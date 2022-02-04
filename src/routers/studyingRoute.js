@@ -235,5 +235,145 @@ router.delete("/api/studying/deleteCardFromStudying/:cardId/:categoryId", auth, 
 });
 
 //! CRUD for the quiz:
+//* Add questions to the quiz by category.
+router.patch("/api/studying/quizQuestion/:categoryId", auth, async (req, res) => {
+  try {
+    const category = await Studying.findOne({ _id: req.params.categoryId});
+    if (!category) {
+      throw new Error("Category not found");
+    }
+    const answersArr = req.body.optionsArr.map((item) => {
+      return ({
+        option: item.answer,
+        correct: item.correct,
+      });
+    });
+    const newQuestion = {
+      question: req.body.question,
+      answers: answersArr,
+    }
+    category.quiz.push(newQuestion);
+
+    await category.save();
+    res.status(200).send(category.quiz);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//* Get the quiz questions by category.
+router.get("/api/studying/quizByCategory/:categoryId", auth, async (req, res) => {
+  try {
+    const category = await Studying.findOne({ _id: req.params.categoryId});
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    res.status(200).send(category.quiz);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//* Update a specific question in the quiz.
+router.patch("/api/studying/updateQuizQuestion/:categoryId/:questionId", auth, async (req, res) => {
+  try {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ["question", "0", "1", "2", "3"];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  
+    if (!isValidOperation) {
+      return res.status(400).send({ error: "Invalid updates!" });
+    }
+    const category = await Studying.findOne({ _id: req.params.categoryId});
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    category.quiz.forEach(quizQ => {
+      if (quizQ._id.valueOf() === req.params.questionId) {
+        updates.forEach(update => {
+          if (update === "question") {
+            quizQ.question = req.body[update];
+          }
+          else {
+            if (req.body[update][0]) {
+              quizQ.answers[update].option = req.body[update][0];
+            }
+            if (req.body[update][1] !== -1) {
+              quizQ.answers[update].correct = req.body[update][1];
+            }
+          }
+        });
+        return quizQ.answers.sort((a, b) => a.correct - b.correct); //! check if the sort work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      }
+    });
+
+    await category.save();
+    res.status(200).send(category.quiz);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//* Delete a specific question in the quiz.
+router.delete("/api/studying/deleteQuizQuestion/:categoryId/:questionId", auth, async (req, res) => {
+  try {
+    const category = await Studying.findOne({ _id: req.params.categoryId});
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    const filteredQuestionArr = category.quiz.filter(quizQ => quizQ._id.valueOf() !== req.params.questionId);
+    const deleteQuizQuestion = category.quiz.filter(quizQ => quizQ._id.valueOf() === req.params.questionId);
+    category.quiz = filteredQuestionArr;
+    if (!deleteQuizQuestion) {
+      throw new Error("Question not found");
+    }
+
+    await category.save();
+    res.status(200).send([category.quiz, deleteQuizQuestion]);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//* Check the user's answers and update the importance.
+router.patch("/api/studying/checkQuiz/:categoryId", auth, async (req, res) => {
+  try {
+    const category = await Studying.findOne({ _id: req.params.categoryId});
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    const userAnswersMap = new Map();
+    req.body.userAnswers.forEach(question => userAnswersMap.set(question.questionID, question.answerID));
+
+    const checkedQuiz = { usersGrade: 0, answersArr: [] }; 
+    category.quiz.forEach(question => {
+      const answerID = userAnswersMap.get(question._id.valueOf());
+      const checkedObj = { questionID: question._id.valueOf(), userAnswer: answerID, correct: '' };
+      if (question.answers[0]._id.valueOf() === answerID) {
+        checkedQuiz.usersGrade++;
+        checkedObj.correct = true;
+      }
+      else {
+        checkedObj.correct = false;
+      }
+      checkedQuiz.answersArr.push(checkedObj);
+    });
+
+    req.user.studying.forEach(card => { 
+      if (card.categoryID === req.params.categoryId) {
+        return card.importance = Math.floor( checkedQuiz.usersGrade / 2);
+      }
+    });
+
+    await req.user.save();
+    res.status(200).send([checkedQuiz, Math.floor( checkedQuiz.usersGrade / 2)]);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 module.exports = router;

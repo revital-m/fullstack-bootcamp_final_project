@@ -8,15 +8,6 @@ const studyingSchema = new mongoose.Schema({
     lowercase: true,
     unique: true,
   },
-  importance: {
-    type: Number,
-    default: 0,
-    validate(value) {
-      if (value < 0 || value > 5) {
-        throw new Error("Importance is invalid");
-      }
-    },
-  },
   questionsArr: [
     {
       global: {
@@ -85,23 +76,23 @@ const studyingSchema = new mongoose.Schema({
   ],
 });
 
-studyingSchema.virtual("userCategory", {
-  ref: "User",
-  localField: "categoryName",
-  foreignField: "categoryName",
-});
+// studyingSchema.virtual("userCategory", {
+//   ref: "User",
+//   localField: "categoryName",
+//   foreignField: "categoryName",
+// });
 
-studyingSchema.virtual("userExercises", {
-  ref: "User",
-  localField: "exercises._id",
-  foreignField: "exercisesQuestionID",
-});
+// studyingSchema.virtual("userExercises", {
+//   ref: "User",
+//   localField: "exercises._id",
+//   foreignField: "exercisesQuestionID",
+// });
 
-studyingSchema.virtual("userQuiz", {
-  ref: "User",
-  localField: "quiz._id",
-  foreignField: "quizQuestionID",
-});
+// studyingSchema.virtual("userQuiz", {
+//   ref: "User",
+//   localField: "quiz._id",
+//   foreignField: "quizQuestionID",
+// });
 
 
 //* Filter the questions in each category to only contain the ones that the user has.

@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema({
         required: true,
         ref: "Studying",
       },
+      importance: {
+        type: Number,
+        default: 0,
+        validate(value) {
+          if (value < 0 || value > 5) {
+            throw new Error("Importance is invalid");
+          }
+        },
+      },
       userQuestions: [
         {
           questionID: {
