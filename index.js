@@ -2,6 +2,7 @@ const express = require("express");
 require("./src/db/mongoose");
 const userRoute = require("./src/routers/userRoute");
 const jobsRoute = require("./src/routers/jobsRoute");
+const studyingRoute = require("./src/routers/studyingRoute");
 const cors = require("cors");
 const path = require("path");
 
@@ -12,6 +13,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(userRoute);
 app.use(jobsRoute);
+app.use(studyingRoute);
 const publicPath = path.join(__dirname, "client/build");
 
 app.use(express.static(publicPath));

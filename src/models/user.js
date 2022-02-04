@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const Jobs = require("./jobs");
+const Studying = require("../models/studying");
 
 const userSchema = new mongoose.Schema({
   password: {
@@ -44,14 +45,25 @@ const userSchema = new mongoose.Schema({
   studying: [
     {
       categoryID: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true,
+        ref: "Studying",
+      },
+      importance: {
+        type: Number,
+        default: 0,
+        validate(value) {
+          if (value < 0 || value > 5) {
+            throw new Error("Importance is invalid");
+          }
+        },
       },
       userQuestions: [
         {
           questionID: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
+            ref: "Studying",
           },
         },
       ],
@@ -59,25 +71,19 @@ const userSchema = new mongoose.Schema({
   ],
   exercisesAnswer: [
     {
-      questionID: {
+      exercisesQuestionID: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: "Studying",
       },
       answer: {
         type: String,
         required: true,
       },
-    },
-  ],
-  quizAnswer: [
-    {
-      questionID: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-      },
-      answer: {
-        type: String,
-        required: true,
+      createdAt: {
+        type: Date,
+        immutable: true,
+        default: () => Date.now(),
       },
     },
   ],
@@ -85,6 +91,12 @@ const userSchema = new mongoose.Schema({
 
 userSchema.virtual("jobs", {
   ref: "Jobs",
+  localField: "_id",
+  foreignField: "owner",
+});
+
+userSchema.virtual("studyingCard", {
+  ref: "Studying",
   localField: "_id",
   foreignField: "owner",
 });
@@ -145,6 +157,7 @@ userSchema.pre("save", async function (next) {
 userSchema.pre("remove", async function (next) {
   const user = this;
   await Jobs.deleteMany({ owner: user._id });
+  await Studying.deleteMany({ "questionsArr.owner": user._id });
 
   next();
 });
