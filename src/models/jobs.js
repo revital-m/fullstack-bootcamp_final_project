@@ -1,4 +1,3 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
 const validator = require("validator");
 
@@ -39,9 +38,10 @@ const jobsSchema = new mongoose.Schema({
   },
   moreInfo: [
     {
-      date: {
+      createdAt: {
         type: Date,
-        default: new Date(),
+        immutable: true,
+        default: () => Date.now(),
       },
       info: {
         type: String,
@@ -66,6 +66,11 @@ const jobsSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => Date.now(),
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
