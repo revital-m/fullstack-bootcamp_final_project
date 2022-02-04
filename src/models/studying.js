@@ -76,31 +76,6 @@ const studyingSchema = new mongoose.Schema({
   ],
 });
 
-// studyingSchema.virtual("userCategory", {
-//   ref: "User",
-//   localField: "categoryName",
-//   foreignField: "categoryName",
-// });
-
-// studyingSchema.virtual("userExercises", {
-//   ref: "User",
-//   localField: "exercises._id",
-//   foreignField: "exercisesQuestionID",
-// });
-
-// studyingSchema.virtual("userQuiz", {
-//   ref: "User",
-//   localField: "quiz._id",
-//   foreignField: "quizQuestionID",
-// });
-
-
-//* Filter the questions in each category to only contain the ones that the user has.
-// studyingSchema.methods.filterQuestionByCategory = async function(userArr, categoriesArr) {
-//     console.log("filterQuestionByCategory: ",this);
-
-// };
-
 const Studying = mongoose.model("Studying", studyingSchema);
 
 module.exports = Studying;

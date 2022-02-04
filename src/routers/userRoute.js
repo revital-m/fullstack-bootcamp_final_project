@@ -82,12 +82,19 @@ router.patch("/api/users/updateProfile", auth, async (req, res) => {
 //* Add a new category card to the user's studying array.
 router.patch("/api/users/addNewCard", auth, async (req, res) => {
   try {
-    const category = req.user.studying.find(category => category.categoryID.valueOf() === req.body.categoryID);
+    const category = req.user.studying.find(
+      (category) => category.categoryID.valueOf() === req.body.categoryID
+    );
     if (!req.user.studying.length || !category) {
-      req.user.studying.push({ categoryID: req.body.categoryID, userQuestions: { questionID: req.body.questionID } });
-    }
-    else {
-      category.userQuestions = [...category.userQuestions, { questionID: req.body.questionID }]
+      req.user.studying.push({
+        categoryID: req.body.categoryID,
+        userQuestions: { questionID: req.body.questionID },
+      });
+    } else {
+      category.userQuestions = [
+        ...category.userQuestions,
+        { questionID: req.body.questionID },
+      ];
     }
 
     await req.user.save();

@@ -87,29 +87,6 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  // quizAnswer: [
-  //   {
-  //     quizQuestionID: {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       required: true,
-  //       ref: "Studying",
-  //     },
-  //     answer: {
-  //       type: Number,
-  //       required: true,
-  //       validate(value) {
-  //         if (value < 0 || value > 4) {
-  //           throw new Error("Answer is invalid");
-  //         }
-  //       },
-  //     },
-  //     createdAt: {
-  //       type: Date,
-  //       immutable: true,
-  //       default: () => Date.now(),
-  //     },
-  //   },
-  // ],
 });
 
 userSchema.virtual("jobs", {
