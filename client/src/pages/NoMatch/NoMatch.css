@@ -1,0 +1,36 @@
+.no-match {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: url("./img/feather.jpg") no-repeat center center/cover;
+}
+
+.no-match-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.664);
+  box-shadow: 5px 5px 20px rgb(37, 37, 37);
+  border-radius: 7rem;
+  padding: 5rem;
+  width: max-content;
+  color: whitesmoke;
+  font-size: 4rem;
+}
+
+.no-match--link {
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.884);
+  border: 0.2rem solid black;
+  border-radius: 2rem;
+  color: whitesmoke;
+  font-size: 4rem;
+  padding: 2rem;
+}
+
+.no-match--link:hover {
+  background: rgba(0, 0, 0, 0.61);
+}
