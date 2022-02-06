@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, BrowserRouter, Route, Link } from "react-router-dom";
 import "./App.css";
-import myApi from './api/Api';
-// import Navbar from "./components/Navbar/Navbar";
+// import myApi from './api/Api';
+import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
 // import Jobs from "./pages/Jobs/Jobs";
 // import JobCard from "./components/JobCard/JobCard";
@@ -11,15 +11,25 @@ import Homepage from "./pages/Homepage/Homepage";
 import NoMatch from "./pages/NoMatch/NoMatch";
 // import Message from "./components/Message/Message";
 import { AuthProvider } from "./context/AuthContext";
-import Signup from "./components/Signup/Signup";
+// import Signup from "./components/Signup/Signup";
 
 function App() {
+  // const { currentUser, currentToken } = useAuth();
+  // const [user, setUser] = useState(false);
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     setUser(true);
+  //   }
+  // }, [currentUser]);
+  
+
   return (
-    <div className="App">
+    <div>
       <BrowserRouter>
         <div>
           <AuthProvider>
-            {/* <Navbar /> */}
+            <Navbar />
             <Switch>
               <Route path="/" exact component={Homepage} />
               {/* <Route path="/jobs" exact component={Jobs} /> */}

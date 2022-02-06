@@ -1,37 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { AuthProvider, useAuth,AuthContext } from "../../context/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { currentUser } = useAuth();
-  const { logout } = useAuth();
-  const history = useHistory();
-  const location = useLocation();
+  const { logout, currentToken, show, setCurrentToken, currentUser } = useContext(AuthContext);
+  
+  // const  [isShow, setIsShow] = useState(currentToken);
 
-  const [isJobs, setIsJobs] = useState(false);
-  const [isStudying, setIsStudying] = useState(false);
+  const history = useHistory();
+  // const location = useLocation();
+
+  // const [isJobs, setIsJobs] = useState(false);
+  // const [isStudying, setIsStudying] = useState(false);
   // const [userValue, setUserValue] = useState("");
 
-  useEffect(() => {
-    if (location.pathname === "/jobs") {
-      setIsJobs(true);
-      setIsStudying(false);
-    } else if (location.pathname === "/studying") {
-      setIsJobs(false);
-      setIsStudying(true);
-    } else {
-      setIsJobs(false);
-      setIsStudying(false);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   const userLoggedIn = currentToken ? true : false;
+  //   console.log("In useEffect - userLoggedIn: ", userLoggedIn);
+  //   setIsShow(userLoggedIn);
+  // }, [show, currentToken, setCurrentToken]);
+  
+
+  // useEffect(() => {
+  //   if (location.pathname === "/jobs") {
+  //     setIsJobs(true);
+  //     setIsStudying(false);
+  //   } else if (location.pathname === "/studying") {
+  //     setIsJobs(false);
+  //     setIsStudying(true);
+  //   } else {
+  //     setIsJobs(false);
+  //     setIsStudying(false);
+  //   }
+  // }, [location]);
 
   const handleLogout = async () => {
     try {
       await logout();
       history.push(`/`);
     } catch (error) {
-      history.push(`/error/error/${error.message}`);
+      // history.push(`/error/error/${error.message}`);
     }
   };
 
@@ -39,8 +48,13 @@ const Navbar = () => {
   //   setUserValue(e.target.value);
   // };
 
+  // console.log("userLoggedIn: ", userLoggedIn);
+  // console.log("show: ", show);
+
   return (
+
     <nav className="navbar">
+      {console.log(currentUser)}
       <div className="navbar--left-side">
         <Link className="navbar--link" to="/">
           Homepage
@@ -59,26 +73,26 @@ const Navbar = () => {
         {/* {isStudying && (
           <button className="navbar--btn">Get Global Cards</button>
         )} */}
-        {isJobs && (
+        {/* {isJobs && (
           <Link className="navbar--link" to="/jobs/new_card">
             New Card
           </Link>
-        )}
-        {isStudying && (
+        )} */}
+        {/* {isStudying && (
           <Link className="navbar--link" to="/studying/new_card">
             New Card
           </Link>
-        )}
-        {currentUser && (
+        )} */}
+        {/* {currentUser && (
           <Link className="navbar--link" to="/jobs">
             Jobs
           </Link>
-        )}
-        {currentUser && (
+        )} */}
+        {/* {currentUser && (
           <Link className="navbar--link" to="/studying">
             Studying
           </Link>
-        )}
+        )} */}
         {currentUser && (
           <button className="navbar--btn" onClick={handleLogout}>
             Logout

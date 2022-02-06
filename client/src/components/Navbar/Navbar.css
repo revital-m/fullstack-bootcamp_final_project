@@ -21,7 +21,7 @@
 
 .navbar--link {
   color: antiquewhite;
-  padding: 2rem 1rem;
+  padding: 1rem;
   margin: 0 2rem;
   text-decoration: none;
   font-size: 1.8rem;
@@ -29,7 +29,7 @@
 
 .navbar--btn {
   color: antiquewhite;
-  padding: 2rem 1rem;
+  padding: 1rem;
   margin: 0 2rem;
   font-size: 1.8rem;
   background: transparent;

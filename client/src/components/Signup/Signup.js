@@ -37,7 +37,7 @@ function Signup({ handleClick }) {
       }
       await signup(password, email, userName);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setCurrent(0);
       setErr(error.message);
     }
@@ -84,7 +84,7 @@ function Signup({ handleClick }) {
 
   //* handel the focus on user's changes.
   const handleEnter = (e) => {
-    console.log(e);
+    // console.log(e);
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
     if (e.type === "click") {

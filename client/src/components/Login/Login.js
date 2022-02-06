@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import myApi from "../../api/Api";
 
 function Login({ handleClick }) {
   //* State:
@@ -13,7 +14,7 @@ function Login({ handleClick }) {
   const emailRef = useRef();
 
   //* useAuth functions.
-  const { login, error, setError } = useAuth();
+  const { login, error, setError, setCurrentUser } = useAuth();
 
   //* Call login() to login the user.
   const handleSubmit = async (e) => {
@@ -23,6 +24,9 @@ function Login({ handleClick }) {
       setError("");
       setIsLoading(true);
       await login(email, password);
+      // if (res) {
+      //   handleGetUser();
+      // }
     } catch (error) {
       setCurrent(0);
       setErr("Failed to log in");
@@ -51,9 +55,20 @@ function Login({ handleClick }) {
     emailRef.current.focus();
   }, []);
 
+  // const handleGetUser = async () => {
+  //   try {
+  //     const response = await myApi.get("/users/myProfile");
+  //     console.log(response);
+  //     setCurrentUser(response.data);
+  //   } catch (e) {
+  //     // setError(e.response.data.message);
+  //     console.table(e);
+  //   }
+  // };
+
   //* handel the focus on user's changes.
   const handleEnter = (e) => {
-    console.log(e);
+    // console.log(e);
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
     if (e.type === "click") {

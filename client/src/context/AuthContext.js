@@ -1,16 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
 import myApi from "../api/Api";
 
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
+
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [currentToken, setCurrentToken] = useState();
+  const [currentUser, setCurrentUser] = useState("");
+  const [currentToken, setCurrentToken] = useState(localStorage.getItem("JobPreparingToken"));
+
+  let userLoggedIn = currentToken ? true : false;
+
+  // const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const  [show, setShow] = useState(userLoggedIn);
   const [error, setError] = useState("");
+
+
 
   //* Signup user and add his token to local storage.
   async function signup(password, email, name) {
@@ -24,7 +32,7 @@ export function AuthProvider({ children }) {
       const response = await myApi.post("/users/signup", obj);
       setCurrentToken(response.data.token);
       setCurrentUser(response.data.user);
-      localStorage.setItem('JobPreparing-Token', response.data.token);
+      localStorage.setItem('JobPreparingToken', response.data.token);
 
     } catch (e) {
       if (e.response.data.message) {
@@ -45,30 +53,32 @@ export function AuthProvider({ children }) {
     };
     try {
       const response = await myApi.post("/users/login", obj);
+      console.log("login: ", response);
       setCurrentToken(response.data.token);
-      setCurrentUser(response.data.user);
-      localStorage.setItem('JobPreparing-Token', response.data.token);
+      // setCurrentUser(response.data.user);
+      localStorage.setItem('JobPreparingToken', response.data.token);
 
     } catch (e) {
       setError(e.response.data);
     }
   }
 
-  console.log(currentToken);
+  
 
-  //handle user logout and remove his token from localstorage
+  //* Logout user & remove his token from local storage
   async function logout() {
     setError("");
 
     try {
       const response = await myApi.post("/users/logout");
-
+      setCurrentToken("");
+      setCurrentUser(null);
       console.log(response);
       localStorage.clear();
 
     } catch (e) {
-
-      setError(e.response.data.message);
+      console.log(e);
+      // setError(e.response.data.message);
       
     }
 
@@ -91,7 +101,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  console.log(error);
+  // console.log(error);
 
 
   // useEffect(() => {
@@ -100,6 +110,38 @@ export function AuthProvider({ children }) {
   //   });
   //   return unsubscribe;
   // }, []);
+ 
+
+  // useEffect(() => {
+  //   console.log("In useEffect - userLoggedIn: ", userLoggedIn);
+  //   userLoggedIn = currentToken ? true : false;
+  //   // console.log("userLoggedIn: ", userLoggedIn);
+  //   setShow(userLoggedIn);
+  // }, [currentToken, setCurrentToken]);
+
+  // useEffect(() => {
+  //   setCurrentToken(localStorage.getItem("JobPreparingToken"));
+  // }, [currentUser]);
+
+  useEffect(() => {
+
+    setError("");
+
+    const handleGetUser = async () => {
+      try {
+        const response = await myApi.get("/users/myProfile");
+        setCurrentUser(response.data);
+      } catch (e) {
+        setError(e.response.data.message);
+      }
+    };
+  
+    handleGetUser();
+ 
+  }, [currentToken, setCurrentToken]);
+
+
+  // console.log("userLoggedIn: ", userLoggedIn);
 
   const value = {
     currentUser,
@@ -108,9 +150,22 @@ export function AuthProvider({ children }) {
     logout,
     logoutFromAll,
     currentToken,
+    setCurrentToken,
     error,
     setError,
+    show,
+    userLoggedIn,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={ {currentUser,
+    signup,
+    login,
+    logout,
+    logoutFromAll,
+    currentToken,
+    setCurrentToken,
+    error,
+    setError,
+    show,
+    userLoggedIn} }>{children}{console.log(currentToken)}</AuthContext.Provider>;
 }
