@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { updateCard, creatNewCard } from "../../api/crud";
+// import { updateCard, creatNewCard } from "../../api/crud";
 import { useAuth } from "../../context/AuthContext";
-import MsgBox from "../../util/MsgBox/MsgBox";
-import Spinner from "../../util/Spinner/Spinner";
+import MsgBox from "../../components/MsgBox/MsgBox";
+import Spinner from "../../components/Spinner/Spinner";
 import "./JobCard.css";
 
 const JobCard = () => {
@@ -38,37 +38,37 @@ const JobCard = () => {
 
   const { userJobsArr, userJobsID, addToJobArr, editJobArr } = useAuth();
 
-  useEffect(() => {
-    const filteredDataArr = userJobsArr.filter(
-      (card) => card.jobCardID !== params.id
-    );
-    if (filteredDataArr) {
-      setFilteredData(filteredDataArr);
-    }
-    const data = userJobsArr.filter((card) => card.jobCardID === params.id);
-    if (data.length) {
-      // console.log(data);
-      setCardId(data[0].id);
-      setCardData(data[0]);
-      setPlaceholderDescription(cardData.jobDescription);
-      setPlaceholderCompany(cardData.companyName);
-      if (cardData.contacts && cardData.contacts.email) {
-        setPlaceholderEmail(cardData.contacts.email);
-      }
-      if (cardData.contacts && cardData.contacts.fullName) {
-        setPlaceholderFullName(cardData.contacts.fullName);
-      }
-      if (cardData.contacts && cardData.contacts.phone) {
-        setPlaceholderPhone(cardData.contacts.phone);
-      }
-    }
-  }, [
-    params.id,
-    cardData.companyName,
-    cardData.contacts,
-    cardData.jobDescription,
-    userJobsArr,
-  ]);
+  // useEffect(() => {
+  //   const filteredDataArr = userJobsArr.filter(
+  //     (card) => card.jobCardID !== params.id
+  //   );
+  //   if (filteredDataArr) {
+  //     setFilteredData(filteredDataArr);
+  //   }
+  //   const data = userJobsArr.filter((card) => card.jobCardID === params.id);
+  //   if (data.length) {
+  //     // console.log(data);
+  //     setCardId(data[0].id);
+  //     setCardData(data[0]);
+  //     setPlaceholderDescription(cardData.jobDescription);
+  //     setPlaceholderCompany(cardData.companyName);
+  //     if (cardData.contacts && cardData.contacts.email) {
+  //       setPlaceholderEmail(cardData.contacts.email);
+  //     }
+  //     if (cardData.contacts && cardData.contacts.fullName) {
+  //       setPlaceholderFullName(cardData.contacts.fullName);
+  //     }
+  //     if (cardData.contacts && cardData.contacts.phone) {
+  //       setPlaceholderPhone(cardData.contacts.phone);
+  //     }
+  //   }
+  // }, [
+  //   params.id,
+  //   cardData.companyName,
+  //   cardData.contacts,
+  //   cardData.jobDescription,
+  //   userJobsArr,
+  // ]);
 
   const handleInputChange = (e) => {
     switch (e.target.name) {
@@ -164,16 +164,16 @@ const JobCard = () => {
       newInfo,
       timeline: [],
     };
-    const res = await creatNewCard("jobs", userJobsID, cardData);
-    if (res === 200 || res === 201) {
-      addToJobArr();
-      setMsgClass("msg--success");
-      setMessage("The card was create successfully!");
-    } else {
+    // const res = await creatNewCard("jobs", userJobsID, cardData);
+    // if (res === 200 || res === 201) {
+    //   addToJobArr();
+    //   setMsgClass("msg--success");
+    //   setMessage("The card was create successfully!");
+    // } else {
 
-      setMsgClass("msg--error");
-      setMessage(`Something went wrong - ${res.error.status}`);
-    }
+    //   setMsgClass("msg--error");
+    //   setMessage(`Something went wrong - ${res.error.status}`);
+    // }
     setPathBack("/jobs");
     setIsLoading(false);
     setIsMsgBox(true);
@@ -196,29 +196,29 @@ const JobCard = () => {
       newInfo,
       newtimeline: [],
     };
-    const res = await updateCard("jobs", userJobsID, cardId, cardData);
-    if (res === 200 || res === 201) {
-      const newCard = {
-        jobCardID: params.id,
-        jobDescription: newDescription,
-        companyName: newCompany,
-        contacts: {
-          email: newEmail,
-          fullName: newFullName,
-          phone: newPhone,
-        },
-        moreInfo: newInfo,
-        timeline: [],
-        id: cardId,
-      };
-      editJobArr([...filteredData, newCard]);
-      setMsgClass("msg--success");
-      setMessage("The card was update successfully!");
-    } else {
-      // console.log(res);
-      setMsgClass("msg--error");
-      setMessage(`Something went wrong - ${res}`);
-    }
+    // const res = await updateCard("jobs", userJobsID, cardId, cardData);
+    // if (res === 200 || res === 201) {
+    //   const newCard = {
+    //     jobCardID: params.id,
+    //     jobDescription: newDescription,
+    //     companyName: newCompany,
+    //     contacts: {
+    //       email: newEmail,
+    //       fullName: newFullName,
+    //       phone: newPhone,
+    //     },
+    //     moreInfo: newInfo,
+    //     timeline: [],
+    //     id: cardId,
+    //   };
+    //   editJobArr([...filteredData, newCard]);
+    //   setMsgClass("msg--success");
+    //   setMessage("The card was update successfully!");
+    // } else {
+    //   // console.log(res);
+    //   setMsgClass("msg--error");
+    //   setMessage(`Something went wrong - ${res}`);
+    // }
     setPathBack("/jobs");
     setIsLoading(false);
     setIsMsgBox(true);

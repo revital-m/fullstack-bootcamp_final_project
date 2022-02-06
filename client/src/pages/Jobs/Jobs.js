@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import MsgBox from "../../components/MsgBox/MsgBox";
 import Spinner from "../../components/Spinner/Spinner";
 // import { deleteCard } from "../../api/crud";
+import myApi from "../../api/Api";
 
 let slidesArr = [];
 
@@ -33,8 +34,9 @@ const Jobs = () => {
   const [state, dispatch] = React.useReducer(slidesReducer, initialState);
   const [isEmpty, setIsEmpty] = useState(false);
   // const { userJobsArr, userJobsID, editJobArr } = useAuth();
-  const userJobsArr = [];
+  // const userJobsArr = [];
 
+  const [userJobsArr, setUserJobsArr] = useState([]);
   const [cardId, setCardId] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
@@ -56,6 +58,29 @@ const Jobs = () => {
       setIsEmpty(false);
     }
   }, [userJobsArr]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await myApi.get("/jobs");
+        setUserJobsArr(data);
+        console.log(data);
+  
+      } catch (e) {
+        console.log(e);
+        // if (e.response.data.message) {
+        //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
+        // }
+  
+      }
+    }
+
+    getData();
+    // return () => {
+    //   second;
+    // };
+  }, []);
+  
 
   const handleDelete = (id, jobCardID) => {
     setCardId(id);
@@ -147,8 +172,8 @@ const Jobs = () => {
 
       {isLoading && <Spinner />}
       {isMsgBox && <MsgBox msgClass={msgClass} message={message} pathBack={pathBack} handleDelete="" handleGoBackbtn={onGoBack} isDelete={isDelete} isClose={isClose} notDelete={false} />}
-      {isShow &&     <div className="slides">
-      {[...userJobsArr, ...userJobsArr, ...userJobsArr].map((job, i) => {
+      <div className="slides">
+      {isShow && [...userJobsArr, ...userJobsArr, ...userJobsArr].map((job, i) => {
         let offset = userJobsArr.length + (state.slideIndex - i);
         return <JobCardsToShow offset={offset} key={job.jobCardID+i}
         jobDescription={job.jobDescription}
@@ -161,9 +186,9 @@ const Jobs = () => {
         handleDeletebtn={handleDelete}
         id={job.id} />;
       })}
-      <button className="prev-btn" onClick={() => dispatch({ type: "PREV" })}>‹</button>
-      <button className="next-btn" onClick={() => dispatch({ type: "NEXT" })}>›</button>
-    </div>}
+      {isShow && <button className="prev-btn" onClick={() => dispatch({ type: "PREV" })}>‹</button>}
+      {isShow && <button className="next-btn" onClick={() => dispatch({ type: "NEXT" })}>›</button>}
+    </div>
       {/* {isShow && <div className="jobs-card-container">{displayJobCards()}</div>} */}
     </div>
   );

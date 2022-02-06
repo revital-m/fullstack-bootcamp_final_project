@@ -10,10 +10,9 @@ const Homepage = () => {
   const { show, currentUser, currentToken } = useAuth();
   const [toggle, setToggle] = useState(true);
 
-
   const handleToggle = () => {
     setToggle(!toggle);
-  };
+  }; 
 
   return (
     <AuthProvider>

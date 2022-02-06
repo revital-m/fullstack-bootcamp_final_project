@@ -54,7 +54,7 @@ const Navbar = () => {
   return (
 
     <nav className="navbar">
-      {console.log(currentUser)}
+      {/* {console.log(currentUser)} */}
       <div className="navbar--left-side">
         <Link className="navbar--link" to="/">
           Homepage

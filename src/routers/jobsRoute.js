@@ -20,8 +20,10 @@ router.post("/api/jobs/creatNewCard", auth, async (req, res) => {
 //* Get all of the user's job cards.
 router.get("/api/jobs", auth, async (req, res) => {
   try {
+
     // const jobs = await Jobs.find({owner: req.user._id});
     // res.status(200).send(jobs);
+
     await req.user.populate("jobs");
     res.status(200).send(req.user.jobs);
   } catch (error) {

@@ -5,7 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
 import Jobs from "./pages/Jobs/Jobs";
-// import JobCard from "./components/JobCard/JobCard";
+import JobCard from "./components/JobCard/JobCard";
 // import Studying from "./pages/Studying/Studying";
 // import StudyingCard from "./components/StudyingCard/StudyingCard";
 import NoMatch from "./pages/NoMatch/NoMatch";
@@ -33,8 +33,8 @@ function App() {
             <Switch>
               <Route path="/" exact component={Homepage} />
               <Route path="/jobs" exact component={Jobs} />
-              {/* <Route path="/jobs/new_card" exact component={JobCard} /> */}
-              {/* <Route path="/jobs/edit_card/:id" exact component={JobCard} /> */}
+              <Route path="/jobs/new_card" exact component={JobCard} />
+              <Route path="/jobs/edit_card/:id" exact component={JobCard} />
               {/* <Route path="/studying" exact component={Studying} /> */}
               {/* <Route path="/studying/new_card" exact component={StudyingCard} /> */}
               {/* <Route

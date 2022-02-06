@@ -167,5 +167,5 @@ export function AuthProvider({ children }) {
     error,
     setError,
     show,
-    userLoggedIn} }>{children}{console.log(currentToken)}</AuthContext.Provider>;
+    userLoggedIn} }>{children}</AuthContext.Provider>;
 }
