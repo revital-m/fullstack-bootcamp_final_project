@@ -1,0 +1,116 @@
+.jobs {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../components/img/leefs.jpg") no-repeat center
+    center/cover;
+  /* padding-top: 7rem; */
+  overflow: hidden;
+}
+
+.jobs-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.jobs--link {
+  padding: 0 1rem;
+  color: rgb(0, 45, 170);
+}
+
+.jobs--link:hover {
+  padding: 0 1rem;
+  color: rgb(0, 115, 223);
+}
+
+.slides {
+  display: grid;
+}
+
+.slides > .slide {
+  grid-area: 1 / -1;
+}
+
+.slides > button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: rgb(0, 0, 0);
+  position: absolute;
+  font-size: 14rem;
+  width: 5rem;
+  height: 5rem;
+  bottom: 20%;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  opacity: 0.9;
+  z-index: 5;
+}
+
+.prev-btn {
+  left: 30.3%;
+}
+
+.next-btn {
+  left: 66.5%;
+}
+
+.slides > button:hover {
+  opacity: 1;
+}
+
+.slides > button:focus {
+  outline: none;
+}
+
+.slides > button:first-child {
+  left: -50%;
+}
+.slides > button:last-child {
+  right: -50%;
+}
+
+.slideContent {
+  background: rgb(255, 255, 255);
+  transition: transform 0.5s ease-in-out;
+  opacity: 0.6;
+
+  display: grid;
+  align-content: center;
+
+  transform-style: preserve-3d;
+  transform: perspective(1000px) translateX(calc(80% * var(--offset)))
+    rotateY(calc(-45deg * var(--dir)));
+}
+
+.slide[data-active] {
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.slide[data-active] .slideBackground {
+  opacity: 0.2;
+  transform: none;
+}
+
+.slide[data-active] .slideContentInner {
+  opacity: 1;
+}
+
+.slide[data-active] .slideContent {
+  --x: calc(var(--px) - 0.5);
+  --y: calc(var(--py) - 0.5);
+  opacity: 1;
+
+  transform: perspective(1000px);
+}
+
+/* .slide[data-active] .slideContent:hover {
+  transition: none;
+  transform: perspective(1000px) rotateY(calc(var(--x) * 45deg))
+    rotateX(calc(var(--y) * -45deg));
+} */

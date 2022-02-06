@@ -1,0 +1,57 @@
+.msg-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(245, 245, 245, 0.616);
+  box-shadow: 5px 5px 20px rgb(37, 37, 37);
+  border-radius: 7rem;
+  padding: 1rem;
+  max-width: 75rem;
+  width: 89vw;
+  color: black;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.msg--empty {
+  padding: 5rem;
+  max-width: 50rem;
+}
+
+.msg--error {
+  background: rgba(253, 136, 136, 0.616);
+}
+
+.msg--success {
+  background: rgba(136, 253, 185, 0.616);
+}
+
+.msg--btn-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.msg--btn,
+.msg--link {
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.884);
+  border: 0.2rem solid black;
+  border-radius: 2rem;
+  color: whitesmoke;
+  font-size: 2rem;
+  padding: 2rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.msg--btn:hover,
+.msg--link:hover {
+  background: rgba(0, 0, 0, 0.61);
+}
+
+.msg--link {
+  text-decoration: none;
+}
