@@ -1,0 +1,22 @@
+.spinner {
+  height: 10vmin;
+  width: 10vmin;
+  border-radius: 50%;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-name: spinners;
+  border: rgb(141, 141, 141) 0.5vmin solid;
+  border-left: turquoise 0.5vmin solid;
+  margin: 1rem;
+}
+
+@keyframes spinners {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

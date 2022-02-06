@@ -4,7 +4,7 @@ import "./App.css";
 // import myApi from './api/Api';
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
-// import Jobs from "./pages/Jobs/Jobs";
+import Jobs from "./pages/Jobs/Jobs";
 // import JobCard from "./components/JobCard/JobCard";
 // import Studying from "./pages/Studying/Studying";
 // import StudyingCard from "./components/StudyingCard/StudyingCard";
@@ -32,7 +32,7 @@ function App() {
             <Navbar />
             <Switch>
               <Route path="/" exact component={Homepage} />
-              {/* <Route path="/jobs" exact component={Jobs} /> */}
+              <Route path="/jobs" exact component={Jobs} />
               {/* <Route path="/jobs/new_card" exact component={JobCard} /> */}
               {/* <Route path="/jobs/edit_card/:id" exact component={JobCard} /> */}
               {/* <Route path="/studying" exact component={Studying} /> */}

@@ -1,0 +1,69 @@
+.JobCard {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  /* padding-top: 15rem; */
+  justify-content: center;
+  align-items: center;
+  background: url("../img/leefs.jpg") no-repeat center center/cover;
+}
+
+.JobCard-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  margin: 1rem;
+
+  box-shadow: 5px 5px 20px gray;
+  border-radius: 1rem;
+  background: rgba(245, 245, 245, 0.514);
+  /* background: url("./img/bgTree.jpg") no-repeat center center/cover; */
+}
+
+.job-card--label,
+.job-card--info {
+  font-weight: bold;
+  margin: 1rem;
+}
+
+.job-card--label {
+  font-size: 1.8rem;
+}
+
+.job-card--info {
+  border: 0.3rem solid #22072a;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.job-card--textarea {
+  display: flex;
+  flex-wrap: wrap;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.job-card--btn {
+  cursor: pointer;
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.589);
+  border: 2px solid rgba(0, 0, 0, 0.589);
+  border-radius: 1rem;
+  color: whitesmoke;
+}
+
+.job-card--btn:hover {
+  background: rgba(0, 0, 0, 0.76);
+}
