@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 // import { updateCard, creatNewCard } from "../../api/crud";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import MsgBox from "../../components/MsgBox/MsgBox";
 import Spinner from "../../components/Spinner/Spinner";
 import "./JobCard.css";
 
-const JobCard = () => {
+const JobCard = ({ userJobsArr }) => {
   const [isShow, setIsShow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isMsgBox, setIsMsgBox] = useState(false);
@@ -28,15 +28,15 @@ const JobCard = () => {
   const [placeholderFullName, setPlaceholderFullName] = useState("Full Name");
   const [placeholderPhone, setPlaceholderPhone] = useState("9999-999-999");
 
-  const [cardData, setCardData] = useState({});
-  const [cardId, setCardId] = useState("");
+  // const [cardData, setCardData] = useState({});
+  // const [cardId, setCardId] = useState("");
   // console.log(cardId);
-  const [filteredData, setFilteredData] = useState([]);
+  // const [filteredData, setFilteredData] = useState([]);
 
-  const params = useParams();
+  // const params = useParams();
   // const history = useHistory();
 
-  const { userJobsArr, userJobsID, addToJobArr, editJobArr } = useAuth();
+  // const { userJobsArr, userJobsID, addToJobArr, editJobArr } = useAuth();
 
   // useEffect(() => {
   //   const filteredDataArr = userJobsArr.filter(
@@ -95,134 +95,134 @@ const JobCard = () => {
     }
   };
 
-  const handleClick = () => {
-    setIsShow(false);
-    setIsLoading(true);
-    if (!params.id) {
-      newCard();
-    } else {
-      const newDescription = jobDescription
-        ? jobDescription
-        : cardData.jobDescription;
-      const newCompany = companyName ? companyName : cardData.companyName;
+  // const handleClick = () => {
+  //   setIsShow(false);
+  //   setIsLoading(true);
+  //   if (!params.id) {
+  //     newCard();
+  //   } else {
+  //     const newDescription = jobDescription
+  //       ? jobDescription
+  //       : cardData.jobDescription;
+  //     const newCompany = companyName ? companyName : cardData.companyName;
 
-      let newEmail = email;
-      if (!email && cardData.contacts && cardData.contacts.email) {
-        newEmail = cardData.contacts.email;
-      }
+  //     let newEmail = email;
+  //     if (!email && cardData.contacts && cardData.contacts.email) {
+  //       newEmail = cardData.contacts.email;
+  //     }
 
-      let newFullName = fullName;
-      if (!fullName && cardData.contacts && cardData.contacts.fullName) {
-        newFullName = cardData.contacts.fullName;
-      }
+  //     let newFullName = fullName;
+  //     if (!fullName && cardData.contacts && cardData.contacts.fullName) {
+  //       newFullName = cardData.contacts.fullName;
+  //     }
 
-      let newPhone = phone;
-      if (!phone && cardData.contacts && cardData.contacts.phone) {
-        newPhone = cardData.contacts.phone;
-      }
+  //     let newPhone = phone;
+  //     if (!phone && cardData.contacts && cardData.contacts.phone) {
+  //       newPhone = cardData.contacts.phone;
+  //     }
 
-      const newInfo = infoText
-        ? [
-            ...cardData.moreInfo,
-            {
-              date: new Date().toString(),
-              info: infoText,
-              id: uuidv4(),
-            },
-          ]
-        : [...cardData.moreInfo];
+  //     const newInfo = infoText
+  //       ? [
+  //           ...cardData.moreInfo,
+  //           {
+  //             date: new Date().toString(),
+  //             info: infoText,
+  //             id: uuidv4(),
+  //           },
+  //         ]
+  //       : [...cardData.moreInfo];
 
-      UpdateCard(
-        newDescription,
-        newCompany,
-        newEmail,
-        newFullName,
-        newPhone,
-        newInfo
-      );
-    }
-  };
+  //     UpdateCard(
+  //       newDescription,
+  //       newCompany,
+  //       newEmail,
+  //       newFullName,
+  //       newPhone,
+  //       newInfo
+  //     );
+  //   }
+  // };
 
-  const newCard = async () => {
-    let newInfo = [];
-    if (infoText) {
-      newInfo = [
-        {
-          date: new Date().toString(),
-          info: infoText,
-          id: uuidv4(),
-        },
-      ];
-    }
-    const cardData = {
-      jobCardID: uuidv4(),
-      jobDescription,
-      companyName,
-      email,
-      fullName,
-      phone,
-      newInfo,
-      timeline: [],
-    };
-    // const res = await creatNewCard("jobs", userJobsID, cardData);
-    // if (res === 200 || res === 201) {
-    //   addToJobArr();
-    //   setMsgClass("msg--success");
-    //   setMessage("The card was create successfully!");
-    // } else {
+  // const newCard = async () => {
+  //   let newInfo = [];
+  //   if (infoText) {
+  //     newInfo = [
+  //       {
+  //         date: new Date().toString(),
+  //         info: infoText,
+  //         id: uuidv4(),
+  //       },
+  //     ];
+  //   }
+  //   const cardData = {
+  //     jobCardID: uuidv4(),
+  //     jobDescription,
+  //     companyName,
+  //     email,
+  //     fullName,
+  //     phone,
+  //     newInfo,
+  //     timeline: [],
+  //   };
+  //   const res = await creatNewCard("jobs", userJobsID, cardData);
+  //   if (res === 200 || res === 201) {
+  //     addToJobArr();
+  //     setMsgClass("msg--success");
+  //     setMessage("The card was create successfully!");
+  //   } else {
 
-    //   setMsgClass("msg--error");
-    //   setMessage(`Something went wrong - ${res.error.status}`);
-    // }
-    setPathBack("/jobs");
-    setIsLoading(false);
-    setIsMsgBox(true);
-  };
+  //     setMsgClass("msg--error");
+  //     setMessage(`Something went wrong - ${res.error.status}`);
+  //   }
+  //   setPathBack("/jobs");
+  //   setIsLoading(false);
+  //   setIsMsgBox(true);
+  // };
 
-  const UpdateCard = async (
-    newDescription,
-    newCompany,
-    newEmail,
-    newFullName,
-    newPhone,
-    newInfo
-  ) => {
-    const cardData = {
-      newDescription,
-      newCompany,
-      newEmail,
-      newFullName,
-      newPhone,
-      newInfo,
-      newtimeline: [],
-    };
-    // const res = await updateCard("jobs", userJobsID, cardId, cardData);
-    // if (res === 200 || res === 201) {
-    //   const newCard = {
-    //     jobCardID: params.id,
-    //     jobDescription: newDescription,
-    //     companyName: newCompany,
-    //     contacts: {
-    //       email: newEmail,
-    //       fullName: newFullName,
-    //       phone: newPhone,
-    //     },
-    //     moreInfo: newInfo,
-    //     timeline: [],
-    //     id: cardId,
-    //   };
-    //   editJobArr([...filteredData, newCard]);
-    //   setMsgClass("msg--success");
-    //   setMessage("The card was update successfully!");
-    // } else {
-    //   // console.log(res);
-    //   setMsgClass("msg--error");
-    //   setMessage(`Something went wrong - ${res}`);
-    // }
-    setPathBack("/jobs");
-    setIsLoading(false);
-    setIsMsgBox(true);
-  };
+  // const UpdateCard = async (
+  //   newDescription,
+  //   newCompany,
+  //   newEmail,
+  //   newFullName,
+  //   newPhone,
+  //   newInfo
+  // ) => {
+  //   const cardData = {
+  //     newDescription,
+  //     newCompany,
+  //     newEmail,
+  //     newFullName,
+  //     newPhone,
+  //     newInfo,
+  //     newtimeline: [],
+  //   };
+  //   const res = await updateCard("jobs", userJobsID, cardId, cardData);
+  //   if (res === 200 || res === 201) {
+  //     const newCard = {
+  //       jobCardID: params.id,
+  //       jobDescription: newDescription,
+  //       companyName: newCompany,
+  //       contacts: {
+  //         email: newEmail,
+  //         fullName: newFullName,
+  //         phone: newPhone,
+  //       },
+  //       moreInfo: newInfo,
+  //       timeline: [],
+  //       id: cardId,
+  //     };
+  //     editJobArr([...filteredData, newCard]);
+  //     setMsgClass("msg--success");
+  //     setMessage("The card was update successfully!");
+  //   } else {
+  //     // console.log(res);
+  //     setMsgClass("msg--error");
+  //     setMessage(`Something went wrong - ${res}`);
+  //   }
+  //   setPathBack("/jobs");
+  //   setIsLoading(false);
+  //   setIsMsgBox(true);
+  // };
 
   return (
     <div className="JobCard">
@@ -290,9 +290,12 @@ const JobCard = () => {
             value={infoText}
           ></textarea>
         </div>
-        <button className="job-card--btn" onClick={handleClick}>
+        <button className="job-card--btn" onClick="">
           Save
         </button>
+        {/* <button className="job-card--btn" onClick={handleClick}>
+          Save
+        </button> */}
       </div>
       }
       

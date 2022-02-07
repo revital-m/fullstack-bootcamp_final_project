@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import myApi from "../../api/Api";
 
-function Login({ handleClick }) {
+function Login({ handleClick, login, error, setError }) {
   //* State:
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +14,7 @@ function Login({ handleClick }) {
   const emailRef = useRef();
 
   //* useAuth functions.
-  const { login, error, setError, setCurrentUser } = useAuth();
+  // const { login, error, setError, setCurrentUser } = useAuth();
 
   //* Call login() to login the user.
   const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ function Login({ handleClick }) {
       setCurrent(0);
       setErr("Failed to log in");
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   //* Controlled Inputs.

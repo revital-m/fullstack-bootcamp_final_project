@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
       "tokens.token": `${token}`,
     });
 
-    // console.log("user: ", user);
+    console.log("user: ", user);
     if (!user) {
       console.log("User Not found!");
       throw new Error("User Not found!");

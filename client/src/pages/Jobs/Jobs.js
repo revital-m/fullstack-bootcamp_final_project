@@ -30,13 +30,13 @@ const initialState = {
     }
   };
 
-const Jobs = () => {
+const Jobs = ({ userJobsArr, setUserJobsArr }) => {
   const [state, dispatch] = React.useReducer(slidesReducer, initialState);
   const [isEmpty, setIsEmpty] = useState(false);
   // const { userJobsArr, userJobsID, editJobArr } = useAuth();
   // const userJobsArr = [];
 
-  const [userJobsArr, setUserJobsArr] = useState([]);
+  // const [userJobsArr, setUserJobsArr] = useState([]);
   const [cardId, setCardId] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
@@ -59,27 +59,7 @@ const Jobs = () => {
     }
   }, [userJobsArr]);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await myApi.get("/jobs");
-        setUserJobsArr(data);
-        console.log(data);
-  
-      } catch (e) {
-        console.log(e);
-        // if (e.response.data.message) {
-        //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
-        // }
-  
-      }
-    }
 
-    getData();
-    // return () => {
-    //   second;
-    // };
-  }, []);
   
 
   const handleDelete = (id, jobCardID) => {
@@ -98,25 +78,35 @@ const Jobs = () => {
     setIsMsgBox(true);
   }
 
-  // const onDelete = async () => {
-  //   setIsLoading(true);
-  //   setIsShow(false);
-  //   setIsMsgBox(false);
-  //   const res = await deleteCard("jobs", userJobsID, cardId);
-  //   if (res === 200 || res === 201) {
-  //     setMessage("The card was deleted successfully!");
-  //     setMsgClass("msg--success");
-  //     editJobArr(filteredData);
-  //   } else {
-  //     setMessage(`Something went wrong - ${res}`);
-  //     setMsgClass("msg--error");
-  //   }
-  //   setIsLoading(false);
-  //   setIsClose(true);
-  //   setIsDelete(false);
-  //   setIsEmpty(false);
-  //   setIsMsgBox(true);
-  // }
+  const onDelete = async () => {
+    setIsLoading(true);
+    setIsShow(false);
+    setIsMsgBox(false);
+    const res = await deleteCard();
+    if (res === 200 || res === 201) {
+      setMessage("The card was deleted successfully!");
+      setMsgClass("msg--success");
+      setUserJobsArr(filteredData);
+    } else {
+      setMessage(`Something went wrong - ${res}`);
+      setMsgClass("msg--error");
+    }
+    setIsLoading(false);
+    setIsClose(true);
+    setIsDelete(false);
+    setIsEmpty(false);
+    setIsMsgBox(true);
+  }
+
+  const deleteCard = async () => {
+    try {
+      const response = await myApi.delete(`/jobs/deleteCard/${cardId}`);
+      console.log(response);
+  
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const onGoBack = () => {
     setIsLoading(false);
@@ -157,6 +147,7 @@ const Jobs = () => {
 
   return (
     <div className="jobs">
+      {/* {console.log("userJobsArr: ", userJobsArr)} */}
       {isEmpty && (
         <div className={`msg-container msg--empty`}>
           <h1>Let's get started!</h1>
@@ -171,20 +162,21 @@ const Jobs = () => {
       )}
 
       {isLoading && <Spinner />}
-      {isMsgBox && <MsgBox msgClass={msgClass} message={message} pathBack={pathBack} handleDelete="" handleGoBackbtn={onGoBack} isDelete={isDelete} isClose={isClose} notDelete={false} />}
+      {isMsgBox && <MsgBox msgClass={msgClass} message={message} pathBack={pathBack} handleDelete={onDelete} handleGoBackbtn={onGoBack} isDelete={isDelete} isClose={isClose} notDelete={false} />}
       <div className="slides">
       {isShow && [...userJobsArr, ...userJobsArr, ...userJobsArr].map((job, i) => {
+        console.log("in the map - job: ", job);
         let offset = userJobsArr.length + (state.slideIndex - i);
-        return <JobCardsToShow offset={offset} key={job.jobCardID+i}
+        return <JobCardsToShow offset={offset} key={job._id+i}
         jobDescription={job.jobDescription}
         companyName={job.companyName}
-        contactEmail={job.contacts.email}
-        contactFullName={job.contacts.fullName}
-        contactPhone={job.contacts.phone}
-        jobCardID={job.jobCardID}
+        contactEmail={(job.contacts && job.contacts.email) ? job.contacts.email: ""}
+        contactFullName={(job.contacts && job.contacts.fullName) ? job.contacts.fullName : ""}
+        contactPhone={(job.contacts && job.contacts.phone) ? job.contacts.phone : ""}
+        jobCardID={job._id}
         moreInfo={job.moreInfo}
-        handleDeletebtn={handleDelete}
-        id={job.id} />;
+        handleDeleteBtn={handleDelete}
+        owner={job.owner} />;
       })}
       {isShow && <button className="prev-btn" onClick={() => dispatch({ type: "PREV" })}>‹</button>}
       {isShow && <button className="next-btn" onClick={() => dispatch({ type: "NEXT" })}>›</button>}

@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./Signup.css";
 import validator from "validator";
 
-function Signup({ handleClick }) {
+function Signup({ handleClick, signup, error, setError }) {
   //* Terms for a strong password.
   const strongPassword =
     "Password must contain at least: 8 characters, 1 lowercase, 1 uppercase, 1 number, 1 symbol.";
@@ -22,7 +22,7 @@ function Signup({ handleClick }) {
   const userNameRef = useRef();
 
   //* useAuth functions.
-  const { signup, error, setError } = useAuth();
+  // const { signup, error, setError } = useAuth();
 
   //* Check if the password & the passwordConfirm are the same. and call signup() to signup the user.
   const handleSubmit = async (e) => {
@@ -41,7 +41,7 @@ function Signup({ handleClick }) {
       setCurrent(0);
       setErr(error.message);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   //* Controlled Inputs.

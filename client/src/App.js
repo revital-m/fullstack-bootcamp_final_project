@@ -6,35 +6,166 @@ import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
 import Jobs from "./pages/Jobs/Jobs";
 import JobCard from "./components/JobCard/JobCard";
+import JobCreateCard from "./components/JobCreateCard/JobCreateCard";
 // import Studying from "./pages/Studying/Studying";
 // import StudyingCard from "./components/StudyingCard/StudyingCard";
 import NoMatch from "./pages/NoMatch/NoMatch";
 // import Message from "./components/Message/Message";
-import { AuthProvider } from "./context/AuthContext";
+// import { AuthProvider } from "./context/AuthContext";
 // import Signup from "./components/Signup/Signup";
+import myApi from "./api/Api";
 
 function App() {
-  // const { currentUser, currentToken } = useAuth();
-  // const [user, setUser] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+  const [currentToken, setCurrentToken] = useState(localStorage.getItem("JobPreparingToken"));
+  const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     setUser(true);
-  //   }
-  // }, [currentUser]);
+  const [userJobsArr, setUserJobsArr] = useState([]);
+
+  // let userLoggedIn = currentToken ? true : false;
+  // const [userLoggedIn, setUserLoggedIn] = useState(false);
+  // const  [show, setShow] = useState(userLoggedIn);
+
+  //* Signup user and add his token to local storage.
+   async function signup(password, email, name) {
+    setError("");
+    let obj = {
+      password: password,
+      email: email,
+      userName: name,
+    };
+    try {
+      const response = await myApi.post("/users/signup", obj);
+      setCurrentToken(response.data.token);
+      setCurrentUser(response.data.user);
+      localStorage.setItem('JobPreparingToken', response.data.token);
   
+    } catch (e) {
+      if (e.response.data.message) {
+        setError(e.response.data.message.replace("User validation failed:", "Error -"));
+      }
+      else {
+        setError("Unable to signup");
+      }
+    }
+  }
+
+  //* Login user and add his token to local storage.
+  async function login(email, password) {
+    setError("");
+    let obj = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await myApi.post("/users/login", obj);
+      console.log("login: ", response);
+      setCurrentToken(response.data.token);
+      // setCurrentUser(response.data.user);
+      localStorage.setItem('JobPreparingToken', response.data.token);
+  
+    } catch (e) {
+      setError(e.response.data);
+    }
+  }
+
+  //* Logout user & remove his token from local storage
+  async function logout() {
+    setError("");
+
+    try {
+      const response = await myApi.post("/users/logout");
+      setCurrentToken("");
+      setCurrentUser(null);
+      console.log(response);
+      localStorage.clear();
+
+    } catch (e) {
+      console.log(e);
+      // setError(e.response.data.message);
+      
+    }
+
+  }
+
+  //logout from all user's devices
+  async function logoutFromAll(){
+    setError("");
+  
+    try {
+      const response = await myApi.post("/users/logoutAll");
+      console.log(response);
+      localStorage.clear();
+  
+    } catch (e) {
+      setError(e.response.data.message);
+        
+    }
+  }
+
+   //* Get all of the cards from Jobs collection that the current user owns.
+  const getData = async () => {
+    try {
+      const { data } = await myApi.get("/jobs");
+      setUserJobsArr(data);
+      console.log("data: ", data);
+  
+    } catch (e) {
+      console.log(e);
+      // if (e.response.data.message) {
+      //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
+      // }
+    }
+  }
+
+  useEffect(() => {
+    if (currentToken) {
+      getData();
+    }
+  }, [currentToken]);
+  
+  //* Save the new card to the Jobs collection.
+  const saveNewJobCard = async (newCard) => {
+    try {
+      console.log("newCard: ", newCard);
+      const { data, status } = await myApi.post("/jobs/creatNewCard", newCard);
+      setUserJobsArr(data);
+      // console.log(response);
+      return status;
+  
+    } catch (e) {
+      console.log(e);
+      return e.status;
+      // if (e.response.data.message) {
+      //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
+      // }
+    }
+  }
 
   return (
     <div>
       <BrowserRouter>
         <div>
-          <AuthProvider>
-            <Navbar />
+          {/* <AuthProvider> */}
+            {/* <Navbar /> */}
+            <Navbar currentToken={currentToken} logout={logout} logoutFromAll={logoutFromAll} />
             <Switch>
-              <Route path="/" exact component={Homepage} />
-              <Route path="/jobs" exact component={Jobs} />
-              <Route path="/jobs/new_card" exact component={JobCard} />
-              <Route path="/jobs/edit_card/:id" exact component={JobCard} />
+              {/* <Route path="/" exact component={Homepage} /> */}
+              <Route path="/" exact >
+                <Homepage currentToken={currentToken} signup={signup} login={login} error={error} setError={setError} />
+              </Route>
+              <Route path="/jobs" exact >
+                <Jobs userJobsArr={userJobsArr} setUserJobsArr={setUserJobsArr} />
+              </Route>
+              {/* <Route path="/jobs" exact component={Jobs} /> */}
+             <Route path="/jobs/new_card" exact >
+                <JobCreateCard saveNewJobCard={saveNewJobCard} />
+              </Route> 
+             <Route path="/jobs/edit_card/:id" exact >
+                <JobCard userJobsArr={userJobsArr} />
+              </Route> 
+              {/* <Route path="/jobs/new_card" exact component={JobCard} />
+              <Route path="/jobs/edit_card/:id" exact component={JobCard} /> */}
               {/* <Route path="/studying" exact component={Studying} /> */}
               {/* <Route path="/studying/new_card" exact component={StudyingCard} /> */}
               {/* <Route
@@ -46,7 +177,7 @@ function App() {
               {/* <Route path="/error/:name/:id" exact component={Message} /> */}
               <Route component={NoMatch} />
             </Switch>
-          </AuthProvider>
+          {/* </AuthProvider> */}
         </div>
       </BrowserRouter>
     </div>
