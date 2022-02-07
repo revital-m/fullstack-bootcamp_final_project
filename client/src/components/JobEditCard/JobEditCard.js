@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import MsgBox from "../MsgBox/MsgBox";
 import Spinner from "../Spinner/Spinner";
-import "./JobCreateCard.css";
 
-function JobCreateCard({ saveNewJobCard }) {
+function JobEditCard({ userJobsArr, saveUpdateJobCard }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(true);
 
@@ -14,18 +14,14 @@ function JobCreateCard({ saveNewJobCard }) {
   const [gotCallback, setGotCallback] = useState(false);
   const [interview, setInterview] = useState(false);
   const [negotiation, setNegotiation] = useState(false);
-  const [jobDescription, setJobDescription] = useState("");
-  const [isJobDescription, setIsJobDescription] = useState(
-    "job-card--label-required"
-  );
-  const [companyName, setCompanyName] = useState("");
-  const [isCompanyName, setIsCompanyName] = useState(
-    "job-card--label-required"
-  );
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [infoText, setInfoText] = useState("");
+
+  const [placeholderEmail, setPlaceholderEmail] = useState("temp@gmail.com");
+  const [placeholderFullName, setPlaceholderFullName] = useState("Full Name");
+  const [placeholderPhone, setPlaceholderPhone] = useState("9999-999-999");
 
   //* State for the MsgBox component.
   const [isMsgBox, setIsMsgBox] = useState(false);
@@ -33,24 +29,44 @@ function JobCreateCard({ saveNewJobCard }) {
   const [message, setMessage] = useState("");
   const [pathBack, setPathBack] = useState("");
 
-  //* Ref
-  const jobDescriptionRef = useRef();
+  //* Ref & params
+  const emailRef = useRef();
+  const params = useParams();
 
-  //* Check if all of the required fields are provided and call saveNewJobCard() to save the card to the Jobs collection.
+  useEffect(() => {
+    const cardToUpdate = userJobsArr.filter((job) => job._id === params.id);
+    setGotCallback(cardToUpdate[0].timeline.gotCallback);
+    setInterview(cardToUpdate[0].timeline.interview);
+    setNegotiation(cardToUpdate[0].timeline.negotiation);
+    if (cardToUpdate[0].contacts) {
+      const emailPlaceholder = cardToUpdate[0].contacts.email
+        ? cardToUpdate[0].contacts.email
+        : "temp@gmail.com";
+      setPlaceholderEmail(emailPlaceholder);
+      const namePlaceholder = cardToUpdate[0].contacts.fullName
+        ? cardToUpdate[0].contacts.fullName
+        : "Full Name";
+      setPlaceholderFullName(namePlaceholder);
+      const phonePlaceholder = cardToUpdate[0].contacts.phone
+        ? cardToUpdate[0].contacts.phone
+        : "9999-999-999";
+      setPlaceholderPhone(phonePlaceholder);
+    }
+  }, []);
+
+  //* Call saveUpdateJobCard() to save the card to the Jobs collection.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setIsShow(false);
     try {
       setErr("");
-      if (!jobDescription || !companyName) {
-        throw new Error("Required fields are not provided!");
-      }
-      const newCard = creatNewCardObj();
-      const response = await saveNewJobCard(newCard);
+      const updates = creatUpdatesObj();
+      console.log("updates: ", updates);
+      const response = await saveUpdateJobCard(params.id, updates);
       if (response === 200 || response === 201) {
         setMsgClass("msg--success");
-        setMessage("The card was create successfully!");
+        setMessage("The card was update successfully!");
       } else {
         setMsgClass("msg--error");
         setMessage(`Something went wrong - ${response.status}`);
@@ -79,60 +95,31 @@ function JobCreateCard({ saveNewJobCard }) {
   };
 
   //* Create the new card object to be saved.
-  const creatNewCardObj = () => {
+  const creatUpdatesObj = () => {
     const timelineArr = validTimeline();
-    const newCard = {
-      jobDescription: jobDescription,
-      companyName: companyName,
-      timeline: {
-        sendCV: timelineArr[0],
-        gotCallback: timelineArr[1],
-        interview: timelineArr[2],
-        negotiation: timelineArr[3],
-      },
+    const updatedCard = {
+      gotCallback: timelineArr[1],
+      interview: timelineArr[2],
+      negotiation: timelineArr[3],
     };
-    const contact = {};
     if (email) {
-      contact.email = email;
+      updatedCard.email = email;
     }
     if (fullName) {
-      contact.fullName = fullName;
+      updatedCard.fullName = fullName;
     }
     if (phone) {
-      contact.phone = phone;
-    }
-    if (email || fullName || phone) {
-      newCard.contacts = contact;
+      updatedCard.phone = phone;
     }
     if (infoText) {
-      newCard.moreInfo = {
-        info: infoText,
-      };
+      updatedCard.moreInfo = infoText;
     }
-    return newCard;
+    return updatedCard;
   };
-
-  //* Check if the job description is provided.
-  useEffect(() => {
-    if (jobDescription) {
-      setIsJobDescription("");
-    } else {
-      setIsJobDescription("job-card--label-required");
-    }
-  }, [jobDescription]);
-
-  //* Check if the company name is provided.
-  useEffect(() => {
-    if (companyName) {
-      setIsCompanyName("");
-    } else {
-      setIsCompanyName("job-card--label-required");
-    }
-  }, [companyName]);
 
   //* Focus on the first input.
   useEffect(() => {
-    jobDescriptionRef.current.focus();
+    emailRef.current.focus();
   }, []);
 
   //* handel the focus on user's changes.
@@ -155,12 +142,6 @@ function JobCreateCard({ saveNewJobCard }) {
   //* Controlled Inputs.
   const handleInputChange = (e) => {
     switch (e.target.name) {
-      case "jobDescription":
-        setJobDescription(e.target.value);
-        break;
-      case "companyName":
-        setCompanyName(e.target.value);
-        break;
       case "email":
         setEmail(e.target.value);
         break;
@@ -207,9 +188,6 @@ function JobCreateCard({ saveNewJobCard }) {
       )}
       {isShow && (
         <form className="JobCard-container" onSubmit={handleSubmit}>
-          <p className="job-card--required-field">
-            All red fields are required.
-          </p>
           {err && <p className="job-card--err">{err}</p>}
           <section className="job-card__timeline">
             <div>
@@ -253,11 +231,9 @@ function JobCreateCard({ saveNewJobCard }) {
               <label className="job-card--label">In Negotiation</label>
             </div>
           </section>
-          <section className="job-card__description-company">
-            <div>
-              <label className={`job-card--label ${isJobDescription}`}>
-                Job Description:
-              </label>
+          <section className="job-card__contacts-info">
+            <div className="job-card--contacts">
+              <label className="job-card--label">Contacts:</label>
               <input
                 className={`job-card--info ${
                   current === 4 ? "job-card__form--current" : ""
@@ -265,16 +241,12 @@ function JobCreateCard({ saveNewJobCard }) {
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
-                type="text"
-                name="jobDescription"
-                ref={jobDescriptionRef}
-                value={jobDescription}
+                type="email"
+                name="email"
+                ref={emailRef}
+                placeholder={placeholderEmail}
+                value={email}
               ></input>
-            </div>
-            <div>
-              <label className={`job-card--label ${isCompanyName}`}>
-                Company:
-              </label>
               <input
                 className={`job-card--info ${
                   current === 5 ? "job-card__form--current" : ""
@@ -283,14 +255,10 @@ function JobCreateCard({ saveNewJobCard }) {
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
                 type="text"
-                name="companyName"
-                value={companyName}
+                name="fullName"
+                placeholder={placeholderFullName}
+                value={fullName}
               ></input>
-            </div>
-          </section>
-          <section className="job-card__contacts-info">
-            <div className="job-card--contacts">
-              <label className="job-card--label">Contacts:</label>
               <input
                 className={`job-card--info ${
                   current === 6 ? "job-card__form--current" : ""
@@ -298,33 +266,9 @@ function JobCreateCard({ saveNewJobCard }) {
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
-                type="email"
-                name="email"
-                placeholder="temp@gmail.com"
-                value={email}
-              ></input>
-              <input
-                className={`job-card--info ${
-                  current === 7 ? "job-card__form--current" : ""
-                }`}
-                onChange={handleInputChange}
-                onKeyDown={handleEnter}
-                onClick={handleEnter}
-                type="text"
-                name="fullName"
-                placeholder="Full Name"
-                value={fullName}
-              ></input>
-              <input
-                className={`job-card--info ${
-                  current === 8 ? "job-card__form--current" : ""
-                }`}
-                onChange={handleInputChange}
-                onKeyDown={handleEnter}
-                onClick={handleEnter}
                 type="tel"
                 name="phone"
-                placeholder="999-999-9999"
+                placeholder={placeholderPhone}
                 value={phone}
               ></input>
             </div>
@@ -332,7 +276,7 @@ function JobCreateCard({ saveNewJobCard }) {
               <label className="job-card--label">More Information:</label>
               <textarea
                 className={`job-card--info ${
-                  current === 9 ? "job-card__form--current" : ""
+                  current === 7 ? "job-card__form--current" : ""
                 }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
@@ -346,7 +290,7 @@ function JobCreateCard({ saveNewJobCard }) {
           </section>
           <button
             className={`job-card--btn ${
-              current === 10 ? "job-card__form--current" : ""
+              current === 8 ? "job-card__form--current" : ""
             }`}
             type="submit"
             disabled={isLoading}
@@ -359,4 +303,4 @@ function JobCreateCard({ saveNewJobCard }) {
   );
 }
 
-export default JobCreateCard;
+export default JobEditCard;

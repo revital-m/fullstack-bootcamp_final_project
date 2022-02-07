@@ -37,8 +37,10 @@ router.get("/api/jobs", auth, async (req, res) => {
 //* Update the current user's specific card.
 router.patch("/api/jobs/updateCard/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["jobDescription", "companyName", "contacts.email", "contacts.fullName", "contacts.phone", "moreInfo", "timeline.sendCV", "timeline.gotCallback", "timeline.interview", "timeline.negotiation",
+  const allowedUpdates = ["email", "fullName", "phone", "moreInfo", "gotCallback", "interview", "negotiation",
   ];
+  // const allowedUpdates = ["contacts.email", "contacts.fullName", "contacts.phone", "moreInfo", "timeline.sendCV", "timeline.gotCallback", "timeline.interview", "timeline.negotiation",
+  // ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -55,8 +57,10 @@ router.patch("/api/jobs/updateCard/:id", auth, async (req, res) => {
     updates.forEach((update) => {
       if (update === "moreInfo") {
         job.moreInfo.push({ info: req.body[update] });
-      } else {
-        job[update] = req.body[update];
+      } else if(update === "email"|| update === "fullName" || update === "phone") {
+        job.contacts[update] = req.body[update];
+      } else if(update === "gotCallback"|| update === "interview" || update === "negotiation") {
+        job.timeline[update] = req.body[update];
       }
     });
     await job.save();

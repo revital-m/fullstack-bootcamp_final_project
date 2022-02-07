@@ -5,8 +5,9 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
 import Jobs from "./pages/Jobs/Jobs";
-import JobCard from "./components/JobCard/JobCard";
+// import JobCard from "./components/JobCard/JobCard";
 import JobCreateCard from "./components/JobCreateCard/JobCreateCard";
+import JobEditCard from "./components/JobEditCard/JobEditCard";
 // import Studying from "./pages/Studying/Studying";
 // import StudyingCard from "./components/StudyingCard/StudyingCard";
 import NoMatch from "./pages/NoMatch/NoMatch";
@@ -107,14 +108,11 @@ function App() {
   const getData = async () => {
     try {
       const { data } = await myApi.get("/jobs");
-      setUserJobsArr(data);
+      setUserJobsArr(data.sort((a, b) => b.companyName - a.companyName));
       console.log("data: ", data);
   
     } catch (e) {
       console.log(e);
-      // if (e.response.data.message) {
-      //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
-      // }
     }
   }
 
@@ -129,16 +127,41 @@ function App() {
     try {
       console.log("newCard: ", newCard);
       const { data, status } = await myApi.post("/jobs/creatNewCard", newCard);
-      setUserJobsArr(data);
-      // console.log(response);
+      console.log("saveNewJobCard - data: ", data);
+      setUserJobsArr([...userJobsArr, data]);
+
       return status;
   
     } catch (e) {
       console.log(e);
       return e.status;
-      // if (e.response.data.message) {
-      //   setError(e.response.data.message.replace("User validation failed:", "Error -"));
-      // }
+    }
+  }
+  
+  //* Save the updated card to the Jobs collection.
+  const saveUpdateJobCard = async (cardId, updates) => {
+    try {
+      const { data, status } = await myApi.patch(`/jobs/updateCard/${cardId}`, updates);
+      const filteredData = userJobsArr.filter(card => card._id !== cardId);
+      setUserJobsArr([...filteredData, data]);
+      return status;
+  
+    } catch (e) {
+      console.log(e);
+      return e.status;
+    }
+  }
+
+  //* Delete the card from the Jobs collection.
+  const deleteJobCard = async (cardId) => {
+    try {
+      const { status } = await myApi.delete(`/jobs/deleteCard/${cardId}`);
+      const filteredData = userJobsArr.filter(card => card._id !== cardId);
+      setUserJobsArr(filteredData);
+      return status;
+       
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -155,14 +178,14 @@ function App() {
                 <Homepage currentToken={currentToken} signup={signup} login={login} error={error} setError={setError} />
               </Route>
               <Route path="/jobs" exact >
-                <Jobs userJobsArr={userJobsArr} setUserJobsArr={setUserJobsArr} />
+                <Jobs userJobsArr={userJobsArr} setUserJobsArr={setUserJobsArr} deleteJobCard={deleteJobCard} />
               </Route>
               {/* <Route path="/jobs" exact component={Jobs} /> */}
              <Route path="/jobs/new_card" exact >
                 <JobCreateCard saveNewJobCard={saveNewJobCard} />
               </Route> 
              <Route path="/jobs/edit_card/:id" exact >
-                <JobCard userJobsArr={userJobsArr} />
+                <JobEditCard userJobsArr={userJobsArr} saveUpdateJobCard={saveUpdateJobCard} />
               </Route> 
               {/* <Route path="/jobs/new_card" exact component={JobCard} />
               <Route path="/jobs/edit_card/:id" exact component={JobCard} /> */}

@@ -7,7 +7,7 @@ function JobCardsToShow({ offset, jobDescription, companyName, contactEmail, con
   
     const displayMoreInfo = () => {
       return moreInfo.map((item) => {
-        console.log("item: ", item);
+        // console.log("item: ", item);
           return (
               <div key={item._id} className="JobCardsToShow__more-info">
                   <div className="JobCardsToShow__more-info--date">{item.createdAt}</div>
