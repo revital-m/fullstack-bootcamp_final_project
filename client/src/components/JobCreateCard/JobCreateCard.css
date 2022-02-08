@@ -3,7 +3,6 @@
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
-  /* padding-top: 15rem; */
   justify-content: center;
   align-items: center;
   background: url("../img/leefs.jpg") no-repeat center center/cover;
@@ -12,17 +11,14 @@
 .JobCard-container {
   display: flex;
   flex-wrap: wrap;
-
   justify-content: center;
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem;
   margin: 1rem;
-
   box-shadow: 5px 5px 20px gray;
   border-radius: 1rem;
   background: rgba(245, 245, 245, 0.514);
-  /* background: url("./img/bgTree.jpg") no-repeat center center/cover; */
 }
 
 .job-card--label,
@@ -46,7 +42,6 @@
 .job-card--textarea {
   display: flex;
   flex-wrap: wrap;
-
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -66,4 +61,60 @@
 
 .job-card--btn:hover {
   background: rgba(0, 0, 0, 0.76);
+}
+
+.job-card__form--current {
+  border: 0.4rem solid #32814c;
+}
+
+.job-card--label-required {
+  color: red;
+}
+
+.job-card--required-field {
+  color: red;
+  padding: 0.3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.job-card__contacts-info,
+.job-card__description-company,
+.job-card__timeline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.job-card__timeline {
+  padding: 1.5rem 0;
+}
+
+.job-card--contacts {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.job-card__timeline--check-mark {
+  height: 2rem;
+  width: 2rem;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.job-card--err {
+  padding: 2rem;
+  margin: 0.5rem;
+  background: rgba(252, 159, 159, 0.801);
+  box-shadow: 0.5rem 0.5rem 1.5rem rgba(37, 37, 37, 0.623);
+  border-radius: 2rem;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
 }

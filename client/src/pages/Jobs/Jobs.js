@@ -2,42 +2,37 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Jobs.css";
 import JobCardsToShow from "../../components/JobCardsToShow/JobCardsToShow";
-import { useAuth } from "../../context/AuthContext";
 import MsgBox from "../../components/MsgBox/MsgBox";
 import Spinner from "../../components/Spinner/Spinner";
-// import { deleteCard } from "../../api/crud";
 
 let slidesArr = [];
 
 const initialState = {
-    slideIndex: 0,
-  };
-  
-  const slidesReducer = (state, event) => {
-    if (event.type === "NEXT") {
-      return {
-        ...state,
-        slideIndex: (state.slideIndex + 1) % slidesArr.length,
-      };
-    }
-    if (event.type === "PREV") {
-      return {
-        ...state,
-        slideIndex:
-          state.slideIndex === 0 ? slidesArr.length - 1 : state.slideIndex - 1,
-      };
-    }
-  };
+  slideIndex: 0,
+};
 
-const Jobs = () => {
+const slidesReducer = (state, event) => {
+  if (event.type === "NEXT") {
+    return {
+      ...state,
+      slideIndex: (state.slideIndex + 1) % slidesArr.length,
+    };
+  }
+  if (event.type === "PREV") {
+    return {
+      ...state,
+      slideIndex:
+        state.slideIndex === 0 ? slidesArr.length - 1 : state.slideIndex - 1,
+    };
+  }
+};
+
+const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
+  //* State:
   const [state, dispatch] = React.useReducer(slidesReducer, initialState);
   const [isEmpty, setIsEmpty] = useState(false);
-  // const { userJobsArr, userJobsID, editJobArr } = useAuth();
-  const userJobsArr = [];
-
   const [cardId, setCardId] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-
   const [isShow, setIsShow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isMsgBox, setIsMsgBox] = useState(false);
@@ -47,8 +42,9 @@ const Jobs = () => {
   const [isClose, setIsClose] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
 
-  slidesArr = userJobsArr; 
+  slidesArr = userJobsArr;
 
+  //* Check if the userJobsArr is empty or not.
   useEffect(() => {
     if (!userJobsArr.length) {
       setIsEmpty(true);
@@ -57,11 +53,11 @@ const Jobs = () => {
     }
   }, [userJobsArr]);
 
-  const handleDelete = (id, jobCardID) => {
-    setCardId(id);
+  //* Send the props needed to MsgBox.
+  const handleDelete = (jobCardID) => {
+    setCardId(jobCardID);
 
-    const data = userJobsArr.filter(job => job.jobCardID !== jobCardID);
-    // console.log(data);
+    const data = userJobsArr.filter((job) => job.jobCardID !== jobCardID);
     setFilteredData(data);
 
     setMsgClass("");
@@ -71,28 +67,30 @@ const Jobs = () => {
     setIsLoading(false);
     setIsShow(false);
     setIsMsgBox(true);
-  }
+  };
 
-  // const onDelete = async () => {
-  //   setIsLoading(true);
-  //   setIsShow(false);
-  //   setIsMsgBox(false);
-  //   const res = await deleteCard("jobs", userJobsID, cardId);
-  //   if (res === 200 || res === 201) {
-  //     setMessage("The card was deleted successfully!");
-  //     setMsgClass("msg--success");
-  //     editJobArr(filteredData);
-  //   } else {
-  //     setMessage(`Something went wrong - ${res}`);
-  //     setMsgClass("msg--error");
-  //   }
-  //   setIsLoading(false);
-  //   setIsClose(true);
-  //   setIsDelete(false);
-  //   setIsEmpty(false);
-  //   setIsMsgBox(true);
-  // }
+  //* Call deleteJobCard() to delete the card from the Jobs collection.
+  const onDelete = async (cardId) => {
+    setIsLoading(true);
+    setIsShow(false);
+    setIsMsgBox(false);
+    const res = await deleteJobCard(cardId);
+    if (res === 200 || res === 201) {
+      setMessage("The card was deleted successfully!");
+      setMsgClass("msg--success");
+      setUserJobsArr(filteredData);
+    } else {
+      setMessage(`Something went wrong - ${res}`);
+      setMsgClass("msg--error");
+    }
+    setIsLoading(false);
+    setIsClose(true);
+    setIsDelete(false);
+    setIsEmpty(false);
+    setIsMsgBox(true);
+  };
 
+  //* Reset all of the props for the MsgBox component.
   const onGoBack = () => {
     setIsLoading(false);
     setIsMsgBox(false);
@@ -106,29 +104,7 @@ const Jobs = () => {
       setIsEmpty(true);
     }
     setIsShow(true);
-  }
-
-  // const displayJobCards = () => {
-  //   return userJobsArr.map((job) => {
-  //     // console.log(job);
-  //     return (
-  //       <div key={job.jobCardID}>
-  //         <JobCardsToShow
-  //           key={job.jobCardID}
-  //           jobDescription={job.jobDescription}
-  //           companyName={job.companyName}
-  //           contactEmail={job.contacts.email}
-  //           contactFullName={job.contacts.fullName}
-  //           contactPhone={job.contacts.phone}
-  //           jobCardID={job.jobCardID}
-  //           moreInfo={job.moreInfo}
-  //           handleDeletebtn={handleDelete}
-  //           id={job.id}
-  //         />
-  //       </div>
-  //     );
-  //   });
-  // };
+  };
 
   return (
     <div className="jobs">
@@ -146,25 +122,67 @@ const Jobs = () => {
       )}
 
       {isLoading && <Spinner />}
-      {isMsgBox && <MsgBox msgClass={msgClass} message={message} pathBack={pathBack} handleDelete="" handleGoBackbtn={onGoBack} isDelete={isDelete} isClose={isClose} notDelete={false} />}
-      {isShow &&     <div className="slides">
-      {[...userJobsArr, ...userJobsArr, ...userJobsArr].map((job, i) => {
-        let offset = userJobsArr.length + (state.slideIndex - i);
-        return <JobCardsToShow offset={offset} key={job.jobCardID+i}
-        jobDescription={job.jobDescription}
-        companyName={job.companyName}
-        contactEmail={job.contacts.email}
-        contactFullName={job.contacts.fullName}
-        contactPhone={job.contacts.phone}
-        jobCardID={job.jobCardID}
-        moreInfo={job.moreInfo}
-        handleDeletebtn={handleDelete}
-        id={job.id} />;
-      })}
-      <button className="prev-btn" onClick={() => dispatch({ type: "PREV" })}>‹</button>
-      <button className="next-btn" onClick={() => dispatch({ type: "NEXT" })}>›</button>
-    </div>}
-      {/* {isShow && <div className="jobs-card-container">{displayJobCards()}</div>} */}
+      {isMsgBox && (
+        <MsgBox
+          msgClass={msgClass}
+          message={message}
+          pathBack={pathBack}
+          handleDelete={() => onDelete(cardId)}
+          handleGoBackbtn={onGoBack}
+          isDelete={isDelete}
+          isClose={isClose}
+          notDelete={false}
+        />
+      )}
+      <div className="slides">
+        {isShow &&
+          [...userJobsArr, ...userJobsArr, ...userJobsArr].map((job, i) => {
+            let offset = userJobsArr.length + (state.slideIndex - i);
+            return (
+              <JobCardsToShow
+                offset={offset}
+                key={job._id + i}
+                jobDescription={job.jobDescription}
+                companyName={job.companyName}
+                contactEmail={
+                  job.contacts && job.contacts.email ? job.contacts.email : ""
+                }
+                contactFullName={
+                  job.contacts && job.contacts.fullName
+                    ? job.contacts.fullName
+                    : ""
+                }
+                contactPhone={
+                  job.contacts && job.contacts.phone ? job.contacts.phone : ""
+                }
+                jobCardID={job._id}
+                moreInfo={job.moreInfo}
+                handleDeleteBtn={() => handleDelete(job._id)}
+                owner={job.owner}
+                sendCV={job.timeline.sendCV}
+                gotCallback={job.timeline.gotCallback}
+                negotiation={job.timeline.negotiation}
+                interview={job.timeline.interview}
+              />
+            );
+          })}
+        {isShow && (
+          <button
+            className="prev-btn"
+            onClick={() => dispatch({ type: "PREV" })}
+          >
+            ‹
+          </button>
+        )}
+        {isShow && (
+          <button
+            className="next-btn"
+            onClick={() => dispatch({ type: "NEXT" })}
+          >
+            ›
+          </button>
+        )}
+      </div>
     </div>
   );
 };

@@ -6,21 +6,20 @@ import TextBox from "../../components/TextBox/TextBox";
 import { AuthProvider, useAuth } from "../../context/AuthContext";
 import "./Homepage.css";
 
-const Homepage = () => {
-  const { show, currentUser, currentToken } = useAuth();
+const Homepage = ({ currentToken, signup, login, error, setError }) => {
+  // const { show, currentUser, currentToken } = useAuth();
   const [toggle, setToggle] = useState(true);
-
 
   const handleToggle = () => {
     setToggle(!toggle);
-  };
+  }; 
 
   return (
     <AuthProvider>
       <div className="homepage-container">
-        {!currentUser && toggle && <Signup handleClick={handleToggle} />}
-        {!currentUser && !toggle && <Login handleClick={handleToggle} />}
-        {currentUser && (
+        {!currentToken && toggle && <Signup handleClick={handleToggle} signup={signup} error={error} setError={setError} />}
+        {!currentToken && !toggle && <Login handleClick={handleToggle} login={login} error={error} setError={setError} />}
+        {currentToken && (
           <div className="homepage-container--loggedin">
             <Link to="/jobs" className="homepage--link">
               <TextBox textBoxClass="box--job" textBoxTxt="My Job Search" />

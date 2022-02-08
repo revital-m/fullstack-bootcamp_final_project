@@ -10,18 +10,23 @@ router.post("/api/jobs/creatNewCard", auth, async (req, res) => {
     owner: req.user._id,
   });
   try {
-    await job.save();
+    console.log("job: ", job);
+    const response = await job.save();
+    console.log("response: ", response);
     res.status(201).send(job);
   } catch (error) {
-    res.status(400).send(error.message);
+    console.table(error);
+    res.status(400).send(error);
   }
 });
 
 //* Get all of the user's job cards.
 router.get("/api/jobs", auth, async (req, res) => {
   try {
+
     // const jobs = await Jobs.find({owner: req.user._id});
     // res.status(200).send(jobs);
+
     await req.user.populate("jobs");
     res.status(200).send(req.user.jobs);
   } catch (error) {
@@ -32,8 +37,10 @@ router.get("/api/jobs", auth, async (req, res) => {
 //* Update the current user's specific card.
 router.patch("/api/jobs/updateCard/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["jobDescription", "companyName", "contacts.email", "contacts.fullName", "contacts.phone", "moreInfo", "timeline.sendCV", "timeline.gotCallback", "timeline.interview", "timeline.negotiation",
+  const allowedUpdates = ["email", "fullName", "phone", "moreInfo", "gotCallback", "interview", "negotiation",
   ];
+  // const allowedUpdates = ["contacts.email", "contacts.fullName", "contacts.phone", "moreInfo", "timeline.sendCV", "timeline.gotCallback", "timeline.interview", "timeline.negotiation",
+  // ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -50,8 +57,10 @@ router.patch("/api/jobs/updateCard/:id", auth, async (req, res) => {
     updates.forEach((update) => {
       if (update === "moreInfo") {
         job.moreInfo.push({ info: req.body[update] });
-      } else {
-        job[update] = req.body[update];
+      } else if(update === "email"|| update === "fullName" || update === "phone") {
+        job.contacts[update] = req.body[update];
+      } else if(update === "gotCallback"|| update === "interview" || update === "negotiation") {
+        job.timeline[update] = req.body[update];
       }
     });
     await job.save();

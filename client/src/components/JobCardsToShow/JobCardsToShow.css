@@ -1,28 +1,9 @@
-/* .JobCardsToShow {
-  width: 40vw;
-  height: 75vh;
-  overflow: hidden;
-  margin: 1rem;
-  box-shadow: 5px 5px 20px gray;
-  border-radius: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  background: whitesmoke;
-  background: url("../img/bgTree.jpg") no-repeat center center/cover;
-  line-height: 1.8;
-  padding: 1rem;
-} */
-
 .JobCardsToShow--container {
   width: 87vw;
   max-width: 45rem;
   min-height: 62vh;
   padding: 2rem;
   background: rgb(245, 245, 245);
-  border-radius: 10px;
-  margin: 1rem;
   box-shadow: 5px 5px 20px gray;
   border-radius: 1rem;
   display: flex;
@@ -52,29 +33,27 @@
 }
 
 .JobCardsToShow__more-info--container {
-  /* height: 50%; */
-  overflow: hidden;
   margin: 1rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-
-  /* max-width: 50rem; */
+  overflow-y: scroll;
+  height: 15rem;
+  box-shadow: 5px 5px 20px rgba(180, 179, 179, 0.829);
+  border-radius: 0.5rem;
 }
 
 .JobCardsToShow__more-info {
   padding: 1rem;
-  border-top: 1px solid gray;
+  border-bottom: 1px dashed #32814cb6;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
   width: 100%;
-
-  /* max-width: 50rem; */
 }
 
 .JobCardsToShow__more-info--date {
@@ -107,10 +86,145 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  /* max-width: 50rem; */
 }
 
 .JobCardsToShow--icon {
   font-size: 2rem;
   padding: 0 1rem;
+}
+
+.timeline {
+  padding: 2rem 4rem 0 3rem;
+}
+
+.timeline__list {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+.timeline__list--item {
+  position: relative;
+}
+
+.timeline--point {
+  position: absolute;
+  top: -4rem;
+  left: 40%;
+  border: none;
+  border-radius: 50%;
+  background: rgba(228, 228, 228);
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.timeline--point--done {
+  background: #236949;
+  animation-duration: 2.2s;
+  animation-timing-function: ease;
+  animation-name: timelinePoint;
+}
+
+.timeline--type {
+  opacity: 1;
+  transition: 1.5s;
+  font-size: 1.2rem;
+  font-weight: 700;
+  position: absolute;
+  top: -6rem;
+  left: -2.3rem;
+  width: max-content;
+}
+
+.timeline--type--underline {
+  top: -2.5rem;
+}
+
+.timeline--line {
+  background: rgba(228, 228, 228);
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 1.2rem;
+  position: relative;
+}
+
+.timeline__innerLine {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  background: #236949;
+  width: 25%;
+  height: 0.4rem;
+  border-radius: 99.9rem;
+  animation-duration: 2s;
+  animation-timing-function: ease;
+  animation-name: sendCV;
+}
+
+.timeline__innerLine--negotiation {
+  width: 100%;
+  animation-name: negotiation;
+}
+
+.timeline__innerLine--interview {
+  width: 75%;
+  animation-name: interview;
+}
+
+.timeline__innerLine--gotCallback {
+  width: 50%;
+  animation-name: gotCallback;
+}
+
+@keyframes sendCV {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 25%;
+  }
+}
+
+@keyframes gotCallback {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 50%;
+  }
+}
+
+@keyframes interview {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 75%;
+  }
+}
+
+@keyframes negotiation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes timelinePoint {
+  0% {
+    background: rgba(228, 228, 228);
+  }
+  25% {
+    background: rgba(228, 228, 228);
+  }
+  50% {
+    background: rgba(228, 228, 228);
+  }
+  100% {
+    background: #236949;
+  }
 }
