@@ -159,6 +159,10 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
                 moreInfo={job.moreInfo}
                 handleDeleteBtn={() => handleDelete(job._id)}
                 owner={job.owner}
+                sendCV={job.timeline.sendCV}
+                gotCallback={job.timeline.gotCallback}
+                negotiation={job.timeline.negotiation}
+                interview={job.timeline.interview}
               />
             );
           })}

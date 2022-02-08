@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Switch, BrowserRouter, Route, Link } from "react-router-dom";
 import "./App.css";
-// import myApi from './api/Api';
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
 import Jobs from "./pages/Jobs/Jobs";
-// import JobCard from "./components/JobCard/JobCard";
 import JobCreateCard from "./components/JobCreateCard/JobCreateCard";
 import JobEditCard from "./components/JobEditCard/JobEditCard";
 // import Studying from "./pages/Studying/Studying";
@@ -156,8 +154,9 @@ function App() {
   const deleteJobCard = async (cardId) => {
     try {
       const { status } = await myApi.delete(`/jobs/deleteCard/${cardId}`);
-      const filteredData = userJobsArr.filter(card => card._id !== cardId);
-      setUserJobsArr(filteredData);
+      await getData();
+      // const filteredData = userJobsArr.filter(card => card._id !== cardId);
+      // setUserJobsArr(filteredData);
       return status;
        
     } catch (e) {
