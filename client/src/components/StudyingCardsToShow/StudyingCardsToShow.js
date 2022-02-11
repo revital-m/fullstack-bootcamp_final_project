@@ -1,40 +1,58 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
 import "./StudyingCardsToShow.css";
 import FlippedCard from "../FlippedCard/FlippedCard";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
-// import { useAuth } from "../../context/AuthContext";
-
-const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudyingCategoryId, categoryId, setChosenStudyingCard }) => {
+const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudyingCategoryId, categoryId, setChosenStudyingCard, setMsgClass, setMessage, setPathBack, setIsDelete, setIsLoading, setIsShow, setIsMsgBox, setIsRemove }) => {
   const [choosenCard, setChoosenCard] = useState("");
-  const [isShow, setIsShow] = useState(false);
+  // const [isShow, setIsShow] = useState(false);
+  const [isFlippedCard, setIsFlippedCard] = useState(false);
+  // const [isGlobalCard, setIsGlobalCard] = useState(false);
+  // const [isMsgBox, setIsMsgBox] = useState(false);
+  // const [msgClass, setMsgClass] = useState("");
+  // const [message, setMessage] = useState("");
+  // const [pathBack, setPathBack] = useState("");
+  // const [isClose, setIsClose] = useState(false);
+  // const [isDelete, setIsDelete] = useState(false);
+
   const history = useHistory();
 
-  // const [isUserCard, setIsUserCard] = useState(false);
-  // console.log("currentUser: ", currentUser);
-
-  // const { userUID } = useAuth();
-
-  // useEffect(() => {
-  //   if (userUID === userUid) {
-  //     setIsUserCard(true);
-  //   } else {
-  //     setIsUserCard(false);
-  //   }
-  // }, [userUID, userUid]);
-
-  const handleEdit = (chosenCardId, chosenCategoryId, isGlobal, card) => {
-    // setStudyingCardId(chosenCardId);
+  const handleEdit = (chosenCategoryId, card) => {
     setStudyingCategoryId(chosenCategoryId);
-    // setIsGlobalCard(isGlobal);
     setChosenStudyingCard(card);
     history.push(`/studying/edit_card`);
+  }
+
+  const handleDelete = (chosenCategoryId, card) => {
+    setStudyingCategoryId(chosenCategoryId);
+    setChosenStudyingCard(card);
+    setMsgClass("");
+    setMessage(`Are you sure you want to delete this card?`);
+    setPathBack("");
+    setIsDelete(true);
+    setIsLoading(false);
+    setIsShow(false);
+    setIsMsgBox(true);
+    setIsRemove(false);
+  }
+
+  const handleRemove = (chosenCategoryId, card) => {
+    setStudyingCategoryId(chosenCategoryId);
+    setChosenStudyingCard(card);
+    setMsgClass("");
+    setMessage(`Are you sure you want to delete this card?`);
+    setPathBack("");
+    setIsDelete(true);
+    setIsLoading(false);
+    setIsShow(false);
+    setIsMsgBox(true);
+    setIsRemove(true);
   }
 
   const displayQuestions = () => {
     return categoryData.map((item) => {
       // console.log("item: ", item);
+      // console.log("isGlobalCard: ", isGlobalCard);
       return (
         <div
           key={item._id}
@@ -44,23 +62,15 @@ const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudy
           <div className="category-card--title-container">
             <h3 className="category-card--title">{item.title}</h3>
           </div>
-          {/* <p className="category-card--body">{item.question}</p> */}
           <div className="category-card--btns">
             {(item.owner === currentUser._id) && (
-              <button className="category-card--link" onClick={() => handleEdit(item._id, categoryId, item.global, item)}>Edit</button>
-              // <Link className="category-card--link" to={`/studying/edit_card/${item._id}`} >
-              //   Edit
-              // </Link>
+              <button className="category-card--link" onClick={() => handleEdit(categoryId, item)}>Edit</button>
             )}
-            {(item.owner === currentUser._id) && (
-              <Link className="category-card--link" to="/">
-                Delete
-              </Link>
+            {(item.owner === currentUser._id && !item.global) && (
+              <button className="category-card--link" onClick={() => handleDelete(categoryId, item)}>Delete</button>
             )}
-            {(item.owner !== currentUser._id) && (
-              <Link className="category-card--link" to="/" >
-                Remove
-              </Link>
+            {(item.owner !== currentUser._id || (item.owner === currentUser._id && item.global)) && (
+              <button className="category-card--link" onClick={() => handleRemove(categoryId, item)}>Remove</button>
             )}
           </div>
         </div>
@@ -70,11 +80,11 @@ const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudy
 
   const handleCardClick = (card) => {
     setChoosenCard(card);
-    setIsShow(true);
+    setIsFlippedCard(true);
   };
 
   const handleClose = () => {
-    setIsShow(false);
+    setIsFlippedCard(false);
   };
 
   return (
@@ -91,13 +101,13 @@ const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudy
           className="category--arrow fas fa-arrow-alt-circle-right"
         ></i>
       </div>
-      {isShow && (
+      {isFlippedCard && (
         <i
           className="category--close fas fa-times-circle"
           onClick={handleClose}
         ></i>
       )}
-      {isShow && <FlippedCard card={choosenCard} />}
+      {isFlippedCard && <FlippedCard card={choosenCard} />}
     </div>
   );
 };

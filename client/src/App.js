@@ -141,7 +141,8 @@ function App() {
     try {
       const { data } = await myApi.get("/studying/allCategories");
       console.log("Studying data: ", data);
-      setUserStudyingArr(data);
+      const filteredData = data.filter(item => item.questionsArr.length !== 0);
+      setUserStudyingArr(filteredData);
   
     } catch (e) {
       console.log("getStudyingData - error: ");
@@ -269,12 +270,39 @@ function App() {
   const updateQuestionCard = async (updates) => {
     try {
       console.log("updates: ", updates);
-      const { status } = await myApi.patch(`studying/updateCard/${chosenStudyingCard._id}/${studyingCategoryId}`, updates);
+      const { status } = await myApi.patch(`/studying/updateCard/${chosenStudyingCard._id}/${studyingCategoryId}`, updates);
       await getStudyingData();
       return status;
        
     } catch (e) {
       console.log("updateQuestionCard - error: ",e);
+      return e.status;
+    }
+  }
+
+  //* Remove a question in an existing category in the user collection.
+  const removeQuestionCard = async () => {
+    try {
+      const { status } = await myApi.delete(`/studying/removeCardFromUser/${chosenStudyingCard._id}/${studyingCategoryId}`);
+      await getStudyingData();
+      return status;
+       
+    } catch (e) {
+      console.log("removeQuestionCard - error: ",e);
+      return e.status;
+    }
+  }
+
+  //* Delete a question in an existing category in the studying collection.
+  const deleteQuestionCard = async () => {
+    try {
+      const { status } = await myApi.delete(`/studying/deleteCardFromStudying/${chosenStudyingCard._id}/${studyingCategoryId}`);
+      const response = await removeQuestionCard();
+      await getStudyingData();
+      return response;
+       
+    } catch (e) {
+      console.log("removeQuestionCard - error: ",e);
       return e.status;
     }
   }
@@ -313,7 +341,7 @@ function App() {
               {/* <Route path="/jobs/new_card" exact component={JobCard} />
               <Route path="/jobs/edit_card/:id" exact component={JobCard} /> */}
               <Route path="/studying" exact >
-                <Studying userStudyingArr={userStudyingArr} currentUser={currentUser} setStudyingCategoryId={setStudyingCategoryId} setChosenStudyingCard={setChosenStudyingCard} />
+                <Studying userStudyingArr={userStudyingArr} currentUser={currentUser} setStudyingCategoryId={setStudyingCategoryId} setChosenStudyingCard={setChosenStudyingCard} removeQuestionCard={removeQuestionCard} deleteQuestionCard={deleteQuestionCard} />
               </Route>
               <Route path="/studying/new_card" exact >
                 <StudyingCreateCard categoriesName={categoriesName} saveNewCategoryCard={saveNewCategoryCard} saveNewQuestionCard={saveNewQuestionCard} />

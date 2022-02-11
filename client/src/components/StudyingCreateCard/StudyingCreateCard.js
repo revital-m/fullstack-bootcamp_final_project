@@ -9,13 +9,6 @@ const StudyingCreateCard = ({
   saveNewCategoryCard,
   saveNewQuestionCard,
 }) => {
-  const subjects = [
-    { name: "HTML", id: uuidv4() },
-    { name: "CSS", id: uuidv4() },
-    { name: "JS", id: uuidv4() },
-    { name: "REACT", id: uuidv4() },
-    { name: "NODEJS", id: uuidv4() },
-  ];
 
   const [isLoading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(true);
@@ -27,7 +20,8 @@ const StudyingCreateCard = ({
   const [isCategory, setIsCategory] = useState("job-card--label-required");
   const [selectCategory, setSelectCategory] = useState("Select Category");
   const [subjectsSelect, setSubjectsSelect] = useState("Select Subject");
-  const [subjectsArr, setSubjectsArr] = useState(subjects);
+  const [newSubject, setNewSubject] = useState("");
+  const [subjectsArr, setSubjectsArr] = useState([]);
   const [globalCard, setGlobalCard] = useState(true);
   const [userPrivate, setUserPrivate] = useState(false);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -46,17 +40,25 @@ const StudyingCreateCard = ({
   const [pathBack, setPathBack] = useState("");
 
   //* Ref, params & history.
-  const newCategoryRef = useRef();
+  const newSubjectRef = useRef();
 
-  //* Focus on the first input.
+  //* Focus on the first input. Create the subject array.
   useEffect(() => {
-    newCategoryRef.current.focus();
+    newSubjectRef.current.focus();
+
+    const subjectsName = [];
+    categoriesName.forEach(category => {
+      const categoryNameArr = category.categoryName.split("-");
+      const categoryObj = { name: `${categoryNameArr[0].toUpperCase()}`, id: uuidv4() };
+      subjectsName.push(categoryObj);
+    });
+    setSubjectsArr(subjectsName);
   }, []);
 
   //* Check if the category is provided.
   useEffect(() => {
     if (
-      (newCategory && subjectsSelect !== "Select Subject") ||
+      (newCategory && (subjectsSelect !== "Select Subject" || newSubject)) ||
       selectCategory !== "Select Category"
     ) {
       setIsCategory("");
@@ -102,8 +104,8 @@ const StudyingCreateCard = ({
       if (!answer || !question || !questionTitle || isCategory) {
         throw new Error("Required fields are not provided!");
       }
-      checkCategory();
-      const newQuestion = createNewQuestion();
+      const chosenCategory = checkCategory();
+      const newQuestion = createNewQuestion(chosenCategory);
       console.log("newQuestion: ", newQuestion);
       let response = "";
       if (selectCategory === "Select Category") {
@@ -122,23 +124,22 @@ const StudyingCreateCard = ({
 
   //* Check if the category does not exist already.
   const checkCategory = () => {
-    categoriesName.forEach((category) => {
+    const category = newSubject ? `${newSubject.toLowerCase()}-${newCategory.toLowerCase()}` : `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`;
+    let chosenCategory = category;
+    categoriesName.forEach((item) => {
       if (
-        category ===
-        `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`
+        item === category
       ) {
-        setSelectCategory(category);
+        chosenCategory = item;
       }
     });
+    return chosenCategory;
   };
 
   //* Create the new question to send to the server.
-  const createNewQuestion = () => {
+  const createNewQuestion = (chosenCategory) => {
     const newQuestion = {
-      categoryName:
-        selectCategory === "Select Category"
-          ? `${subjectsSelect}-${newCategory}`
-          : selectCategory,
+      categoryName: chosenCategory,
       global: globalCard,
       title: questionTitle,
       question: question,
@@ -219,14 +220,25 @@ const StudyingCreateCard = ({
         if (e.target.value !== "Select Subject") {
           setSelectCategory("Select Category");
           setSubjectsSelect(e.target.value);
+          setNewSubject("");
         } else {
           setSubjectsSelect(e.target.value);
+        }
+        break;
+      case "newSubject":
+        if (e.target.value) {
+          setSubjectsSelect("Select Subject");
+          setSelectCategory("Select Category");
+          setNewSubject(e.target.value);
+        } else {
+          setNewSubject(e.target.value);
         }
         break;
       case "selectCategory":
         if (e.target.value !== "Select Category") {
           setSelectCategory(e.target.value);
           setNewCategory("");
+          setNewSubject("");
           setSubjectsSelect("Select Subject");
         } else {
           setSelectCategory(e.target.value);
@@ -349,10 +361,22 @@ const StudyingCreateCard = ({
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
                 type="text"
+                name="newSubject"
+                placeholder="New Subject"
+                value={newSubject}
+                ref={newSubjectRef}
+              ></input>
+              <input
+                className={`studying-card--info ${
+                  current === 5 ? "studying-card__form--current" : ""
+                }`}
+                onChange={handleInputChange}
+                onKeyDown={handleEnter}
+                onClick={handleEnter}
+                type="text"
                 name="newCategory"
-                placeholder="New category"
+                placeholder="New Category"
                 value={newCategory}
-                ref={newCategoryRef}
               ></input>
             </div>
           </section>
@@ -362,7 +386,7 @@ const StudyingCreateCard = ({
             </label>
             <input
               className={`studying-card--info ${
-                current === 5 ? "studying-card__form--current" : ""
+                current === 6 ? "studying-card__form--current" : ""
               }`}
               onChange={handleInputChange}
               onKeyDown={handleEnter}
@@ -379,7 +403,7 @@ const StudyingCreateCard = ({
               </label>
               <textarea
                 className={`studying-card--info ${
-                  current === 6 ? "studying-card__form--current" : ""
+                  current === 7 ? "studying-card__form--current" : ""
                 }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
@@ -396,7 +420,7 @@ const StudyingCreateCard = ({
               </label>
               <textarea
                 className={`studying-card--info ${
-                  current === 7 ? "studying-card__form--current" : ""
+                  current === 8 ? "studying-card__form--current" : ""
                 }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
@@ -410,7 +434,7 @@ const StudyingCreateCard = ({
           </section>
           <button
             className={`studying-card--btn ${
-              current === 8 ? "studying-card__form--current" : ""
+              current === 9 ? "studying-card__form--current" : ""
             }`}
             type="submit"
             disabled={isLoading}

@@ -139,6 +139,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
       )}
       {isShow && (
         <form className="studying-card-container" onSubmit={handleSubmit}>
+          {err && <p className="job-card--err">{err}</p>}
           <section className="studying-card__checkbox studying-card-edit__checkbox">
             {!isGlobalCard && (
               <div>

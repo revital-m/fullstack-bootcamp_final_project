@@ -2,11 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Studying.css";
 import StudyingCardsToShow from "../../components/StudyingCardsToShow/StudyingCardsToShow";
-// import { useAuth } from "../../context/AuthContext";
+import MsgBox from "../../components/MsgBox/MsgBox";
+import Spinner from "../../components/Spinner/Spinner";
 
-const Studying = ({ userStudyingArr, currentUser, setStudyingCardId, setStudyingCategoryId, setIsGlobalCard, setChosenStudyingCard }) => {
+const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChosenStudyingCard, removeQuestionCard, deleteQuestionCard }) => {
   const [isEmpty, setIsEmpty] = useState(false);
-  // const { userStudyingArr } = useAuth();
+  const [isShow, setIsShow] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMsgBox, setIsMsgBox] = useState(false);
+  const [msgClass, setMsgClass] = useState("");
+  const [message, setMessage] = useState("");
+  const [pathBack, setPathBack] = useState("");
+  const [isClose, setIsClose] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isRemove, setIsRemove] = useState(false);
 
   useEffect(() => {
     if (userStudyingArr.length) {
@@ -16,9 +25,51 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCardId, setStudying
     }
   }, [userStudyingArr]);
 
+  //* Call deleteJobCard() to delete the card from the Jobs collection.
+  const onDelete = async () => {
+    setIsLoading(true);
+    setIsShow(false);
+    setIsMsgBox(false);
+    let response = "";
+    if (isRemove) {
+      response = await removeQuestionCard();
+    } else {
+      response = await deleteQuestionCard();
+    }
+    checkAxiosResponse(response);
+  };
+
+    //* Check the response from the axios request.
+    const checkAxiosResponse = (response) => {
+      if (response === 200 || response === 201) {
+        setMessage("The card was deleted successfully!");
+        setMsgClass("msg--success");
+      } else {
+        setMessage(`Something went wrong - ${response}`);
+        setMsgClass("msg--error");
+      }
+      setIsLoading(false);
+      setIsClose(true);
+      setIsDelete(false);
+      setIsEmpty(false);
+      setIsMsgBox(true);
+    };
+
+  //* Reset all of the props for the MsgBox component.
+  const onGoBack = () => {
+    setIsLoading(false);
+    setIsMsgBox(false);
+    setIsClose(false);
+    setIsDelete(false);
+    setMsgClass("");
+    setMessage("");
+    setPathBack("");
+    setIsShow(true);
+  };
+
   const displayCategories = () => {
     return userStudyingArr.map((item) => {
-      // console.log("item: ", item);
+      console.log("item: ", item);
       const categoryNameArr = item.categoryName.split("-");
       const categoryNameStr = `${categoryNameArr[0].toUpperCase()}-${categoryNameArr[1].toLowerCase()}`
       // console.log("categoryNameStr: ", categoryNameStr);
@@ -28,11 +79,18 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCardId, setStudying
           categoryName={categoryNameStr}
           categoryData={item.questionsArr}
           currentUser={currentUser}
-          // setStudyingCardId={setStudyingCardId}
           setStudyingCategoryId={setStudyingCategoryId}
           categoryId={item._id}
-          // setIsGlobalCard={setIsGlobalCard}
           setChosenStudyingCard={setChosenStudyingCard}
+          // isGlobalCard={item.global}
+          setMsgClass={setMsgClass}
+          setMessage={setMessage}
+          setPathBack={setPathBack}
+          setIsDelete={setIsDelete}
+          setIsLoading={setIsLoading}
+          setIsShow={setIsShow}
+          setIsMsgBox={setIsMsgBox}
+          setIsRemove={setIsRemove}
         />
       );
     });
@@ -52,7 +110,20 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCardId, setStudying
           </h3>
         </div>
       )}
-      {!isEmpty && displayCategories()}
+      {isLoading && <Spinner />}
+      {isMsgBox && (
+        <MsgBox
+          msgClass={msgClass}
+          message={message}
+          pathBack={pathBack}
+          handleDelete={() => onDelete()}
+          handleGoBackbtn={onGoBack}
+          isDelete={isDelete}
+          isClose={isClose}
+          notDelete={false}
+        />
+      )}
+      {isShow && displayCategories()}
     </div>
   );
 };
