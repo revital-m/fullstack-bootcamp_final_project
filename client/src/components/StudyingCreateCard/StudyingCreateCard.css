@@ -1,0 +1,99 @@
+.studying-card {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url("../../components/img/bgPinkDots.jpg") no-repeat center
+    center/cover;
+  padding-top: 6rem;
+}
+
+.studying-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  margin: 1rem;
+  box-shadow: 5px 5px 20px gray;
+  border-radius: 1rem;
+  background: rgba(245, 245, 245, 0.514);
+}
+
+.studying-card--label,
+.studying-card--info {
+  font-weight: bold;
+  margin: 1rem;
+}
+
+.studying-card--label {
+  font-size: 1.8rem;
+}
+
+.studying-card--label--sub {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.studying-card--info {
+  border: 0.3rem solid #22072a;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.studying-card--textarea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.studying-card--btn {
+  cursor: pointer;
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.589);
+  border: 2px solid rgba(0, 0, 0, 0.589);
+  border-radius: 1rem;
+  color: whitesmoke;
+}
+
+.studying-card--btn:hover {
+  background: rgba(0, 0, 0, 0.76);
+}
+
+.studying-card__checkbox,
+.studying-card__q-a {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.studying-card__category {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+}
+
+.studying-card__form--current {
+  border: 0.4rem solid #d4b1ad;
+}
+
+.studying-card-edit__checkbox {
+  justify-content: flex-start;
+}

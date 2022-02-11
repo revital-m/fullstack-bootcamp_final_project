@@ -14,7 +14,6 @@ router.post("/api/studying/creatNewCategory", auth, async (req, res) => {
         title: req.body.title,
         question: req.body.question,
         answer: req.body.answer,
-        importance: req.body.importance,
         owner: req.user._id,
       },
     });
@@ -39,7 +38,6 @@ router.patch("/api/studying/creatNewCard", auth, async (req, res) => {
       title: req.body.title,
       question: req.body.question,
       answer: req.body.answer,
-      importance: req.body.importance,
       owner: req.user._id,
     });
     await newCard.save();
@@ -84,7 +82,9 @@ router.get("/api/studying/allCategories", auth, async (req, res) => {
 
     res.status(200).send(filteredArr);
   } catch (error) {
-    res.status(500).send(error.message);
+    console.log(error);
+    res.status(500).send(error);
+    // res.status(500).send(error.message);
   }
 });
 

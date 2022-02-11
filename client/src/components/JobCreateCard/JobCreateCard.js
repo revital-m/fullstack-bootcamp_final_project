@@ -259,9 +259,8 @@ function JobCreateCard({ saveNewJobCard }) {
                 Job Description:
               </label>
               <input
-                className={`job-card--info ${
-                  current === 4 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 4 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -276,9 +275,8 @@ function JobCreateCard({ saveNewJobCard }) {
                 Company:
               </label>
               <input
-                className={`job-card--info ${
-                  current === 5 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 5 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -292,9 +290,8 @@ function JobCreateCard({ saveNewJobCard }) {
             <div className="job-card--contacts">
               <label className="job-card--label">Contacts:</label>
               <input
-                className={`job-card--info ${
-                  current === 6 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 6 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -304,9 +301,8 @@ function JobCreateCard({ saveNewJobCard }) {
                 value={email}
               ></input>
               <input
-                className={`job-card--info ${
-                  current === 7 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 7 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -316,9 +312,8 @@ function JobCreateCard({ saveNewJobCard }) {
                 value={fullName}
               ></input>
               <input
-                className={`job-card--info ${
-                  current === 8 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 8 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -331,9 +326,8 @@ function JobCreateCard({ saveNewJobCard }) {
             <div className="job-card--textarea">
               <label className="job-card--label">More Information:</label>
               <textarea
-                className={`job-card--info ${
-                  current === 9 ? "job-card__form--current" : ""
-                }`}
+                className={`job-card--info ${current === 9 ? "job-card__form--current" : ""
+                  }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
                 onClick={handleEnter}
@@ -345,9 +339,8 @@ function JobCreateCard({ saveNewJobCard }) {
             </div>
           </section>
           <button
-            className={`job-card--btn ${
-              current === 10 ? "job-card__form--current" : ""
-            }`}
+            className={`job-card--btn ${current === 10 ? "job-card__form--current" : ""
+              }`}
             type="submit"
             disabled={isLoading}
           >

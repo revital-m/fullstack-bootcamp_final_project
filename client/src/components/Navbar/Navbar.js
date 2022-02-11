@@ -78,21 +78,21 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
             New Card
           </Link>
         )}
-        {/* {isStudying && (
+        {isStudying && (
           <Link className="navbar--link" to="/studying/new_card">
             New Card
           </Link>
-        )} */}
-        {/* {currentUser && (
+        )}
+        {currentToken && (
           <Link className="navbar--link" to="/jobs">
             Jobs
           </Link>
-        )} */}
-        {/* {currentUser && (
+        )}
+        {currentToken && (
           <Link className="navbar--link" to="/studying">
             Studying
           </Link>
-        )} */}
+        )}
         {currentToken && (
           <button className="navbar--btn" onClick={handleLogout}>
             Logout
