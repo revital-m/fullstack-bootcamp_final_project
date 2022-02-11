@@ -1,0 +1,21 @@
+.studying {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url("../../components/img/bgPinkDots.jpg") no-repeat center
+    center/cover;
+  padding-top: 5rem;
+}
+
+.studying--link {
+  padding: 0 1rem;
+  color: rgb(60, 0, 170);
+}
+
+.studying--link:hover {
+  padding: 0 1rem;
+  color: rgb(78, 0, 223);
+}

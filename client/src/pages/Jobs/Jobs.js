@@ -48,8 +48,10 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
   useEffect(() => {
     if (!userJobsArr.length) {
       setIsEmpty(true);
+      setIsShow(false);
     } else {
       setIsEmpty(false);
+      setIsShow(true);
     }
   }, [userJobsArr]);
 
@@ -172,6 +174,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             onClick={() => dispatch({ type: "PREV" })}
           >
             ‹
+            {console.log("isShow: ", isShow)}
           </button>
         )}
         {isShow && (
@@ -180,7 +183,13 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             onClick={() => dispatch({ type: "NEXT" })}
           >
             ›
+            {console.log("isShow: ", isShow)}
           </button>
+                //   <i
+                //   role="button"
+                //   className="next-btn category--arrow fas fa-arrow-alt-circle-right"
+                //   onClick={() => dispatch({ type: "NEXT" })}
+                // ></i>
         )}
       </div>
     </div>
