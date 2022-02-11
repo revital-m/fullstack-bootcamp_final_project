@@ -4,6 +4,55 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 //! CRUD for the studying cards:
+//* Get all of the global studying cards by category.
+router.post("/api/studying/globalCategories", auth, async (req, res) => {
+  try {
+    console.log("req.body: ", req.body);
+    const categoryArr = await Studying.find({}).sort({ _id: 1 });
+    if (!categoryArr) {
+      throw new Error("Global categories not found");
+    }
+
+    // Loop over the categoryArr from the Studying collection & add all of the chosen categories global questions.
+    const globalMap = new Map();
+    categoryArr.forEach((category) => {
+      const isInclude = req.body.categoriesArr.find(
+        (id) => id === category._id.valueOf()
+      );
+      if (isInclude) {
+        const globalQuestionsArr = category.questionsArr.filter(
+          (question) => question.global === true
+        );
+        globalMap.set(category._id.valueOf(), globalQuestionsArr);
+      }
+    });
+
+    // Loop over the studying array from the User collection & add all of the chosen categories global questions. into a set ( for unique questions only. ) and then into the userQuestions array.
+    req.user.studying.forEach((category) => {
+      const globalCards = globalMap.get(category.categoryID);
+      if (globalCards) {
+        const cardsSet = new Set();
+        globalCards.forEach((question) => cardsSet.add(question._id.valueOf()));
+        category.userQuestions.forEach((question) => {
+          if (!cardsSet.has(question.questionID.valueOf())) {
+            cardsSet.add(question.questionID.valueOf());
+          }
+        });
+        const updatedArr = [];
+        cardsSet.forEach((item) => {
+          updatedArr.push({ questionID: item });
+        });
+        category.userQuestions = updatedArr;
+      }
+    });
+
+    await req.user.save();
+    res.status(200).send(req.user.studying);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 //* Add a new category card to the database.
 router.post("/api/studying/creatNewCategory", auth, async (req, res) => {
   try {
@@ -85,54 +134,6 @@ router.get("/api/studying/allCategories", auth, async (req, res) => {
     console.log(error);
     res.status(500).send(error);
     // res.status(500).send(error.message);
-  }
-});
-
-//* Get all of the global studying cards by category.
-router.get("/api/studying/globalCategories", auth, async (req, res) => {
-  try {
-    const categoryArr = await Studying.find({}).sort({ _id: 1 });
-    if (!categoryArr) {
-      throw new Error("Global categories not found");
-    }
-
-    // Loop over the categoryArr from the Studying collection & add all of the chosen categories global questions.
-    const globalMap = new Map();
-    categoryArr.forEach((category) => {
-      const isInclude = req.body.categoriesArr.find(
-        (id) => id === category._id.valueOf()
-      );
-      if (isInclude) {
-        const globalQuestionsArr = category.questionsArr.filter(
-          (question) => question.global === true
-        );
-        globalMap.set(category._id.valueOf(), globalQuestionsArr);
-      }
-    });
-
-    // Loop over the studying array from the User collection & add all of the chosen categories global questions. into a set ( for unique questions only. ) and then into the userQuestions array.
-    req.user.studying.forEach((category) => {
-      const globalCards = globalMap.get(category.categoryID);
-      if (globalCards) {
-        const cardsSet = new Set();
-        globalCards.forEach((question) => cardsSet.add(question._id.valueOf()));
-        category.userQuestions.forEach((question) => {
-          if (!cardsSet.has(question.questionID.valueOf())) {
-            cardsSet.add(question.questionID.valueOf());
-          }
-        });
-        const updatedArr = [];
-        cardsSet.forEach((item) => {
-          updatedArr.push({ questionID: item });
-        });
-        category.userQuestions = updatedArr;
-      }
-    });
-
-    await req.user.save();
-    res.status(200).send(req.user.studying);
-  } catch (error) {
-    res.status(500).send(error.message);
   }
 });
 

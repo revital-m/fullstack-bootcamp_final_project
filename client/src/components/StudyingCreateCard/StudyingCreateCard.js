@@ -105,6 +105,7 @@ const StudyingCreateCard = ({
         throw new Error("Required fields are not provided!");
       }
       const chosenCategory = checkCategory();
+      console.log("chosenCategory: ", chosenCategory);
       const newQuestion = createNewQuestion(chosenCategory);
       console.log("newQuestion: ", newQuestion);
       let response = "";
@@ -117,22 +118,26 @@ const StudyingCreateCard = ({
     } catch (error) {
       setCurrent(4);
       setIsLoading(false);
-      setErr(error.message);
+      setErr(error);
       setIsShow(true);
     }
   };
 
   //* Check if the category does not exist already.
   const checkCategory = () => {
-    const category = newSubject ? `${newSubject.toLowerCase()}-${newCategory.toLowerCase()}` : `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`;
-    let chosenCategory = category;
-    categoriesName.forEach((item) => {
-      if (
-        item === category
-      ) {
-        chosenCategory = item;
-      }
-    });
+    let chosenCategory = "";
+    if (selectCategory === "Select Category") {
+      let category = newSubject ? `${newSubject.toLowerCase()}-${newCategory.toLowerCase()}` : `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`;
+      chosenCategory = category;
+      categoriesName.forEach((item) => {
+        if ( item === category ) {
+          chosenCategory = item;
+        }
+      });
+    }
+    else {
+      chosenCategory = selectCategory;
+    }
     return chosenCategory;
   };
 
@@ -155,7 +160,8 @@ const StudyingCreateCard = ({
       setMessage("The card was create successfully!");
     } else {
       setMsgClass("msg--error");
-      setMessage(`Something went wrong - ${response.status}`);
+      setMessage(`Something went wrong - ${response.response.data}`);
+      console.table(response);
     }
     setPathBack("/studying");
     setIsLoading(false);

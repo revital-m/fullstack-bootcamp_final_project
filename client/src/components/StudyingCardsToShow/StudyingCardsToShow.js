@@ -103,6 +103,7 @@ const StudyingCardsToShow = ({ categoryName, categoryData, currentUser, setStudy
       </div>
       {isFlippedCard && (
         <i
+          role="button"
           className="category--close fas fa-times-circle"
           onClick={handleClose}
         ></i>

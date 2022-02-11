@@ -1,26 +1,15 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-// import { AuthProvider, useAuth,AuthContext } from "../../context/AuthContext";
 import "./Navbar.css";
 
 const Navbar = ({currentToken, logout, logoutFromAll}) => {
-  // const { logout, currentToken, show, setCurrentToken, currentUser } = useContext(AuthContext);
-  
-  // const  [isShow, setIsShow] = useState(currentToken);
 
   const history = useHistory();
   const location = useLocation();
 
   const [isJobs, setIsJobs] = useState(false);
   const [isStudying, setIsStudying] = useState(false);
-  const [userValue, setUserValue] = useState("");
-
-  // useEffect(() => {
-  //   const userLoggedIn = currentToken ? true : false;
-  //   console.log("In useEffect - userLoggedIn: ", userLoggedIn);
-  //   setIsShow(userLoggedIn);
-  // }, [show, currentToken, setCurrentToken]);
-  
+  // const [userValue, setUserValue] = useState("");
 
   useEffect(() => {
     if (location.pathname === "/jobs") {
@@ -37,24 +26,16 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logoutFromAll();
       history.push(`/`);
     } catch (error) {
-      // history.push(`/error/error/${error.message}`);
+      console.log("navbar - error", error);
     }
   };
-
-  // const handleChange = (e) => {
-  //   setUserValue(e.target.value);
-  // };
-
-  // console.log("userLoggedIn: ", userLoggedIn);
-  // console.log("show: ", show);
 
   return (
 
     <nav className="navbar">
-      {/* {console.log("currentToken: ", currentToken)} */}
       <div className="navbar--left-side">
         <Link className="navbar--link" to="/">
           Homepage
@@ -70,9 +51,11 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
         )} */}
       </div>
       <div className="navbar--right-side">
-        {/* {isStudying && (
-          <button className="navbar--btn">Get Global Cards</button>
-        )} */}
+        {isStudying && (
+          <Link className="navbar--link" to="/studying/globalCategories">
+            Get Global Cards
+          </Link>
+        )}
         {isJobs && (
           <Link className="navbar--link" to="/jobs/new_card">
             New Card
