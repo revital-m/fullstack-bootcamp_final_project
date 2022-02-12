@@ -218,10 +218,15 @@ const Quiz = ({
           setQuizChosenCategory(category.categoryName);
         }
       });
-      const response = await getQuiz(selectCategory);
-      console.log("response: ", response);
+      // const response = await getQuiz(selectCategory);
+      userStudyingArr.forEach(item => {
+        if (item._id === selectCategory) {
+          setQuizData(item.quiz);
+        }
+      });
+      // console.log("response: ", response);
       setStudyingCategoryId(selectCategory);
-      setQuizData(response);
+      // setQuizData(response);
       setIsStartQuiz(true);
       setIsLoading(false);
       setIsShow(true);
