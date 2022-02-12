@@ -13,5 +13,3 @@ export const myApi = (token) => {
     baseURL: myUrl,
   });
 };
-
-// export default myApi;

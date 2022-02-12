@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
 import "./Signup.css";
 import validator from "validator";
 
@@ -21,9 +20,6 @@ function Signup({ handleClick, signup, error, setError }) {
   //* Ref
   const userNameRef = useRef();
 
-  //* useAuth functions.
-  // const { signup, error, setError } = useAuth();
-
   //* Check if the password & the passwordConfirm are the same. and call signup() to signup the user.
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,11 +33,9 @@ function Signup({ handleClick, signup, error, setError }) {
       }
       await signup(password, email, userName);
     } catch (error) {
-      // console.log(error);
       setCurrent(0);
       setErr(error.message);
     }
-    // setIsLoading(false);
   };
 
   //* Controlled Inputs.
@@ -84,7 +78,6 @@ function Signup({ handleClick, signup, error, setError }) {
 
   //* handel the focus on user's changes.
   const handleEnter = (e) => {
-    // console.log(e);
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
     if (e.type === "click") {

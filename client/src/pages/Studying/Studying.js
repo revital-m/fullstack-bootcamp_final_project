@@ -5,7 +5,15 @@ import StudyingCardsToShow from "../../components/StudyingCardsToShow/StudyingCa
 import MsgBox from "../../components/MsgBox/MsgBox";
 import Spinner from "../../components/Spinner/Spinner";
 
-const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChosenStudyingCard, removeQuestionCard, deleteQuestionCard }) => {
+const Studying = ({
+  userStudyingArr,
+  currentUser,
+  setStudyingCategoryId,
+  setChosenStudyingCard,
+  removeQuestionCard,
+  deleteQuestionCard,
+}) => {
+  //* State:
   const [isEmpty, setIsEmpty] = useState(false);
   const [isShow, setIsShow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +25,7 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
   const [isDelete, setIsDelete] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
 
+  //* Check if the user has any categories.
   useEffect(() => {
     if (userStudyingArr.length) {
       setIsEmpty(false);
@@ -39,21 +48,21 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
     checkAxiosResponse(response);
   };
 
-    //* Check the response from the axios request.
-    const checkAxiosResponse = (response) => {
-      if (response === 200 || response === 201) {
-        setMessage("The card was deleted successfully!");
-        setMsgClass("msg--success");
-      } else {
-        setMessage(`Something went wrong - ${response}`);
-        setMsgClass("msg--error");
-      }
-      setIsLoading(false);
-      setIsClose(true);
-      setIsDelete(false);
-      setIsEmpty(false);
-      setIsMsgBox(true);
-    };
+  //* Check the response from the axios request.
+  const checkAxiosResponse = (response) => {
+    if (response === 200 || response === 201) {
+      setMessage("The card was deleted successfully!");
+      setMsgClass("msg--success");
+    } else {
+      setMessage(`Something went wrong - ${response}`);
+      setMsgClass("msg--error");
+    }
+    setIsLoading(false);
+    setIsClose(true);
+    setIsDelete(false);
+    setIsEmpty(false);
+    setIsMsgBox(true);
+  };
 
   //* Reset all of the props for the MsgBox component.
   const onGoBack = () => {
@@ -67,12 +76,14 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
     setIsShow(true);
   };
 
+  //* Display the categories.
   const displayCategories = () => {
     return userStudyingArr.map((item) => {
-      console.log("item: ", item);
       const categoryNameArr = item.categoryName.split("-");
-      const categoryNameStr = `${categoryNameArr[0].toUpperCase()}-${categoryNameArr[1].toLowerCase()}`
-      // console.log("categoryNameStr: ", categoryNameStr);
+      const categoryNameStr = `${categoryNameArr[0].toUpperCase()}-${categoryNameArr[1].toLowerCase()}`;
+      const userCard = currentUser.studying.find(
+        (card) => card.categoryID === item._id
+      );
       return (
         <StudyingCardsToShow
           key={item._id}
@@ -82,7 +93,6 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
           setStudyingCategoryId={setStudyingCategoryId}
           categoryId={item._id}
           setChosenStudyingCard={setChosenStudyingCard}
-          // isGlobalCard={item.global}
           setMsgClass={setMsgClass}
           setMessage={setMessage}
           setPathBack={setPathBack}
@@ -91,6 +101,7 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
           setIsShow={setIsShow}
           setIsMsgBox={setIsMsgBox}
           setIsRemove={setIsRemove}
+          cardImportance={userCard.importance}
         />
       );
     });
@@ -110,7 +121,12 @@ const Studying = ({ userStudyingArr, currentUser, setStudyingCategoryId, setChos
           </h3>
         </div>
       )}
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner
+          spinnerClass="spinner--studying"
+          loadingClass="loading--studying"
+        />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}
