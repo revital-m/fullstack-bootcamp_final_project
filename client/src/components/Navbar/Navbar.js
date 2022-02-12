@@ -77,11 +77,11 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
               Quiz
             </Link>
           )}
-          {isStudying && (
+          {/* {isStudying && (
             <Link className="navbar--link" to="/studying/globalCategories">
               Get Global Cards
             </Link>
-          )}
+          )} */}
           {isJobs && (
             <Link className="navbar--link" to="/jobs/new_card">
               New Card
@@ -122,11 +122,11 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
                   Quiz
                 </Link>
               )}
-              {isStudying && (
+              {/* {isStudying && (
                 <Link className="navbar--link" to="/studying/globalCategories">
                   Get Global Cards
                 </Link>
-              )}
+              )} */}
               {isJobs && (
                 <Link className="navbar--link" to="/jobs/new_card">
                   New Card

@@ -17,7 +17,7 @@ const Homepage = ({ currentToken, signup, login, error, setError, isLoading }) =
   }; 
 
   return (
-      <div className="homepage-container">
+      <div className={`homepage-container ${currentToken ? "" : "homepage-container-before-user"}`}>
       {isLoading && <Spinner spinnerClass="spinner--homepage" loadingClass="loading--homepage" />}
         {(!currentToken && toggle && !isLoading) && <Signup handleClick={handleToggle} signup={signup} error={error} setError={setError} />}
         {(!currentToken && !toggle && !isLoading) && <Login handleClick={handleToggle} login={login} error={error} setError={setError} />}

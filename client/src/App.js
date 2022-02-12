@@ -396,22 +396,22 @@ function App() {
       setIsLoading(true);
       console.log("quizCategoryId: ", quizCategoryId);
       const questionToAdd = {
-        question: "Q10 - Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente repellat dolor optio labore vero quod magni velit nam quis harum.",
+        question: "(Q10) Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente repellat dolor optio labore vero quod magni velit nam quis harum.",
         optionsArr: [
             {
-                answer: "A101 - Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
+                answer: "(A10.1) Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
                 correct: true
             },
                     {
-                answer: "A102 - Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
+                answer: "(A10.2) Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
                 correct: false
             },
                     {
-                answer: "A103 - Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
+                answer: "(A10.3) Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
                 correct: false
             },
                     {
-                answer: "A104 - Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
+                answer: "(A10.4) Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, labore!",
                 correct: false
             }
         ]
