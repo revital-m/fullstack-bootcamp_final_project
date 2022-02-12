@@ -505,7 +505,7 @@ function App() {
                 <StudyingGlobalCategories getGlobalCards={getGlobalCards} categoriesName={categoriesName} />
               </Route>
               <Route path="/studying/quiz" exact >
-                <Quiz addQuestionToQuiz={addQuestionToQuiz} userStudyingArr={userStudyingArr} getQuiz={getQuiz} setStudyingCategoryId={setStudyingCategoryId} checkQuiz={checkQuiz} />
+                <Quiz addQuestionToQuiz={addQuestionToQuiz} userStudyingArr={userStudyingArr} getQuiz={getQuiz} setStudyingCategoryId={setStudyingCategoryId} checkQuiz={checkQuiz} setCurrentUser={setCurrentUser} currentUser={currentUser} />
               </Route>
               <Route component={NoMatch} />
             </Switch>
