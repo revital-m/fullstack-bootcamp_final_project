@@ -219,6 +219,7 @@ const Quiz = ({
         }
       });
       const response = await getQuiz(selectCategory);
+      console.log("response: ", response);
       setStudyingCategoryId(selectCategory);
       setQuizData(response);
       setIsStartQuiz(true);
