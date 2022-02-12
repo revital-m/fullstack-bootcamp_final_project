@@ -9,15 +9,15 @@
   top: 0;
   left: 0;
   padding: 0 2rem;
-  z-index: 2;
+  z-index: 10;
 }
 
 .navbar--right-side {
   display: flex;
   flex-wrap: wrap;
-
   justify-content: space-between;
   align-items: center;
+  z-index: 10;
 }
 
 .navbar--link {
@@ -26,6 +26,7 @@
   margin: 0 2rem;
   text-decoration: none;
   font-size: 1.8rem;
+  z-index: 10;
 }
 
 .navbar--btn {
@@ -36,23 +37,26 @@
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
+  z-index: 10;
 }
 
 .navbar--link:hover,
 .navbar--btn:hover {
   background: rgb(39, 39, 39);
+  z-index: 10;
 }
 
 .btn-login {
   display: flex;
   flex-wrap: wrap;
-
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 .btn-login img {
   padding-right: 1rem;
+  z-index: 10;
 }
 
 .navbar--serch {
@@ -63,4 +67,38 @@
   font-size: 1.8rem;
   font-weight: bold;
   margin: 1rem;
+  z-index: 10;
+}
+
+.navbar--hamburger-btn-open,
+.navbar--hamburger-btn-close {
+  background: url("../img/icons8-horizontal-separated-bars-representing-hamburger-menu-layout-36.png")
+    no-repeat center center/cover;
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  z-index: 10;
+  cursor: pointer;
+  margin: 0.5rem 1rem;
+}
+
+.navbar--hamburger-btn-close {
+  background: url("../img/icons8-macos-close-32.png") no-repeat center
+    center/cover;
+}
+
+.navbar--hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  z-index: 10;
+}
+
+.navbar--hamburger-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  z-index: 10;
 }
