@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./StudyingEditCard.css";
 import MsgBox from "../MsgBox/MsgBox";
 import Spinner from "../Spinner/Spinner";
 
@@ -9,7 +8,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
 
   //* State for the studying card:
   const [err, setErr] = useState("");
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(0);
   const [globalCard, setGlobalCard] = useState(false);
   const [isGlobalCard, setIsGlobalCard] = useState(false);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -88,7 +87,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
   const handleEnter = (e) => {
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
-    // console.log("index: ", index);
+    console.log("index: ", index);
     if (e.type === "click") {
       form.elements[index].focus();
       setCurrent(index);
@@ -124,7 +123,12 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
 
   return (
     <div className="studying-card">
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner
+          spinnerClass="spinner--studying"
+          loadingClass="loading--studying"
+        />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}
@@ -158,7 +162,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
             <label className="studying-card--label">Question Title:</label>
             <input
               className={`studying-card--info ${
-                current === 1 ? "studying-card__form--current" : ""
+                current === 0 ? "studying-card__form--current" : ""
               }`}
               onChange={handleInputChange}
               onKeyDown={handleEnter}
@@ -175,7 +179,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
               <label className="studying-card--label">Question:</label>
               <textarea
                 className={`studying-card--info ${
-                  current === 2 ? "studying-card__form--current" : ""
+                  current === 1 ? "studying-card__form--current" : ""
                 }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
@@ -191,7 +195,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
               <label className="studying-card--label">Answer:</label>
               <textarea
                 className={`studying-card--info ${
-                  current === 3 ? "studying-card__form--current" : ""
+                  current === 2 ? "studying-card__form--current" : ""
                 }`}
                 onChange={handleInputChange}
                 onKeyDown={handleEnter}
@@ -206,7 +210,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
           </section>
           <button
             className={`studying-card--btn ${
-              current === 4 ? "studying-card__form--current" : ""
+              current === 3 ? "studying-card__form--current" : ""
             }`}
             type="submit"
             disabled={isLoading}

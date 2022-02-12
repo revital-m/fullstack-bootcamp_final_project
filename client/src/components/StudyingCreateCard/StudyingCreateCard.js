@@ -9,7 +9,6 @@ const StudyingCreateCard = ({
   saveNewCategoryCard,
   saveNewQuestionCard,
 }) => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [isShow, setIsShow] = useState(true);
 
@@ -47,9 +46,12 @@ const StudyingCreateCard = ({
     newSubjectRef.current.focus();
 
     const subjectsName = [];
-    categoriesName.forEach(category => {
+    categoriesName.forEach((category) => {
       const categoryNameArr = category.categoryName.split("-");
-      const categoryObj = { name: `${categoryNameArr[0].toUpperCase()}`, id: uuidv4() };
+      const categoryObj = {
+        name: `${categoryNameArr[0].toUpperCase()}`,
+        id: uuidv4(),
+      };
       subjectsName.push(categoryObj);
     });
     setSubjectsArr(subjectsName);
@@ -105,9 +107,7 @@ const StudyingCreateCard = ({
         throw new Error("Required fields are not provided!");
       }
       const chosenCategory = checkCategory();
-      console.log("chosenCategory: ", chosenCategory);
       const newQuestion = createNewQuestion(chosenCategory);
-      console.log("newQuestion: ", newQuestion);
       let response = "";
       if (selectCategory === "Select Category") {
         response = await saveNewCategoryCard(newQuestion);
@@ -127,15 +127,16 @@ const StudyingCreateCard = ({
   const checkCategory = () => {
     let chosenCategory = "";
     if (selectCategory === "Select Category") {
-      let category = newSubject ? `${newSubject.toLowerCase()}-${newCategory.toLowerCase()}` : `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`;
+      let category = newSubject
+        ? `${newSubject.toLowerCase()}-${newCategory.toLowerCase()}`
+        : `${subjectsSelect.toLowerCase()}-${newCategory.toLowerCase()}`;
       chosenCategory = category;
       categoriesName.forEach((item) => {
-        if ( item === category ) {
+        if (item === category) {
           chosenCategory = item;
         }
       });
-    }
-    else {
+    } else {
       chosenCategory = selectCategory;
     }
     return chosenCategory;
@@ -161,7 +162,6 @@ const StudyingCreateCard = ({
     } else {
       setMsgClass("msg--error");
       setMessage(`Something went wrong - ${response.response.data}`);
-      console.table(response);
     }
     setPathBack("/studying");
     setIsLoading(false);
@@ -283,7 +283,12 @@ const StudyingCreateCard = ({
 
   return (
     <div className="studying-card">
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner
+          spinnerClass="spinner--studying"
+          loadingClass="loading--studying"
+        />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}

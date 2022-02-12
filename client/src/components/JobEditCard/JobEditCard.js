@@ -173,7 +173,9 @@ function JobEditCard({ userJobsArr, saveUpdateJobCard }) {
 
   return (
     <div className="JobCard">
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner spinnerClass="spinner--jobs" loadingClass="loading--jobs" />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}

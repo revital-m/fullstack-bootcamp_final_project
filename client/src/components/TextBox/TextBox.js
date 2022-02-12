@@ -7,6 +7,6 @@ const TextBox = ({ textBoxClass, textBoxTxt }) => {
       <h1>{textBoxTxt}</h1>
     </div>
   );
-}
+};
 
 export default TextBox;

@@ -90,6 +90,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
     setIsDelete(false);
     setIsEmpty(false);
     setIsMsgBox(true);
+    setIsShow(false);
   };
 
   //* Reset all of the props for the MsgBox component.
@@ -123,7 +124,9 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
         </div>
       )}
 
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner spinnerClass="spinner--jobs" loadingClass="loading--jobs" />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}
@@ -173,8 +176,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             className="prev-btn"
             onClick={() => dispatch({ type: "PREV" })}
           >
-            ‹
-            {console.log("isShow: ", isShow)}
+            ‹{console.log("isShow: ", isShow)}
           </button>
         )}
         {isShow && (
@@ -182,14 +184,8 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             className="next-btn"
             onClick={() => dispatch({ type: "NEXT" })}
           >
-            ›
-            {console.log("isShow: ", isShow)}
+            ›{console.log("isShow: ", isShow)}
           </button>
-                //   <i
-                //   role="button"
-                //   className="next-btn category--arrow fas fa-arrow-alt-circle-right"
-                //   onClick={() => dispatch({ type: "NEXT" })}
-                // ></i>
         )}
       </div>
     </div>

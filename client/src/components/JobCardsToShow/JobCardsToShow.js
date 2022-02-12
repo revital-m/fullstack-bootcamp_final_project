@@ -20,6 +20,7 @@ function JobCardsToShow({
 }) {
   const active = offset === 0 ? true : null;
 
+  //* Display all of the info about the job.
   const displayMoreInfo = () => {
     return moreInfo.map((item) => {
       return (
@@ -33,6 +34,7 @@ function JobCardsToShow({
     });
   };
 
+  //* Add design for the phone number ( _ _ _ - _ _ _ - _ _ _ _).
   const phone = contactPhone
     ? `${contactPhone.substring(0, 3)}-${contactPhone.substring(
         3,
@@ -40,6 +42,7 @@ function JobCardsToShow({
       )}-${contactPhone.substring(6)}`
     : contactPhone;
 
+  //* Set the current timeline.
   let currentTimeline = "";
   if (negotiation) {
     currentTimeline = "timeline__innerLine--negotiation";

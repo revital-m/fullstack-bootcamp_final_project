@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./StudyingGlobalCategories.css";
 import MsgBox from "../MsgBox/MsgBox";
 import Spinner from "../Spinner/Spinner";
@@ -17,19 +17,19 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
   const [message, setMessage] = useState("");
   const [pathBack, setPathBack] = useState("");
 
-    useEffect(() => {
-        const globalCategories =  categoriesName.map(category => {
-            const categoryNameArr = category.categoryName.split("-");
-            const categoryNameStr = `${categoryNameArr[0].toUpperCase()}-${categoryNameArr[1].toLowerCase()}`
-            return ({
-                categoryName: categoryNameStr,
-                categoryID: category.categoryID,
-                value: false,
-            });
-        })
-        setCategoriesArray(globalCategories);
-    }, [])
-    
+  //* Create the categories array.
+  useEffect(() => {
+    const globalCategories = categoriesName.map((category) => {
+      const categoryNameArr = category.categoryName.split("-");
+      const categoryNameStr = `${categoryNameArr[0].toUpperCase()}-${categoryNameArr[1].toLowerCase()}`;
+      return {
+        categoryName: categoryNameStr,
+        categoryID: category.categoryID,
+        value: false,
+      };
+    });
+    setCategoriesArray(globalCategories);
+  }, []);
 
   //* Check if all of the required fields are provided and call saveNewStudyingCard() to save the card to the Studying collection.
   const handleSubmit = async (e) => {
@@ -43,7 +43,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
       const response = await getGlobalCards(categoriesObj);
       checkAxiosResponse(response);
     } catch (error) {
-        console.table(error);
+      console.table(error);
       setIsLoading(false);
       setErr(error.message);
       setIsShow(true);
@@ -53,14 +53,13 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
   //* Create the new question to send to the server.
   const createCategoriesArr = () => {
     const categoriesToGet = [];
-    categoriesArray.forEach(category => {
-        if (category.value) {
-            categoriesToGet.push(category.categoryID);
-        }
-        // console.log("categoriesArr: ", categoriesToGet);
+    categoriesArray.forEach((category) => {
+      if (category.value) {
+        categoriesToGet.push(category.categoryID);
+      }
     });
     const categoriesToGetObj = {
-      categoriesArr: categoriesToGet
+      categoriesArr: categoriesToGet,
     };
     return categoriesToGetObj;
   };
@@ -71,7 +70,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
       setMsgClass("msg--success");
       setMessage("The card was create successfully!");
     } else {
-        console.table(response);
+      console.table(response);
       setMsgClass("msg--error");
       setMessage(`Something went wrong - ${response.response.data}`);
     }
@@ -80,6 +79,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
     setIsMsgBox(true);
   };
 
+  //* Display the categories checkbox.
   const displayCategories = () => {
     return categoriesArray.map((category) => {
       return (
@@ -91,7 +91,9 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
             name={category.categoryName}
             checked={category.value}
           ></input>
-          <label className="studying-card--label">{category.categoryName}</label>
+          <label className="studying-card--label">
+            {category.categoryName}
+          </label>
         </div>
       );
     });
@@ -99,10 +101,10 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
 
   //* Controlled Inputs.
   const handleInputChange = (e) => {
-    const controlledArr =  categoriesArray.map(category => {
-        if (e.target.name === category.categoryName) {
-            category.value = !category.value;
-        }
+    const controlledArr = categoriesArray.map((category) => {
+      if (e.target.name === category.categoryName) {
+        category.value = !category.value;
+      }
       return category;
     });
     setCategoriesArray(controlledArr);
@@ -110,7 +112,12 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
 
   return (
     <div className="studying-card">
-      {isLoading && <Spinner />}
+      {isLoading && (
+        <Spinner
+          spinnerClass="spinner--studying"
+          loadingClass="loading--studying"
+        />
+      )}
       {isMsgBox && (
         <MsgBox
           msgClass={msgClass}
@@ -127,7 +134,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
         <form className="studying-card-container" onSubmit={handleSubmit}>
           {err && <p className="job-card--err">{err}</p>}
           <section className="studying-card__checkbox studying-card-edit__checkbox">
-              {displayCategories()}
+            {displayCategories()}
           </section>
           <button
             className="studying-card--btn"

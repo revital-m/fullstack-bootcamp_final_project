@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
-const Navbar = ({currentToken, logout, logoutFromAll}) => {
+const Navbar = ({ currentToken, logout, logoutFromAll }) => {
+  //* State:
+  const [isJobs, setIsJobs] = useState(false);
+  const [isStudying, setIsStudying] = useState(false);
 
+  //* Use history & location.
   const history = useHistory();
   const location = useLocation();
 
-  const [isJobs, setIsJobs] = useState(false);
-  const [isStudying, setIsStudying] = useState(false);
-  // const [userValue, setUserValue] = useState("");
-
+  //* Check if the current page is jobs or studying.
   useEffect(() => {
     if (location.pathname === "/jobs") {
       setIsJobs(true);
@@ -24,6 +25,7 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
     }
   }, [location]);
 
+  //* Logout user & remove his token from local storage.
   const handleLogout = async () => {
     try {
       await logoutFromAll();
@@ -34,7 +36,6 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
   };
 
   return (
-
     <nav className="navbar">
       <div className="navbar--left-side">
         <Link className="navbar--link" to="/">
@@ -51,6 +52,11 @@ const Navbar = ({currentToken, logout, logoutFromAll}) => {
         )} */}
       </div>
       <div className="navbar--right-side">
+        {isStudying && (
+          <Link className="navbar--link" to="/studying/quiz">
+            Quiz
+          </Link>
+        )}
         {isStudying && (
           <Link className="navbar--link" to="/studying/globalCategories">
             Get Global Cards
