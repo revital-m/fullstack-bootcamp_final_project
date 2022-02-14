@@ -305,6 +305,7 @@ function App() {
         questionID: data.questionsArr[0]._id
       } 
       const response = await saveNewStudyingCardToUser(categoryToAdd);
+      await getUserProfile();
       // setCategoriesName(data)
       console.log("saveNewCategoryCard - response: ", response);
       setIsLoading(false);
