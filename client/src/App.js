@@ -66,6 +66,8 @@ function App() {
       else {
         setError("Unable to signup");
       }
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -89,6 +91,8 @@ function App() {
   
     } catch (e) {
       setError(e.response.data);
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -107,7 +111,9 @@ function App() {
       setIsLoading(false);
 
     } catch (e) {
-      console.log("logout - error: ",e);
+      console.log("logout - error: ");
+      console.table(e);
+
       setIsLoading(false);
       // setError(e.response.data.message);
       
@@ -129,7 +135,9 @@ function App() {
   
     } catch (e) {
       // setError(e.response.data.message);
-      console.log("logoutFromAll - error: ",e);       
+      console.log("logoutFromAll - error: ");     
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -146,7 +154,9 @@ function App() {
   
     } catch (e) {
       // setError(e.response.data.message);
-      console.log("logoutFromAll - error: ",e);     
+      console.log("logoutFromAll - error: ");     
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -161,7 +171,9 @@ function App() {
       setIsLoading(false);
   
     } catch (e) {
-      console.log("getJobData - error: ",e);
+      console.log("getJobData - error: ");
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -206,6 +218,8 @@ function App() {
   const saveUpdateJobCard = async (cardId, updates) => {
     try {
       setIsLoading(true);
+      console.log("cardId: ", cardId);
+      console.log("updates: ", updates);
       const { data, status } = await myApi(currentToken).patch(`/jobs/updateCard/${cardId}`, updates);
       const filteredData = userJobsArr.filter(card => card._id !== cardId);
       setUserJobsArr([...filteredData, data]);
@@ -213,7 +227,9 @@ function App() {
       return status;
   
     } catch (e) {
-      console.log("saveUpdateJobCard - error: ",e);
+      console.log("saveUpdateJobCard - error: ");
+      console.table(e);
+      
       setIsLoading(false);
       return e;
     }
@@ -223,13 +239,16 @@ function App() {
   const deleteJobCard = async (cardId) => {
     try {
       setIsLoading(true);
+      console.log("cardId: ", cardId);
       const { status } = await myApi(currentToken).delete(`/jobs/deleteCard/${cardId}`);
       await getJobData();
       setIsLoading(false);
       return status;
        
     } catch (e) {
-      console.log("deleteJobCard - error: ",e);
+      console.log("deleteJobCard - error: ");
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -243,7 +262,9 @@ function App() {
       setIsLoading(false);
        
     } catch (e) {
-      console.log("getCategories - error: ",e);
+      console.log("getCategories - error: ");
+      console.table(e);
+
       setIsLoading(false);
     }
   }
@@ -261,7 +282,9 @@ function App() {
       return res.status;
          
     } catch (e) {
-      console.log("getCategories - error: ",e);
+      console.log("getCategories - error: ");
+      console.table(e);
+
       setIsLoading(false);
       return e;
     }
@@ -288,7 +311,9 @@ function App() {
       return response;
        
     } catch (e) {
-      console.log("saveNewCategoryCard - error: ",e);
+      console.log("saveNewCategoryCard - error: ");
+      console.table(e);
+
       setIsLoading(false);
       return e;
     }
@@ -315,7 +340,9 @@ function App() {
       return response;
        
     } catch (e) {
-      console.log("saveNewQuestionCard - error: ",e);
+      console.log("saveNewQuestionCard - error: ");
+      console.table(e);
+
       setIsLoading(false);
       return e;
     }
@@ -326,13 +353,17 @@ function App() {
     try {
       setIsLoading(true);
       console.log("updates: ", updates);
+      console.log("chosenStudyingCard._id: ", chosenStudyingCard._id);
+      console.log("studyingCategoryId: ", studyingCategoryId);
       const { status } = await myApi(currentToken).patch(`/studying/updateCard/${chosenStudyingCard._id}/${studyingCategoryId}`, updates);
       await getStudyingData();
       setIsLoading(false);
       return status;
        
     } catch (e) {
-      console.log("updateQuestionCard - error: ",e);
+      console.log("updateQuestionCard - error: ");
+      console.table(e);
+
       setIsLoading(false);
       return e;
     }
@@ -342,13 +373,17 @@ function App() {
   const removeQuestionCard = async () => {
     try {
       setIsLoading(true);
+      console.log("chosenStudyingCard._id: ", chosenStudyingCard._id);
+      console.log("studyingCategoryId: ", studyingCategoryId);
       const { status } = await myApi(currentToken).delete(`/studying/removeCardFromUser/${chosenStudyingCard._id}/${studyingCategoryId}`);
       await getStudyingData();
       setIsLoading(false);
       return status;
        
     } catch (e) {
-      console.log("removeQuestionCard - error: ",e);
+      console.log("removeQuestionCard - error: ");
+      console.table(e);
+
       setIsLoading(false);
       return e;
     }
@@ -358,6 +393,8 @@ function App() {
   const deleteQuestionCard = async () => {
     try {
       setIsLoading(true);
+      console.log("chosenStudyingCard._id: ", chosenStudyingCard._id);
+      console.log("studyingCategoryId: ", studyingCategoryId);
       const { status } = await myApi(currentToken).delete(`/studying/deleteCardFromStudying/${chosenStudyingCard._id}/${studyingCategoryId}`);
       const response = await removeQuestionCard();
       await getStudyingData();
@@ -365,7 +402,8 @@ function App() {
       return response;
        
     } catch (e) {
-      console.log("removeQuestionCard - error: ",e);
+      console.log("removeQuestionCard - error: ");
+      console.table(e);
       setIsLoading(false);
       return e;
     }
@@ -383,7 +421,8 @@ function App() {
       // console.log(res);
        
     } catch (e) {
-      console.log("removeQuestionCard - error: ",e);
+      console.log("removeQuestionCard - error: ");
+      console.table(e);
       setIsLoading(false);
       return e;
     }
@@ -422,7 +461,8 @@ function App() {
       setIsLoading(false);
        
     } catch (e) {
-      console.log("addQuestionToQuiz - error: ",e);
+      console.log("addQuestionToQuiz - error: ");
+      console.table(e);
       setIsLoading(false);
       return e;
     }
@@ -432,13 +472,15 @@ function App() {
   const getQuiz = async (quizCategoryId) => {
     try {
       setIsLoading(true);
+      console.log("quizCategoryId: ", quizCategoryId);
       const { data } = await myApi(currentToken).get(`/studying/quizByCategory/${quizCategoryId}`);
       setIsLoading(false);
       return data;
       // console.log("addQuestionToQuiz- response: ", response);
        
     } catch (e) {
-      console.log("addQuestionToQuiz - error: ",e);
+      console.log("addQuestionToQuiz - error: ");
+      console.table(e);
       setIsLoading(false);
       return e;
     }
