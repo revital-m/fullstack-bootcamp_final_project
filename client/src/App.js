@@ -42,7 +42,13 @@ function App() {
         return Promise.resolve().then(function () {
             return localStorage.getItem(key);
         });
+    },
+    clear: function () {
+        return Promise.resolve().then(function () {
+            return localStorage.clear();
+        });
     }
+    
 };
 
   //* Signup user and add his token to local storage.
@@ -133,7 +139,7 @@ function App() {
       console.log(response);
       setCurrentToken("");
       setCurrentUser("");
-      localStorage.clear();
+      await asyncLocalStorage.clear();
       setIsLoading(false);
       if (response) {
         history.push(`/`);
