@@ -71,7 +71,7 @@ function JobEditCard({ userJobsArr, saveUpdateJobCard }) {
         setMsgClass("msg--error");
         setMessage(`Something went wrong - ${response.status}`);
       }
-      setPathBack("/jobs");
+      setPathBack("/job");
       setIsLoading(false);
       setIsMsgBox(true);
     } catch (error) {

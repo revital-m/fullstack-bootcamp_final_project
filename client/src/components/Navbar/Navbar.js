@@ -27,7 +27,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
 
   //* Check if the current page is jobs or studying.
   useEffect(() => {
-    if (location.pathname === "/jobs") {
+    if (location.pathname === "/job") {
       setIsJobs(true);
       setIsStudying(false);
     } else if (location.pathname === "/studying") {
@@ -83,7 +83,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
             </Link>
           )} */}
           {isJobs && (
-            <Link className="navbar--link" to="/jobs/new_card">
+            <Link className="navbar--link" to="/job/new_card">
               New Card
             </Link>
           )}
@@ -93,7 +93,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
             </Link>
           )}
           {currentToken && (
-            <Link className="navbar--link" to="/jobs">
+            <Link className="navbar--link" to="/job">
               Jobs
             </Link>
           )}
@@ -128,7 +128,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
                 </Link>
               )} */}
               {isJobs && (
-                <Link className="navbar--link" to="/jobs/new_card">
+                <Link className="navbar--link" to="/job/new_card">
                   New Card
                 </Link>
               )}
@@ -138,7 +138,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
                 </Link>
               )}
               {currentToken && (
-                <Link className="navbar--link" to="/jobs">
+                <Link className="navbar--link" to="/job">
                   Jobs
                 </Link>
               )}

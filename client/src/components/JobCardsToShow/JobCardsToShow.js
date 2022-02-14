@@ -135,7 +135,7 @@ function JobCardsToShow({
         <div className="JobCardsToShow__btns">
           <Link
             className="JobCardsToShow--link"
-            to={`/jobs/edit_card/${jobCardID}`}
+            to={`/job/edit_card/${jobCardID}`}
           >
             Edit
           </Link>

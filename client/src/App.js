@@ -481,13 +481,13 @@ function App() {
               <Route path="/" exact >
                 <Homepage currentToken={currentToken} signup={signup} login={login} error={error} setError={setError} isLoading={isLoading} />
               </Route>
-              <Route path="/jobs" exact >
+              <Route path="/job" exact >
                 <Jobs userJobsArr={userJobsArr} setUserJobsArr={setUserJobsArr} deleteJobCard={deleteJobCard} />
               </Route>
-             <Route path="/jobs/new_card" exact >
+             <Route path="/job/new_card" exact >
                 <JobCreateCard saveNewJobCard={saveNewJobCard} />
               </Route> 
-             <Route path="/jobs/edit_card/:id" exact >
+             <Route path="/job/edit_card/:id" exact >
                 <JobEditCard userJobsArr={userJobsArr} saveUpdateJobCard={saveUpdateJobCard} />
               </Route> 
               <Route path="/studying" exact >

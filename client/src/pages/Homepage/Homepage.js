@@ -23,7 +23,7 @@ const Homepage = ({ currentToken, signup, login, error, setError, isLoading }) =
         {(!currentToken && !toggle && !isLoading) && <Login handleClick={handleToggle} login={login} error={error} setError={setError} />}
         {(currentToken && !isLoading) && (
           <div className="homepage-container--loggedin">
-            <Link to="/jobs" className="homepage--link">
+            <Link to="/job" className="homepage--link">
               <TextBox textBoxClass="box--job" textBoxTxt="My Job Search" />
             </Link>
             <Link to="/studying" className="homepage--link">

@@ -116,7 +116,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
           <h1>Let's get started!</h1>
           <h3>
             Press
-            <Link className="jobs--link" to="/jobs/new_card">
+            <Link className="jobs--link" to="/job/new_card">
               here
             </Link>
             to create your first card
