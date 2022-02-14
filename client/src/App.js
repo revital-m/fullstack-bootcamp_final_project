@@ -20,6 +20,7 @@ function App() {
   const [error, setError] = useState("");
 
   console.log("currentUser: ", currentUser);
+  console.log("currentToken: ", currentToken);
 
   const [userJobsArr, setUserJobsArr] = useState([]);
   const [userStudyingArr, setUserStudyingArr] = useState([]);
