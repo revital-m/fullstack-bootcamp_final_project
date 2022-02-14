@@ -200,7 +200,7 @@ function App() {
     try {
       setIsLoading(true);
       console.log("newCard: ", newCard);
-      const { data, status } = await myApi(currentToken).post("/jobs/creatNewCard", newCard);
+      const { data, status } = await myApi(currentToken).put("/jobs/creatNewCard", newCard);
       console.log("saveNewJobCard - data: ", data);
       setUserJobsArr([...userJobsArr, data]);
       setIsLoading(false);

@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 //* Add a new job card to the database.
-router.post("/api/jobs/creatNewCard", auth, async (req, res) => {
+router.put("/api/jobs/creatNewCard", auth, async (req, res) => {
   const job = new Jobs({
     ...req.body,
     owner: req.user._id,
