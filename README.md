@@ -1,122 +1,33 @@
-# mongodb-bank-API
+# Job Preparing App
 
-**App Link**: https://revital-bank-api.herokuapp.com/
+Preparing for a job interview app that will help you stay organized and ready until you’ll find that dream job! 
+- Link : https://job-preparing.herokuapp.com/
 
-## Client Object
+## About the project
 
-| Property   | Type   | Description |
-| ---------- | ------ | ----------- |
-| userId     | String | Unique id   |
-| passportID | String | passport id |
-| cash       | Number | Default 0   |
-| credit     | Number | Default 0   |
+Over 2 weeks we had to create our own app, I did it by using a couple of things:
 
-## Create Client
+- HTML
+- CSS
+- JavaScript
+- React: React Router, Hooks
+- MongoDB
+- And more!
 
-Creates a new client with the given passportID and returns the client object.
+## The site :
 
-**URL**:
-/clients
+### Home Page:
 
-**Method**: Post
+![Home-page](https://user-images.githubusercontent.com/69958596/153936212-7a66ba0f-3efa-46c6-a5a0-c108ad25aee2.jpg)
 
-**URL Params** : none
+### Job Search: Add a new card for each position that you have sent a resume too, in order to keep track on your job search.
 
-### Parameters - Request Body Parameters
+![Jobs-page](https://user-images.githubusercontent.com/69958596/153936253-5ff5124c-f224-4a81-bc29-3aab82c62a4a.jpg)
 
-| Property | Type   | Description         |
-| -------- | ------ | ------------------- |
-| userId   | String | Required            |
-| cash     | Number | Optional, Default 0 |
-| credit   | Number | Optional, Default 0 |
+### Studying For Your Interview: Add cards of all the material you want to study for your job interview.
 
-## Show All Client
+![Studying-page](https://user-images.githubusercontent.com/69958596/153936340-b0cf1f4f-fa8c-478d-96f5-75bc4ced8fa2.jpg)
 
-Returns json data of all the clients.
+### Quiz: Check how well you know the material you need for the job interview.
 
-**URL**:
-/clients
-
-**Method**: Get
-
-**URL Params** : none
-
-## Show One Client
-
-Returns json data of the client.
-
-**URL**:
-/clients/:id
-
-**Method**: Get
-
-**URL Params** : userId
-
-## Deposite cash
-
-Deposit cash to a client account
-
-**URL**:
-/clients/depositing/:id
-
-**Method**: Patch
-
-**URL Params** : userId
-
-### Parameters - Request Body Parameters
-
-| Property | Type   | Description |
-| -------- | ------ | ----------- |
-| amount   | Number | Required    |
-
-## Deposite credit
-
-Deposit credit to a client account
-
-**URL**:
-/clients/updatecredit/:id
-
-**Method**: Patch
-
-**URL Params** : userId
-
-### Parameters - Request Body Parameters
-
-| Property | Type   | Description |
-| -------- | ------ | ----------- |
-| amount   | Number | Required    |
-
-## Withdraw money
-
-Withdraw money from a client account
-
-**URL**:
-/clients/withdrawmoney/:id
-
-**Method**: Patch
-
-**URL Params** : userId
-
-### Parameters - Request Body Parameters
-
-| Property | Type   | Description |
-| -------- | ------ | ----------- |
-| amount   | Number | Required    |
-
-## Trensfer money
-
-Transfer money from one client to another
-
-**URL**:
-/clients/transferring/:id
-
-**Method**: Patch
-
-**URL Params** : userId
-
-### Parameters - Request Body Parameters
-
-| Property | Type   | Description               |
-| -------- | ------ | ------------------------- |
-| amount   | Number | Required                  |
-| id       | String | Required, the receiver id |
+![Quiz-page](https://user-images.githubusercontent.com/69958596/153936305-867485a1-33dc-4b8a-9ce9-b6453570a03d.jpg)
