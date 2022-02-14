@@ -139,9 +139,9 @@ function App() {
       console.log(response);
       setCurrentToken("");
       setCurrentUser("");
-      await asyncLocalStorage.clear();
+      const res = await asyncLocalStorage.clear();
       setIsLoading(false);
-      if (response) {
+      if (res && response) {
         history.push(`/`);
 
       }
