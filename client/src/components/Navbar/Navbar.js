@@ -14,16 +14,18 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
   const location = useLocation();
 
   // //* Check if the window.innerWidth is less then 1000px for the hamburger menu.
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log("window.innerWidth: ", window.innerWidth);
-  //     if (window.innerWidth <= 1000) {
-  //       setIsMobile(true);
-  //     } else {
-  //       setIsMobile(false);
-  //     }
-  //   }, 2000);
-  // }, [isMobile]);
+  useEffect(() => {
+    setInterval(() => {
+      console.log("window.innerWidth: ", window.innerWidth);
+      if (window.innerWidth <= 1000) {
+        if (!isMobile) {
+          setIsMobile(true);
+        }
+      } else if (isMobile) {
+        setIsMobile(false);
+      }
+    }, 2000);
+  }, []);
 
   //* Check if the current page is jobs or studying.
   useEffect(() => {
