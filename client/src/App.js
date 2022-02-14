@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, BrowserRouter, Route, Link } from "react-router-dom";
+import { Switch, BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
@@ -12,9 +12,6 @@ import StudyingEditCard from "./components/StudyingEditCard/StudyingEditCard";
 import StudyingGlobalCategories from "./components/StudyingGlobalCategories/StudyingGlobalCategories";
 import Quiz from "./components/Quiz/Quiz";
 import NoMatch from "./pages/NoMatch/NoMatch";
-// import Message from "./components/Message/Message";
-// import { AuthProvider } from "./context/AuthContext";
-// import Signup from "./components/Signup/Signup";
 import {myApi} from "./api/Api.js";
 
 function App() {
@@ -59,6 +56,7 @@ function App() {
       setCurrentToken(response.data.token);
       setCurrentUser(response.data.user);
       await asyncLocalStorage.setItem('JobPreparingToken', response.data.token);
+      // document.cookie = `JobPreparingToken=${response.data.token}; expires=${new Date(9999,0,1).toUTCString}`
       setIsLoading(false);
   
     } catch (e) {
