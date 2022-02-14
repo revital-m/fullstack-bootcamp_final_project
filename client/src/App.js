@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, BrowserRouter, Route } from "react-router-dom";
+import { Switch, BrowserRouter, Route, useHistory } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Homepage from "./pages/Homepage/Homepage";
@@ -27,6 +27,8 @@ function App() {
   const [studyingCategoryId, setStudyingCategoryId] = useState("");
   const [chosenStudyingCard, setChosenStudyingCard] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const history = useHistory();
 
 
   const asyncLocalStorage = {
@@ -132,6 +134,10 @@ function App() {
       setCurrentUser("");
       localStorage.clear();
       setIsLoading(false);
+      if (response) {
+        history.push(`/`);
+
+      }
   
     } catch (e) {
       // setError(e.response.data.message);

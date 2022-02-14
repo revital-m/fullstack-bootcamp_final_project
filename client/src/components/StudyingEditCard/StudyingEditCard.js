@@ -59,9 +59,9 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
   //* Create the new question to send to the server.
   const createUpdates = () => {
     const updates = {
-      title: questionTitle,
-      question: question,
-      answer: answer,
+      title: questionTitle ? questionTitle : placeholderTitle,
+      question: question ? question : placeholderQuestion,
+      answer: answer ? answer : placeholderAnswer,
     };
     if (!isGlobalCard && globalCard) {
       updates.global = globalCard;
