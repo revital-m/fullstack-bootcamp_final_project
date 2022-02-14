@@ -10,9 +10,9 @@ router.post("/api/jobs/creatNewCard", auth, async (req, res) => {
     owner: req.user._id,
   });
   try {
-    // console.log("job: ", job);
+    console.log("/api/jobs/creatNewCard - req.body: ", req.body);
     const response = await job.save();
-    // console.log("response: ", response);
+    console.log("/api/jobs/creatNewCard - response: ", response);
     res.status(201).send(job);
   } catch (error) {
     console.table(error);

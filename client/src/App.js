@@ -195,7 +195,8 @@ function App() {
       return status;
   
     } catch (e) {
-      console.log("saveNewJobCard - error: ",e);
+      console.log("saveNewJobCard - error: ");
+      console.table(e);
       setIsLoading(false);
       return e;
     }
