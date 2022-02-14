@@ -159,20 +159,20 @@ const Quiz = ({
     setIsShow(false);
     setErr("");
     try {
-      // const response = await checkQuiz(quizAnswerArr);
-      checkQuizAnswer();
-      // console.log("response: ", response);
-      // if (response.status === 200) {
-      //   setCheckedQuiz(response.data[0].answersArr);
-      //   setQuizGrade(response.data[0].usersGrade * 10);
-      //   setIsShow(true);
-      //   setIsStartQuiz(false);
-      //   setIsEndQuiz(false);
-      //   setIsCheckedQuiz(true);
-      //   setIsLoading(false);
-      // } else {
-      //   checkAxiosResponse(response);
-      // }
+      const response = await checkQuiz(quizAnswerArr);
+      // checkQuizAnswer();
+      console.log("response: ", response);
+      if (response.status === 200) {
+        setCheckedQuiz(response.data[0].answersArr);
+        setQuizGrade(response.data[0].usersGrade * 10);
+        setIsShow(true);
+        setIsStartQuiz(false);
+        setIsEndQuiz(false);
+        setIsCheckedQuiz(true);
+        setIsLoading(false);
+      } else {
+        checkAxiosResponse(response);
+      }
     } catch (error) {
       console.table(error);
       setIsLoading(false);
@@ -183,42 +183,42 @@ const Quiz = ({
 
   const checkQuizAnswer = () => {
     // console.log("quizAnswerArr: ", quizAnswerArr);
-    let grade = 0;
-    quizAnswerArr.forEach((item) => {
-      if (item.correct) {
-        grade++;
-      }
-    });
-    setCheckedQuiz([...quizAnswerArr]);
-    setQuizGrade(grade * 10);
-    setIsShow(true);
-    setIsStartQuiz(false);
-    setIsEndQuiz(false);
-    setIsCheckedQuiz(true);
-    setIsLoading(false);
-    const updateUser = {
-      email: currentUser.email,
-      exercisesAnswer: currentUser.exercisesAnswer,
-      userName: currentUser.userName,
-      __v: currentUser.__v,
-      _id: currentUser._id,
-    };
-    const updateStudyingArr = [];
-    currentUser.studying.forEach(item => {
-      if (item.categoryID === selectCategory) {
-        updateStudyingArr.push({
-          categoryID: item.categoryID,
-          importance: Math.floor(grade / 2),
-          userQuestions: item.userQuestions,
-          _id: item._id,
-        });
-      }
-      else {
-        updateStudyingArr.push(item);
-      }
-    })
-    updateUser.studying = updateStudyingArr;
-    setCurrentUser(updateUser);
+    // let grade = 0;
+    // quizAnswerArr.forEach((item) => {
+    //   if (item.correct) {
+    //     grade++;
+    //   }
+    // });
+    // setCheckedQuiz([...quizAnswerArr]);
+    // setQuizGrade(grade * 10);
+    // setIsShow(true);
+    // setIsStartQuiz(false);
+    // setIsEndQuiz(false);
+    // setIsCheckedQuiz(true);
+    // setIsLoading(false);
+    // const updateUser = {
+    //   email: currentUser.email,
+    //   exercisesAnswer: currentUser.exercisesAnswer,
+    //   userName: currentUser.userName,
+    //   __v: currentUser.__v,
+    //   _id: currentUser._id,
+    // };
+    // const updateStudyingArr = [];
+    // currentUser.studying.forEach(item => {
+    //   if (item.categoryID === selectCategory) {
+    //     updateStudyingArr.push({
+    //       categoryID: item.categoryID,
+    //       importance: Math.floor(grade / 2),
+    //       userQuestions: item.userQuestions,
+    //       _id: item._id,
+    //     });
+    //   }
+    //   else {
+    //     updateStudyingArr.push(item);
+    //   }
+    // })
+    // updateUser.studying = updateStudyingArr;
+    // setCurrentUser(updateUser);
   };
 
   //* Check the response from the axios request.
@@ -274,15 +274,15 @@ const Quiz = ({
           setQuizChosenCategory(category.categoryName);
         }
       });
-      // const response = await getQuiz(selectCategory);
-      userStudyingArr.forEach((item) => {
-        if (item._id === selectCategory) {
-          setQuizData(item.quiz);
-        }
-      });
-      // console.log("response: ", response);
+      const response = await getQuiz(selectCategory);
+      // userStudyingArr.forEach((item) => {
+      //   if (item._id === selectCategory) {
+      //     setQuizData(item.quiz);
+      //   }
+      // });
+      console.log("response: ", response);
       setStudyingCategoryId(selectCategory);
-      // setQuizData(response);
+      setQuizData(response);
       setIsStartQuiz(true);
       setIsLoading(false);
       setIsShow(true);
