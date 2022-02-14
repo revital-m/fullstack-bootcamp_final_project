@@ -17,14 +17,13 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
   useEffect(() => {
     setInterval(() => {
       console.log("window.innerWidth: ", window.innerWidth);
+      console.log("isMobile: ", isMobile);
       if (window.innerWidth <= 1000) {
-        if (!isMobile) {
-          setIsMobile(true);
-        }
-      } else if (isMobile) {
+        setIsMobile(true);
+      } else {
         setIsMobile(false);
       }
-    }, 2000);
+    }, 10000);
   }, []);
 
   //* Check if the current page is jobs or studying.
