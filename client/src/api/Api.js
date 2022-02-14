@@ -4,7 +4,7 @@ export const myApi = (token) => {
   let myUrl = "http://localhost:5000/api"; //development
 
   if (process.env.NODE_ENV === "production") {
-    myUrl = "api";
+    myUrl = "/api";
   }
 console.log("myUrl: ", myUrl);
   axios.defaults.headers.common["Authorization"] = "Bearer " + `${token}`;
