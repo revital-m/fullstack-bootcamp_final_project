@@ -51,12 +51,11 @@ function JobCreateCard({ saveNewJobCard }) {
       if (response === 200 || response === 201) {
         setMsgClass("msg--success");
         setMessage("The card was create successfully!");
-        setPathBack("/job");
       } else {
         setMsgClass("msg--error");
         setMessage(`Something went wrong - ${response.status}`);
-        // setPathBack("/job");
       }
+      setPathBack("/job");
       setIsLoading(false);
       setIsMsgBox(true);
     } catch (error) {
