@@ -133,7 +133,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
           message={message}
           pathBack={pathBack}
           handleDelete={() => onDelete(cardId)}
-          handleGoBackbtn={onGoBack}
+          handleGoBackBtn={onGoBack}
           isDelete={isDelete}
           isClose={isClose}
           notDelete={false}

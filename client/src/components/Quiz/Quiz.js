@@ -330,7 +330,6 @@ const Quiz = ({
   //* Display the answers for the current quiz.
   const displayAnswers = () => {
     return quizAnswerArr.map((item, idx) => {
-      // console.log("item: ", item);
       return (
         <div className="quiz--question-option" key={idx} >
           <input
@@ -369,7 +368,6 @@ const Quiz = ({
   //* display the checked quiz.
   const displayCheckedQuizAnswer = () => {
     return checkedQuiz.map((item, idx) => {
-      // console.log("item: ", item);
       return (
         <div className="quiz--checked-answer" key={`${item.questionID}${item.userAnswer}`} >
           <p className={`quiz--icon-${item.correct ? "check" : "x"}`}></p>
@@ -397,7 +395,7 @@ const Quiz = ({
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}

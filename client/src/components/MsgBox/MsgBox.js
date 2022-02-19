@@ -7,7 +7,7 @@ const MsgBox = ({
   message,
   pathBack,
   handleDelete,
-  handleGoBackbtn,
+  handleGoBackBtn,
   isDelete,
   isClose,
   notDelete,
@@ -24,7 +24,7 @@ const MsgBox = ({
       )}
       {isDelete && (
         <div className="msg--btn-container">
-          <button className="msg--btn" onClick={handleGoBackbtn}>
+          <button className="msg--btn" onClick={handleGoBackBtn}>
             Go Back
           </button>
           <button className="msg--btn" onClick={handleDelete}>
@@ -34,7 +34,7 @@ const MsgBox = ({
       )}
       {isClose && (
         <div className="msg--btn-container">
-          <button className="msg--btn" onClick={handleGoBackbtn}>
+          <button className="msg--btn" onClick={handleGoBackBtn}>
             Go Back
           </button>
         </div>

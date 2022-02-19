@@ -201,7 +201,7 @@ function JobCreateCard({ saveNewJobCard }) {
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}

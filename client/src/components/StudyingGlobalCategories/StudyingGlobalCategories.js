@@ -124,7 +124,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}

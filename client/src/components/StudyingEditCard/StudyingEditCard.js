@@ -135,7 +135,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}

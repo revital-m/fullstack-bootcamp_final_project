@@ -182,7 +182,7 @@ function JobEditCard({ userJobsArr, saveUpdateJobCard }) {
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}
