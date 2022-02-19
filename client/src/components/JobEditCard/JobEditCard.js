@@ -62,7 +62,7 @@ function JobEditCard({ userJobsArr, saveUpdateJobCard }) {
     try {
       setErr("");
       const updates = creatUpdatesObj();
-      console.log("updates: ", updates);
+      // console.log("updates: ", updates);
       const response = await saveUpdateJobCard(params.id, updates);
       if (response === 200 || response === 201) {
         setMsgClass("msg--success");

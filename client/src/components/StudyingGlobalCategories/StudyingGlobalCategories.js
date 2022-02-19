@@ -39,7 +39,7 @@ const StudyingGlobalCategories = ({ getGlobalCards, categoriesName }) => {
     setErr("");
     try {
       const categoriesObj = createCategoriesArr();
-      console.log("categoriesObj: ", categoriesObj);
+      // console.log("categoriesObj: ", categoriesObj);
       const response = await getGlobalCards(categoriesObj);
       checkAxiosResponse(response);
     } catch (error) {

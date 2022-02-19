@@ -10,8 +10,6 @@ const Quiz = ({
   getQuiz,
   setStudyingCategoryId,
   checkQuiz,
-  setCurrentUser,
-  currentUser,
 }) => {
   //* State:
   const [isLoading, setIsLoading] = useState(false);
@@ -160,8 +158,6 @@ const Quiz = ({
     setErr("");
     try {
       const response = await checkQuiz(quizAnswerArr);
-      // checkQuizAnswer();
-      console.log("response: ", response);
       if (response.status === 200) {
         setCheckedQuiz(response.data[0].answersArr);
         setQuizGrade(response.data[0].usersGrade * 10);
@@ -179,46 +175,6 @@ const Quiz = ({
       setErr(error.message);
       setIsShow(true);
     }
-  };
-
-  const checkQuizAnswer = () => {
-    // console.log("quizAnswerArr: ", quizAnswerArr);
-    // let grade = 0;
-    // quizAnswerArr.forEach((item) => {
-    //   if (item.correct) {
-    //     grade++;
-    //   }
-    // });
-    // setCheckedQuiz([...quizAnswerArr]);
-    // setQuizGrade(grade * 10);
-    // setIsShow(true);
-    // setIsStartQuiz(false);
-    // setIsEndQuiz(false);
-    // setIsCheckedQuiz(true);
-    // setIsLoading(false);
-    // const updateUser = {
-    //   email: currentUser.email,
-    //   exercisesAnswer: currentUser.exercisesAnswer,
-    //   userName: currentUser.userName,
-    //   __v: currentUser.__v,
-    //   _id: currentUser._id,
-    // };
-    // const updateStudyingArr = [];
-    // currentUser.studying.forEach(item => {
-    //   if (item.categoryID === selectCategory) {
-    //     updateStudyingArr.push({
-    //       categoryID: item.categoryID,
-    //       importance: Math.floor(grade / 2),
-    //       userQuestions: item.userQuestions,
-    //       _id: item._id,
-    //     });
-    //   }
-    //   else {
-    //     updateStudyingArr.push(item);
-    //   }
-    // })
-    // updateUser.studying = updateStudyingArr;
-    // setCurrentUser(updateUser);
   };
 
   //* Check the response from the axios request.
@@ -275,12 +231,6 @@ const Quiz = ({
         }
       });
       const response = await getQuiz(selectCategory);
-      // userStudyingArr.forEach((item) => {
-      //   if (item._id === selectCategory) {
-      //     setQuizData(item.quiz);
-      //   }
-      // });
-      console.log("response: ", response);
       setStudyingCategoryId(selectCategory);
       setQuizData(response);
       setIsStartQuiz(true);
@@ -354,9 +304,9 @@ const Quiz = ({
   const displayOptions = () => {
     return optionsArr.map((item, idx) => {
       return (
-        <div className="quiz--question-option">
+        <div className="quiz--question-option" key={quizData[quizDataIdx].answers[idx]._id} >
           <input
-            className="job-card__timeline--check-mark"
+            className="quiz--check-mark"
             onChange={handleInputChange}
             onClick={() =>
               handleOptionClick(
@@ -369,7 +319,7 @@ const Quiz = ({
             name={idx}
             checked={item}
           ></input>
-          <label className="studying-card--label">
+          <label className="quiz--label quiz--option">
             {quizData[quizDataIdx].answers[idx].option}
           </label>
         </div>
@@ -380,17 +330,19 @@ const Quiz = ({
   //* Display the answers for the current quiz.
   const displayAnswers = () => {
     return quizAnswerArr.map((item, idx) => {
+      // console.log("item: ", item);
       return (
-        <div className="quiz--question-option">
+        <div className="quiz--question-option" key={idx} >
           <input
-            className="job-card__timeline--check-mark"
+            className="quiz--check-mark"
+            readOnly
             onClick={() => handleAnswerClick(idx)}
             type="checkbox"
             name={`quizAnswer${idx + 1}`}
             checked={item.value}
           ></input>
           <label
-            className="studying-card--label"
+            className="quiz--label quiz--option"
             onClick={() => handleAnswerClick(idx)}
           >
             {`Question ${idx + 1}`}
@@ -404,7 +356,7 @@ const Quiz = ({
   const displayChosenAnswers = () => {
     return quizAnswerArr.map((item, idx) => {
       return (
-        <div className="quiz--question-option">
+        <div className="quiz--question-option" key={item.answerID ? item.answerID : idx} >
           <p className="quiz--text">
             <span className="quiz--text-num">{`${idx + 1})`}</span>
             {`${item.optionStr}`}
@@ -417,8 +369,9 @@ const Quiz = ({
   //* display the checked quiz.
   const displayCheckedQuizAnswer = () => {
     return checkedQuiz.map((item, idx) => {
+      // console.log("item: ", item);
       return (
-        <div className="quiz--checked-answer">
+        <div className="quiz--checked-answer" key={`${item.questionID}${item.userAnswer}`} >
           <p className={`quiz--icon-${item.correct ? "check" : "x"}`}></p>
           <p className={`quiz--text`}>
             <span
@@ -426,7 +379,7 @@ const Quiz = ({
                 item.correct ? "green" : "red"
               }`}
             >{`Q${idx + 1} - `}</span>
-            {`${item.optionStr}`}
+            {`${quizAnswerArr[idx].optionStr}`}
           </p>
         </div>
       );
@@ -451,7 +404,7 @@ const Quiz = ({
         />
       )}
       {!isStartQuiz && !isEndQuiz && isShow && !isCheckedQuiz && (
-        <div className="quiz-container">
+        <div className="quiz-container start-quiz">
           <div className="studying-card__existing-category">
             {err && <p className="job-card--err">{err}</p>}
             <label className="quiz--label">
@@ -482,7 +435,7 @@ const Quiz = ({
         <div className="quiz__info">
           <main className="quiz__info--questions-title quiz-container">
             <h1 className="quiz__info--category">{quizChosenCategory}</h1>
-            <div className="category--questions">{displayQuestions()}</div>
+            <div className="quiz__info--questions">{displayQuestions()}</div>
             <div className="quiz-btn-container">
               <i
                 role="button"
@@ -496,18 +449,16 @@ const Quiz = ({
               ></i>
             </div>
           </main>
-          <aside className="quiz__info--answers-submit">
-            <div className="quiz-container">
+          <aside className="quiz__info--answers-submit quiz-container">
               <div className="quiz-answers">{displayAnswers()}</div>
               <button className="quiz--btn" onClick={handleCheckBeforeSubmit}>
                 Submit
               </button>
-            </div>
           </aside>
         </div>
       )}
       {isShow && isEndQuiz && (
-        <form className="quiz-container" onSubmit={handleSubmit}>
+        <form className="quiz-container quiz--check-answers" onSubmit={handleSubmit}>
           <div className="quiz-answers">{displayChosenAnswers()}</div>
           <div className="quiz-btn-container">
             <button className="quiz--btn" onClick={handleEditQuiz}>
@@ -520,7 +471,7 @@ const Quiz = ({
         </form>
       )}
       {isShow && isCheckedQuiz && (
-        <div className="quiz-container">
+        <div className="quiz-container quiz--check-answers">
           <div className="quiz-btn-container">
             <h1>{`Your Grade Is: ${quizGrade}/100`}</h1>
             <Link className="quiz--btn" to="/studying">

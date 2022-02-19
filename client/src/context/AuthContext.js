@@ -53,7 +53,7 @@ export function AuthProvider({ children }) {
     };
     try {
       const response = await myApi.post("/users/login", obj);
-      console.log("login: ", response);
+      // console.log("login: ", response);
       setCurrentToken(response.data.token);
       // setCurrentUser(response.data.user);
       localStorage.setItem('JobPreparingToken', response.data.token);
@@ -73,11 +73,11 @@ export function AuthProvider({ children }) {
       const response = await myApi.post("/users/logout");
       setCurrentToken("");
       setCurrentUser(null);
-      console.log(response);
+      // console.log(response);
       localStorage.clear();
 
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       // setError(e.response.data.message);
       
     }
@@ -91,7 +91,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await myApi.post("/users/logoutAll");
 
-      console.log(response);
+      // console.log(response);
       localStorage.clear();
 
     } catch (e) {
