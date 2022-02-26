@@ -17,7 +17,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
 
   const [placeholderTitle, setPlaceholderTitle] = useState("");
   const [placeholderQuestion, setPlaceholderQuestion] = useState("");
-  const [placeholderAnswer, setPlaceholderAnswer] = useState("");
+  const [placeholderAnswer, setPlaceholderAnswer] = useState("");  
 
   //* State for the MsgBox component.
   const [isMsgBox, setIsMsgBox] = useState(false);
