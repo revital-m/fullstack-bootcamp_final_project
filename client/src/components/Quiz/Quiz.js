@@ -232,7 +232,11 @@ const Quiz = ({
       });
       const response = await getQuiz(selectCategory);
       setStudyingCategoryId(selectCategory);
-      setQuizData(response);
+      const shuffledQuiz = shuffle(response);
+      shuffledQuiz.forEach(
+        (item, idx) => (shuffledQuiz[idx].answers = shuffle(item.answers))
+      );
+      setQuizData(shuffledQuiz);
       setIsStartQuiz(true);
       setIsLoading(false);
       setIsShow(true);
@@ -241,6 +245,27 @@ const Quiz = ({
       setErr(error.message);
       setIsShow(true);
     }
+  };
+
+  //* Shuffle the quiz answers & questions.
+  const shuffle = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
   };
 
   //* Update the quizAnswerArr with the option the user has chosen.
@@ -255,6 +280,7 @@ const Quiz = ({
   //* Update the question that is currently shown.
   const handleAnswerClick = (idx) => {
     setQuizDataIdx(idx);
+    setOptionsArr([...quizAnswerArr[idx].options]);
   };
 
   //* Update the question that is currently shown.
@@ -304,7 +330,10 @@ const Quiz = ({
   const displayOptions = () => {
     return optionsArr.map((item, idx) => {
       return (
-        <div className="quiz--question-option" key={quizData[quizDataIdx].answers[idx]._id} >
+        <div
+          className="quiz--question-option"
+          key={quizData[quizDataIdx].answers[idx]._id}
+        >
           <input
             className="quiz--check-mark"
             onChange={handleInputChange}
@@ -331,7 +360,7 @@ const Quiz = ({
   const displayAnswers = () => {
     return quizAnswerArr.map((item, idx) => {
       return (
-        <div className="quiz--question-option" key={idx} >
+        <div className="quiz--question-option" key={idx}>
           <input
             className="quiz--check-mark"
             readOnly
@@ -355,7 +384,10 @@ const Quiz = ({
   const displayChosenAnswers = () => {
     return quizAnswerArr.map((item, idx) => {
       return (
-        <div className="quiz--question-option" key={item.answerID ? item.answerID : idx} >
+        <div
+          className="quiz--question-option"
+          key={item.answerID ? item.answerID : idx}
+        >
           <p className="quiz--text">
             <span className="quiz--text-num">{`${idx + 1})`}</span>
             {`${item.optionStr}`}
@@ -369,7 +401,10 @@ const Quiz = ({
   const displayCheckedQuizAnswer = () => {
     return checkedQuiz.map((item, idx) => {
       return (
-        <div className="quiz--checked-answer" key={`${item.questionID}${item.userAnswer}`} >
+        <div
+          className="quiz--checked-answer"
+          key={`${item.questionID}${item.userAnswer}`}
+        >
           <p className={`quiz--icon-${item.correct ? "check" : "x"}`}></p>
           <p className={`quiz--text`}>
             <span
@@ -448,15 +483,18 @@ const Quiz = ({
             </div>
           </main>
           <aside className="quiz__info--answers-submit quiz-container">
-              <div className="quiz-answers">{displayAnswers()}</div>
-              <button className="quiz--btn" onClick={handleCheckBeforeSubmit}>
-                Submit
-              </button>
+            <div className="quiz-answers">{displayAnswers()}</div>
+            <button className="quiz--btn" onClick={handleCheckBeforeSubmit}>
+              Submit
+            </button>
           </aside>
         </div>
       )}
       {isShow && isEndQuiz && (
-        <form className="quiz-container quiz--check-answers" onSubmit={handleSubmit}>
+        <form
+          className="quiz-container quiz--check-answers"
+          onSubmit={handleSubmit}
+        >
           <div className="quiz-answers">{displayChosenAnswers()}</div>
           <div className="quiz-btn-container">
             <button className="quiz--btn" onClick={handleEditQuiz}>
