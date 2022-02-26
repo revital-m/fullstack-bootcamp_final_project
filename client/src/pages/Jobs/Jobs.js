@@ -133,7 +133,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
           message={message}
           pathBack={pathBack}
           handleDelete={() => onDelete(cardId)}
-          handleGoBackbtn={onGoBack}
+          handleGoBackBtn={onGoBack}
           isDelete={isDelete}
           isClose={isClose}
           notDelete={false}
@@ -176,7 +176,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             className="prev-btn"
             onClick={() => dispatch({ type: "PREV" })}
           >
-            ‹{console.log("isShow: ", isShow)}
+            {/* ‹{console.log("isShow: ", isShow)} */}
           </button>
         )}
         {isShow && (
@@ -184,7 +184,7 @@ const Jobs = ({ userJobsArr, setUserJobsArr, deleteJobCard }) => {
             className="next-btn"
             onClick={() => dispatch({ type: "NEXT" })}
           >
-            ›{console.log("isShow: ", isShow)}
+            {/* ›{console.log("isShow: ", isShow)} */}
           </button>
         )}
       </div>

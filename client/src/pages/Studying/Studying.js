@@ -133,7 +133,7 @@ const Studying = ({
           message={message}
           pathBack={pathBack}
           handleDelete={() => onDelete()}
-          handleGoBackbtn={onGoBack}
+          handleGoBackBtn={onGoBack}
           isDelete={isDelete}
           isClose={isClose}
           notDelete={false}

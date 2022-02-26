@@ -16,8 +16,8 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
   // //* Check if the window.innerWidth is less then 1000px for the hamburger menu.
   useEffect(() => {
     setInterval(() => {
-      console.log("window.innerWidth: ", window.innerWidth);
-      console.log("isMobile: ", isMobile);
+      // console.log("window.innerWidth: ", window.innerWidth);
+      // console.log("isMobile: ", isMobile);
       if (window.innerWidth <= 1000) {
         setIsMobile(true);
       } else {
@@ -44,7 +44,7 @@ const Navbar = ({ currentToken, logout, logoutFromAll }) => {
   const handleLogout = async () => {
     try {
       await logoutFromAll();
-      history.push(`/`);
+      // history.push(`/`);
     } catch (error) {
       console.log("navbar - error", error);
     }

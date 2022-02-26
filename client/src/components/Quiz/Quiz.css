@@ -7,6 +7,7 @@
   background: url("../img/quiz2.jpg") no-repeat center center/cover;
   overflow: hidden;
   position: relative;
+  padding-top: 5rem;
 }
 
 .quiz::after {
@@ -15,7 +16,7 @@
   top: 0;
   left: 0;
   background: rgba(160, 255, 250, 0.521);
-  min-height: 100vh;
+  height: 100%;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -24,45 +25,63 @@
 }
 
 .quiz-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 2rem;
-  margin: 1rem;
+  padding: 1.5rem;
+  margin: 0.5rem;
   box-shadow: 5px 5px 20px gray;
   border-radius: 1rem;
   background: rgba(245, 245, 245, 0.514);
   z-index: 3;
 }
 
-.quiz__info--category {
-  z-index: 3;
+.start-quiz {
+  width: 90%;
+  max-width: 60rem;
+}
+
+.quiz__existing-category {
+  padding: 1rem;
+}
+
+.quiz--check-answers {
+  width: 90%;
+  max-width: 80rem;
+}
+
+.quiz__info--answers-submit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  width: 93vw;
+  max-width: 85rem;
+}
+
+.quiz__info--questions-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  width: 93vw;
+  max-width: 85rem;
+}
+
+.quiz-answers,
+.quiz--chosen-answers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  max-width: 74rem;
+}
+
+.quiz--chosen-answers {
+  flex-direction: column;
 }
 
 .quiz--label,
 .quiz--info {
   font-weight: bold;
-  margin: 1rem;
   z-index: 3;
-}
-
-.quiz--label {
-  font-size: 1.8rem;
-}
-
-.quiz--text,
-.quiz--text-num {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0.5rem;
-  z-index: 3;
-}
-
-.quiz--text-num {
-  font-size: 2rem;
-  padding-right: 1rem;
 }
 
 .quiz--info {
@@ -71,12 +90,35 @@
   padding: 1rem;
   text-align: center;
   font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.quiz--label {
+  font-size: 1.8rem;
+  line-height: 1.5;
+}
+
+.quiz--option {
+  padding: 0 1.2rem 0 0.5rem;
+}
+
+.quiz--text,
+.quiz--text-num {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem;
+  line-height: 1.6;
+  z-index: 3;
+}
+
+.quiz--text-num {
+  font-size: 2rem;
+  padding-right: 1rem;
 }
 
 .quiz--btn {
   cursor: pointer;
   text-decoration: none;
-  margin: 1rem;
   padding: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
@@ -84,6 +126,7 @@
   border: 2px solid rgba(0, 0, 0, 0.589);
   border-radius: 1rem;
   color: whitesmoke;
+  width: max-content;
   z-index: 3;
 }
 
@@ -102,15 +145,14 @@
 .quiz--question,
 .quiz--title {
   padding: 1.5rem;
-  margin: 1rem;
+  margin: 0.5rem auto;
   box-shadow: 5px 5px 20px grey;
   border: 2px solid #022b35;
   border-radius: 1rem;
-  text-align: center;
   overflow: hidden;
   background: whitesmoke;
   cursor: pointer;
-  width: 100%;
+  width: 93%;
   max-width: 80rem;
   display: flex;
   flex-direction: column;
@@ -120,14 +162,17 @@
 
 .quiz--title {
   background: #83f3efa9;
+  text-align: center;
 }
 
 .quiz--question-option {
-  padding: 1rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
 }
 
 .quiz--checked-answer {
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
 }
 
@@ -150,13 +195,12 @@
   z-index: 3;
 }
 
-.category--questions {
+.quiz__info--questions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin: 1rem;
-  width: 100%;
   z-index: 3;
 }
 
@@ -165,30 +209,34 @@
   z-index: 3;
   text-align: center;
   width: 100%;
+  margin: 0.2rem;
 }
 
 .quiz__info {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  z-index: 3;
+}
+
+.quiz--icon-check,
+.quiz--icon-x {
+  height: 8vmin;
+  max-height: 3rem;
+  width: 20vmin;
+  max-width: 3rem;
+  margin-top: 0.6rem;
   z-index: 3;
 }
 
 .quiz--icon-check {
   background: url("../img/icons8-check-mark-button-48.png") no-repeat center
     center/cover;
-  height: 3rem;
-  width: 3rem;
-  margin-top: 0.3rem;
-  z-index: 3;
 }
 
 .quiz--icon-x {
   background: url("../img/icons8-close-window-48.png") no-repeat center
     center/cover;
-  height: 3rem;
-  width: 3rem;
-  margin-top: 0.3rem;
-  z-index: 3;
 }
 
 .quiz--text-green {
@@ -197,4 +245,14 @@
 
 .quiz--text-red {
   color: #a31e27;
+}
+
+.quiz--check-mark {
+  height: 20vmin;
+  max-height: 2rem;
+  width: 20vmin;
+  max-width: 2rem;
+  margin-top: 0.5rem;
+  background-color: #eee;
+  cursor: pointer;
 }

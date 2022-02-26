@@ -17,7 +17,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
 
   const [placeholderTitle, setPlaceholderTitle] = useState("");
   const [placeholderQuestion, setPlaceholderQuestion] = useState("");
-  const [placeholderAnswer, setPlaceholderAnswer] = useState("");
+  const [placeholderAnswer, setPlaceholderAnswer] = useState("");  
 
   //* State for the MsgBox component.
   const [isMsgBox, setIsMsgBox] = useState(false);
@@ -45,7 +45,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
     setErr("");
     try {
       const updates = createUpdates();
-      console.log("updates: ", updates);
+      // console.log("updates: ", updates);
       const response = await updateQuestionCard(updates);
       checkAxiosResponse(response);
     } catch (error) {
@@ -87,7 +87,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
   const handleEnter = (e) => {
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
-    console.log("index: ", index);
+    // console.log("index: ", index);
     if (e.type === "click") {
       form.elements[index].focus();
       setCurrent(index);
@@ -135,7 +135,7 @@ const StudyingEditCard = ({ updateQuestionCard, chosenStudyingCard }) => {
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}

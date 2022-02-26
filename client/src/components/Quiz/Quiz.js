@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import "./Quiz.css";
 import MsgBox from "../MsgBox/MsgBox";
 import Spinner from "../Spinner/Spinner";
+import QuizSubmit from "../QuizSubmit/QuizSubmit";
+import QuizChecked from "../QuizChecked/QuizChecked";
+import QuizStart from "../QuizStart/QuizStart";
+import QuizSelectCategory from "../QuizSelectCategory/QuizSelectCategory";
 
 const Quiz = ({
   addQuestionToQuiz,
@@ -10,8 +13,6 @@ const Quiz = ({
   getQuiz,
   setStudyingCategoryId,
   checkQuiz,
-  setCurrentUser,
-  currentUser,
 }) => {
   //* State:
   const [isLoading, setIsLoading] = useState(false);
@@ -140,102 +141,6 @@ const Quiz = ({
     setCategoriesArray(quizCategories);
   }, []);
 
-  //* Change to the user's answer for him to check them before submitting the quiz.
-  const handleCheckBeforeSubmit = () => {
-    setIsEndQuiz(true);
-    setIsStartQuiz(false);
-  };
-
-  //* Change to the quiz for the user to change his answers.
-  const handleEditQuiz = () => {
-    setIsEndQuiz(false);
-    setIsStartQuiz(true);
-  };
-
-  //* Check if all of the required fields are provided and call saveNewStudyingCard() to save the card to the Studying collection.
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setIsShow(false);
-    setErr("");
-    try {
-      const response = await checkQuiz(quizAnswerArr);
-      // checkQuizAnswer();
-      console.log("response: ", response);
-      if (response.status === 200) {
-        setCheckedQuiz(response.data[0].answersArr);
-        setQuizGrade(response.data[0].usersGrade * 10);
-        setIsShow(true);
-        setIsStartQuiz(false);
-        setIsEndQuiz(false);
-        setIsCheckedQuiz(true);
-        setIsLoading(false);
-      } else {
-        checkAxiosResponse(response);
-      }
-    } catch (error) {
-      console.table(error);
-      setIsLoading(false);
-      setErr(error.message);
-      setIsShow(true);
-    }
-  };
-
-  const checkQuizAnswer = () => {
-    // console.log("quizAnswerArr: ", quizAnswerArr);
-    // let grade = 0;
-    // quizAnswerArr.forEach((item) => {
-    //   if (item.correct) {
-    //     grade++;
-    //   }
-    // });
-    // setCheckedQuiz([...quizAnswerArr]);
-    // setQuizGrade(grade * 10);
-    // setIsShow(true);
-    // setIsStartQuiz(false);
-    // setIsEndQuiz(false);
-    // setIsCheckedQuiz(true);
-    // setIsLoading(false);
-    // const updateUser = {
-    //   email: currentUser.email,
-    //   exercisesAnswer: currentUser.exercisesAnswer,
-    //   userName: currentUser.userName,
-    //   __v: currentUser.__v,
-    //   _id: currentUser._id,
-    // };
-    // const updateStudyingArr = [];
-    // currentUser.studying.forEach(item => {
-    //   if (item.categoryID === selectCategory) {
-    //     updateStudyingArr.push({
-    //       categoryID: item.categoryID,
-    //       importance: Math.floor(grade / 2),
-    //       userQuestions: item.userQuestions,
-    //       _id: item._id,
-    //     });
-    //   }
-    //   else {
-    //     updateStudyingArr.push(item);
-    //   }
-    // })
-    // updateUser.studying = updateStudyingArr;
-    // setCurrentUser(updateUser);
-  };
-
-  //* Check the response from the axios request.
-  const checkAxiosResponse = (response) => {
-    if (response.status === 200 || response.status === 201) {
-      setMsgClass("msg--success");
-      setMessage("The card was create successfully!");
-    } else {
-      console.table(response);
-      setMsgClass("msg--error");
-      setMessage(`Something went wrong - ${response.response.data}`);
-    }
-    setPathBack("/studying/quiz");
-    setIsLoading(false);
-    setIsMsgBox(true);
-  };
-
   //* Controlled Inputs.
   const handleInputChange = (e) => {
     if (e.target.name === "selectCategory") {
@@ -259,180 +164,6 @@ const Quiz = ({
     }
   };
 
-  //* Get the quiz by the chosen category.
-  const handleStartQuiz = async () => {
-    setIsLoading(true);
-    setIsShow(false);
-    // addQuestionToQuiz(selectCategory);
-    try {
-      setErr("");
-      if (selectCategory === "Select Category") {
-        throw new Error("You must choose a category to start the quiz");
-      }
-      categoriesArray.forEach((category) => {
-        if (category.categoryID === selectCategory) {
-          setQuizChosenCategory(category.categoryName);
-        }
-      });
-      const response = await getQuiz(selectCategory);
-      // userStudyingArr.forEach((item) => {
-      //   if (item._id === selectCategory) {
-      //     setQuizData(item.quiz);
-      //   }
-      // });
-      console.log("response: ", response);
-      setStudyingCategoryId(selectCategory);
-      setQuizData(response);
-      setIsStartQuiz(true);
-      setIsLoading(false);
-      setIsShow(true);
-    } catch (error) {
-      setIsLoading(false);
-      setErr(error.message);
-      setIsShow(true);
-    }
-  };
-
-  //* Update the quizAnswerArr with the option the user has chosen.
-  const handleOptionClick = (questionId, optionId, option) => {
-    const updateAnswerArr = [...quizAnswerArr];
-    updateAnswerArr[quizDataIdx].questionID = questionId;
-    updateAnswerArr[quizDataIdx].answerID = optionId;
-    updateAnswerArr[quizDataIdx].optionStr = option;
-    setQuizAnswerArr(updateAnswerArr);
-  };
-
-  //* Update the question that is currently shown.
-  const handleAnswerClick = (idx) => {
-    setQuizDataIdx(idx);
-  };
-
-  //* Update the question that is currently shown.
-  const handleArrowClick = (idx) => {
-    if (idx < 0) {
-      idx = 0;
-    } else if (idx > 9) {
-      idx = 9;
-    }
-    setQuizDataIdx(idx);
-    setOptionsArr(quizAnswerArr[idx].options);
-  };
-
-  //* Create the categories options for the select element.
-  const createOptions = () => {
-    return categoriesArray.map((category) => {
-      return (
-        <option
-          className="studying-card--info"
-          key={category.categoryID}
-          value={category.categoryID}
-        >
-          {category.categoryName}
-        </option>
-      );
-    });
-  };
-
-  //* Display the options for the current question.
-  const displayQuestions = () => {
-    return (
-      <div key={quizData[quizDataIdx]._id}>
-        <div className="quiz--title">
-          <h2 className="category-card--title">{`Question ${
-            quizDataIdx + 1
-          }:`}</h2>
-          <h3 className="category-card--title">
-            {quizData[quizDataIdx].question}
-          </h3>
-        </div>
-        <div className="quiz--question">{displayOptions()}</div>
-      </div>
-    );
-  };
-
-  //* Display the options for the current question.
-  const displayOptions = () => {
-    return optionsArr.map((item, idx) => {
-      return (
-        <div className="quiz--question-option">
-          <input
-            className="job-card__timeline--check-mark"
-            onChange={handleInputChange}
-            onClick={() =>
-              handleOptionClick(
-                quizData[quizDataIdx]._id,
-                quizData[quizDataIdx].answers[idx]._id,
-                quizData[quizDataIdx].answers[idx].option
-              )
-            }
-            type="checkbox"
-            name={idx}
-            checked={item}
-          ></input>
-          <label className="studying-card--label">
-            {quizData[quizDataIdx].answers[idx].option}
-          </label>
-        </div>
-      );
-    });
-  };
-
-  //* Display the answers for the current quiz.
-  const displayAnswers = () => {
-    return quizAnswerArr.map((item, idx) => {
-      return (
-        <div className="quiz--question-option">
-          <input
-            className="job-card__timeline--check-mark"
-            onClick={() => handleAnswerClick(idx)}
-            type="checkbox"
-            name={`quizAnswer${idx + 1}`}
-            checked={item.value}
-          ></input>
-          <label
-            className="studying-card--label"
-            onClick={() => handleAnswerClick(idx)}
-          >
-            {`Question ${idx + 1}`}
-          </label>
-        </div>
-      );
-    });
-  };
-
-  //* display the chosen answers.
-  const displayChosenAnswers = () => {
-    return quizAnswerArr.map((item, idx) => {
-      return (
-        <div className="quiz--question-option">
-          <p className="quiz--text">
-            <span className="quiz--text-num">{`${idx + 1})`}</span>
-            {`${item.optionStr}`}
-          </p>
-        </div>
-      );
-    });
-  };
-
-  //* display the checked quiz.
-  const displayCheckedQuizAnswer = () => {
-    return checkedQuiz.map((item, idx) => {
-      return (
-        <div className="quiz--checked-answer">
-          <p className={`quiz--icon-${item.correct ? "check" : "x"}`}></p>
-          <p className={`quiz--text`}>
-            <span
-              className={`quiz--text-num quiz--text-${
-                item.correct ? "green" : "red"
-              }`}
-            >{`Q${idx + 1} - `}</span>
-            {`${item.optionStr}`}
-          </p>
-        </div>
-      );
-    });
-  };
-
   return (
     <div className="quiz">
       {isLoading && (
@@ -444,91 +175,69 @@ const Quiz = ({
           message={message}
           pathBack={pathBack}
           handleDelete=""
-          handleGoBackbtn=""
+          handleGoBackBtn=""
           isDelete={false}
           notDelete={true}
           isClose={false}
         />
       )}
       {!isStartQuiz && !isEndQuiz && isShow && !isCheckedQuiz && (
-        <div className="quiz-container">
-          <div className="studying-card__existing-category">
-            {err && <p className="job-card--err">{err}</p>}
-            <label className="quiz--label">
-              Please select a category to start the quiz:
-            </label>
-            <select
-              value={selectCategory}
-              onChange={handleInputChange}
-              name="selectCategory"
-              className="quiz--info"
-            >
-              <option className="quiz--info" checked disabled>
-                Select Category
-              </option>
-              {createOptions()}
-            </select>
-          </div>
-          <button
-            className="quiz--btn"
-            disabled={isLoading}
-            onClick={handleStartQuiz}
-          >
-            Start Quiz
-          </button>
-        </div>
+        <QuizSelectCategory
+          selectCategory={selectCategory}
+          handleInputChange={handleInputChange}
+          isLoading={isLoading}
+          categoriesArray={categoriesArray}
+          setIsLoading={setIsLoading}
+          setIsShow={setIsShow}
+          setErr={setErr}
+          setQuizChosenCategory={setQuizChosenCategory}
+          getQuiz={getQuiz}
+          setStudyingCategoryId={setStudyingCategoryId}
+          setQuizData={setQuizData}
+          setIsStartQuiz={setIsStartQuiz}
+          err={err}
+        />
       )}
       {isStartQuiz && isShow && (
-        <div className="quiz__info">
-          <main className="quiz__info--questions-title quiz-container">
-            <h1 className="quiz__info--category">{quizChosenCategory}</h1>
-            <div className="category--questions">{displayQuestions()}</div>
-            <div className="quiz-btn-container">
-              <i
-                role="button"
-                className="quiz--arrow fas fa-arrow-alt-circle-left"
-                onClick={() => handleArrowClick(quizDataIdx - 1)}
-              ></i>
-              <i
-                role="button"
-                className="quiz--arrow fas fa-arrow-alt-circle-right"
-                onClick={() => handleArrowClick(quizDataIdx + 1)}
-              ></i>
-            </div>
-          </main>
-          <aside className="quiz__info--answers-submit">
-            <div className="quiz-container">
-              <div className="quiz-answers">{displayAnswers()}</div>
-              <button className="quiz--btn" onClick={handleCheckBeforeSubmit}>
-                Submit
-              </button>
-            </div>
-          </aside>
-        </div>
+        <QuizStart
+          quizChosenCategory={quizChosenCategory}
+          quizData={quizData}
+          quizDataIdx={quizDataIdx}
+          optionsArr={optionsArr}
+          setQuizDataIdx={setQuizDataIdx}
+          setOptionsArr={setOptionsArr}
+          quizAnswerArr={quizAnswerArr}
+          setIsEndQuiz={setIsEndQuiz}
+          setIsStartQuiz={setIsStartQuiz}
+          handleInputChange={handleInputChange}
+          setQuizAnswerArr={setQuizAnswerArr}
+        />
       )}
       {isShow && isEndQuiz && (
-        <form className="quiz-container" onSubmit={handleSubmit}>
-          <div className="quiz-answers">{displayChosenAnswers()}</div>
-          <div className="quiz-btn-container">
-            <button className="quiz--btn" onClick={handleEditQuiz}>
-              Edit
-            </button>
-            <button className="quiz--btn" type="submit" disabled={isLoading}>
-              Submit
-            </button>
-          </div>
-        </form>
+        <QuizSubmit
+          setMsgClass={setMsgClass}
+          setMessage={setMessage}
+          setPathBack={setPathBack}
+          setIsLoading={setIsLoading}
+          setIsMsgBox={setIsMsgBox}
+          setIsShow={setIsShow}
+          setErr={setErr}
+          checkQuiz={checkQuiz}
+          quizAnswerArr={quizAnswerArr}
+          setCheckedQuiz={setCheckedQuiz}
+          setQuizGrade={setQuizGrade}
+          setIsStartQuiz={setIsStartQuiz}
+          setIsEndQuiz={setIsEndQuiz}
+          setIsCheckedQuiz={setIsCheckedQuiz}
+          isLoading={isLoading}
+        />
       )}
       {isShow && isCheckedQuiz && (
-        <div className="quiz-container">
-          <div className="quiz-btn-container">
-            <h1>{`Your Grade Is: ${quizGrade}/100`}</h1>
-            <Link className="quiz--btn" to="/studying">
-              Back
-            </Link>
-          </div>
-          <div className="quiz-answers">{displayCheckedQuizAnswer()}</div>
-        </div>
+        <QuizChecked
+          checkedQuiz={checkedQuiz}
+          quizAnswerArr={quizAnswerArr}
+          quizGrade={quizGrade}
+        />
       )}
     </div>
   );
